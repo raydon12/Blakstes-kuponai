@@ -918,7 +918,7 @@ const store = {
     let data = null, error = null;
     try {
       const r = await fetch(`${this.cfg.url}/rest/v1/rpc/${fn}`, { method: 'POST',
-        headers: { apikey: this.cfg.key, 'content-type': 'application/json', accept: 'application/json' }, body: JSON.stringify(args || {}) });
+        headers: { apikey: this.cfg.key, authorization: `Bearer ${this.cfg.key}`, 'content-type': 'application/json', accept: 'application/json' }, body: JSON.stringify(args || {}) });
       const txt = await r.text(); const j = txt ? JSON.parse(txt) : null;
       if (r.ok) data = j; else error = j || { message: 'http_' + r.status };
     } catch (x) { error = { message: 'network' }; }
