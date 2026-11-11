@@ -138,6 +138,7 @@ section{padding:96px 0}
 .amt.custom input::placeholder{color:var(--greige);opacity:.6;font-size:28px}
 .amt.custom input{border:0;border-bottom:1px solid var(--line-light);background:none;font-family:var(--display);font-size:40px;width:100%;outline:none;padding:0}
 .note{font-size:13px;color:var(--greige)}
+.note.terms{margin:14px 0 0;font-size:12px;line-height:1.5}
 
 section{scroll-margin-top:72px}
 /* personalize */
@@ -519,6 +520,7 @@ dialog::backdrop{background:rgba(10,9,9,.7);backdrop-filter:blur(4px)}
           <button class="btn pink" id="buyBtn" disabled><span data-i18n="buy"></span><span class="arr">→</span></button>
         </div>
         <div class="trust"><span data-i18n="tr1"></span><span data-i18n="tr2"></span><span data-i18n="tr3"></span></div>
+        <p class="note terms" data-i18n="terms"></p>
       </div>
       <div class="stick">
         <div class="voucher noir" id="previewCard"></div>
@@ -654,6 +656,7 @@ dialog::backdrop{background:rgba(10,9,9,.7);backdrop-filter:blur(4px)}
       <div class="field"><label class="mono" for="pExp">MM/YY</label><input id="pExp" placeholder="12/28" required></div>
       <div class="field"><label class="mono" for="pCvc">CVC</label><input id="pCvc" inputmode="numeric" placeholder="123" required></div>
     </div>
+    <p class="note terms" data-i18n="terms"></p>
     <p class="note" id="payErr" style="color:#b23a48" hidden></p>
     <div class="summary m-actions">
       <button type="button" class="btn" id="payCancel" data-i18n="cancel"></button>
@@ -728,11 +731,12 @@ const I18N = {
          ["Ar galima kuponą panaudoti dalimis?","Taip. Po procedūros meistras nurašo jos kainą, o likutis lieka kupone kitam apsilankymui."],
          ["Kaip užsiregistruoti su kuponu?","Užsiregistruokite įprastai per Treatwell, o atvykę parodykite kupono QR kodą arba pasakykite kodą."],
          ["Kaip kuponą gaus gavėjas?","Galite jį gauti patys ir atsispausdinti ar persiųsti, arba pasirinkti, kad išsiųstume gavėjui konkrečią dieną."],
-         ["Ar galima pratęsti galiojimą?","Susisiekite su meistru — meistras gali pratęsti kupono galiojimą."]],
+         ["Ar galima pratęsti galiojimą?","Ne. Kupono galiojimas nepratęsiamas, todėl panaudokite jį iki nurodytos datos."],
+         ["Ar galima grąžinti kuponą ar iškeisti į pinigus?","Ne. Kupono suma negrąžinama ir nekeičiama į grynuosius pinigus."]],
     download:"Atsisiųsti", dlErr:"Nepavyko atsisiųsti", next:"Toliau", sendOn:"Bus išsiųsta {email} {date} (testiniame režime laiškai nesiunčiami).",
     chartT:"Pardavimai · 30 d.", feedT:"Paskutiniai nurašymai", noFeed:"Nurašymų dar nebuvo", newV:"+ Naujas kuponas", csv:"CSV",
     sortNew:"Naujausi", sortOld:"Seniausi", sortBal:"Didžiausias likutis", sortExp:"Greitai baigsis",
-    f_void:"Anuliuoti", f_unpaid:"Neapmokėti", badLoginEmail:"Neteisingas el. paštas arba slaptažodis", s_unpaid:"Laukia apmokėjimo", unpaidNote:"Užsakyta internetu, bet dar neapmokėta. Kai klientas sumokės, pažymėkite kuponą apmokėtu — tada jį bus galima naudoti.", markPaid:"Pažymėti apmokėtu", paidQ:"Patvirtinti, kad už {c} gauta {a}?", paidDone:"Kuponas apmokėtas ir galioja", notMaster:"Ši paskyra neturi meistro teisių", order:"Užsakyti", liveNote:"Kuponas įsigalios, kai meistras patvirtins apmokėjimą. Su jumis susisieksime el. paštu dėl atsiskaitymo.", doneLive:"Užsakymas priimtas! Kupono kodas: {code}. Kuponas įsigalios, kai meistras patvirtins apmokėjimą — susisieksime adresu {email}.", s_void:"Anuliuotas", extend:"+3 mėn.", extended:"Pratęsta iki {d}", voidB:"Anuliuoti", voidQ:"Anuliuoti kuponą {c}? Juo nebebus galima atsiskaityti.", voided:"Kuponas anuliuotas", restore:"Atkurti", restored:"Kuponas atkurtas",
+    f_void:"Anuliuoti", f_unpaid:"Neapmokėti", terms:"Kupono suma negrąžinama ir nekeičiama į grynuosius pinigus. Kupono galiojimas nepratęsiamas.", badLoginEmail:"Neteisingas el. paštas arba slaptažodis", s_unpaid:"Laukia apmokėjimo", unpaidNote:"Užsakyta internetu, bet dar neapmokėta. Kai klientas sumokės, pažymėkite kuponą apmokėtu — tada jį bus galima naudoti.", markPaid:"Pažymėti apmokėtu", paidQ:"Patvirtinti, kad už {c} gauta {a}?", paidDone:"Kuponas apmokėtas ir galioja", notMaster:"Ši paskyra neturi meistro teisių", order:"Užsakyti", liveNote:"Kuponas įsigalios, kai meistras patvirtins apmokėjimą. Su jumis susisieksime el. paštu dėl atsiskaitymo.", doneLive:"Užsakymas priimtas! Kupono kodas: {code}. Kuponas įsigalios, kai meistras patvirtins apmokėjimą — susisieksime adresu {email}.", s_void:"Anuliuotas", extend:"+3 mėn.", extended:"Pratęsta iki {d}", voidB:"Anuliuoti", voidQ:"Anuliuoti kuponą {c}? Juo nebebus galima atsiskaityti.", voided:"Kuponas anuliuotas", restore:"Atkurti", restored:"Kuponas atkurtas",
     newT:"Naujas kuponas", newD:"Kuponas, parduotas salone (grynais ar kortele). Jis atsiras sąraše ir gaus kodą bei QR.", vtype:"Tipas", byAmount:"Suma", byService:"Procedūra",
     payM:"Apmokėjimas", payCash:"Grynais", payCard:"Kortele salone", payOnline:"Internetu", payGift:"Dovana / akcija", create:"Sukurti kuponą", created:"Sukurtas {c}", buyerOpt:"Pirkėjo el. paštas (nebūtina)", srcSalon:"Salone", srcOnline:"Internetu", source:"Šaltinis",
     perDay:"{n} vnt. · {s}", vouchersN:"vnt."
@@ -782,11 +786,12 @@ const I18N = {
          ["Можно ли использовать сертификат частями?","Да. После процедуры мастер списывает её стоимость, а остаток сохраняется для следующего визита."],
          ["Как записаться по сертификату?","Запишитесь как обычно через Treatwell, а в салоне покажите QR-код сертификата или назовите код."],
          ["Как сертификат получит получатель?","Можно получить его самому и распечатать или переслать, или выбрать отправку получателю в конкретный день."],
-         ["Можно ли продлить срок?","Свяжитесь с мастером — мастер может продлить срок действия."]],
+         ["Можно ли продлить срок?","Нет. Срок действия сертификата не продлевается, поэтому используйте его до указанной даты."],
+         ["Можно ли вернуть сертификат или обменять на деньги?","Нет. Сумма сертификата не возвращается и не обменивается на наличные."]],
     download:"Скачать", dlErr:"Не удалось скачать", next:"Далее", sendOn:"Будет отправлен на {email} {date} (в тестовом режиме письма не отправляются).",
     chartT:"Продажи · 30 дней", feedT:"Последние списания", noFeed:"Списаний ещё не было", newV:"+ Новый сертификат", csv:"CSV",
     sortNew:"Сначала новые", sortOld:"Сначала старые", sortBal:"Больший остаток", sortExp:"Скоро истекают",
-    f_void:"Аннулированы", f_unpaid:"Не оплачены", badLoginEmail:"Неверный email или пароль", s_unpaid:"Ждёт оплаты", unpaidNote:"Заказан онлайн, но ещё не оплачен. Когда клиент заплатит, отметьте сертификат оплаченным — тогда им можно будет пользоваться.", markPaid:"Отметить оплаченным", paidQ:"Подтвердить, что за {c} получено {a}?", paidDone:"Сертификат оплачен и действует", notMaster:"У этого аккаунта нет прав мастера", order:"Заказать", liveNote:"Сертификат начнёт действовать, когда мастер подтвердит оплату. Мы свяжемся с вами по email насчёт оплаты.", doneLive:"Заказ принят! Код сертификата: {code}. Сертификат начнёт действовать после подтверждения оплаты — напишем на {email}.", s_void:"Аннулирован", extend:"+3 мес.", extended:"Продлён до {d}", voidB:"Аннулировать", voidQ:"Аннулировать сертификат {c}? Им больше нельзя будет расплатиться.", voided:"Сертификат аннулирован", restore:"Восстановить", restored:"Сертификат восстановлен",
+    f_void:"Аннулированы", f_unpaid:"Не оплачены", terms:"Сумма сертификата не возвращается и не обменивается на наличные. Срок действия не продлевается.", badLoginEmail:"Неверный email или пароль", s_unpaid:"Ждёт оплаты", unpaidNote:"Заказан онлайн, но ещё не оплачен. Когда клиент заплатит, отметьте сертификат оплаченным — тогда им можно будет пользоваться.", markPaid:"Отметить оплаченным", paidQ:"Подтвердить, что за {c} получено {a}?", paidDone:"Сертификат оплачен и действует", notMaster:"У этого аккаунта нет прав мастера", order:"Заказать", liveNote:"Сертификат начнёт действовать, когда мастер подтвердит оплату. Мы свяжемся с вами по email насчёт оплаты.", doneLive:"Заказ принят! Код сертификата: {code}. Сертификат начнёт действовать после подтверждения оплаты — напишем на {email}.", s_void:"Аннулирован", extend:"+3 мес.", extended:"Продлён до {d}", voidB:"Аннулировать", voidQ:"Аннулировать сертификат {c}? Им больше нельзя будет расплатиться.", voided:"Сертификат аннулирован", restore:"Восстановить", restored:"Сертификат восстановлен",
     newT:"Новый сертификат", newD:"Сертификат, проданный в салоне (наличными или картой). Он появится в списке и получит код и QR.", vtype:"Тип", byAmount:"Сумма", byService:"Процедура",
     payM:"Оплата", payCash:"Наличными", payCard:"Картой в салоне", payOnline:"Онлайн", payGift:"Подарок / акция", create:"Создать сертификат", created:"Создан {c}", buyerOpt:"Email покупателя (необязательно)", srcSalon:"В салоне", srcOnline:"Онлайн", source:"Источник",
     perDay:"{n} шт. · {s}", vouchersN:"шт."
