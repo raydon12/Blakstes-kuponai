@@ -23,6 +23,7 @@
 *{box-sizing:border-box}
 [hidden]{display:none!important}
 body:not(.live) .live-only, body.live .mock-only{display:none!important}
+body:not(.card-pay) .card-only, body.card-pay .no-card{display:none!important}
 html,body{margin:0}
 html{scroll-behavior:smooth}
 body{background:var(--ink);color:var(--on-dark);font:15px/1.6 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
@@ -669,7 +670,7 @@ dialog::backdrop{background:rgba(10,9,9,.7);backdrop-filter:blur(4px)}
   <form class="m-body" id="payForm" method="dialog">
     <h2 data-i18n="payTitle"></h2>
     <p class="note" id="payWhat" style="margin:10px 0 0"></p>
-    <div class="mono mock mock-only" data-i18n="mockNote"></div><p class="note live-only" data-i18n="liveNote" style="margin:14px 0 0"></p>
+    <div class="mono mock mock-only" data-i18n="mockNote"></div><p class="note live-only no-card" data-i18n="liveNote" style="margin:14px 0 0"></p><p class="note card-only" data-i18n="cardNote" style="margin:14px 0 0"></p>
     <div class="field"><label class="mono" for="pEmail" data-i18n="pEmail"></label><input id="pEmail" type="email" required autocomplete="email"></div>
     <div class="field mock-only"><label class="mono" for="pCard" data-i18n="pCard"></label><input id="pCard" inputmode="numeric" placeholder="4242 4242 4242 4242" required></div>
     <div class="two mock-only">
@@ -757,7 +758,7 @@ const I18N = {
     download:"Atsisiųsti", dlErr:"Nepavyko atsisiųsti", next:"Toliau", sendOn:"Bus išsiųsta {email} {date} (testiniame režime laiškai nesiunčiami).",
     chartT:"Pardavimai · 30 d.", feedT:"Paskutiniai nurašymai", noFeed:"Nurašymų dar nebuvo", newV:"+ Naujas kuponas", csv:"CSV",
     sortNew:"Naujausi", sortOld:"Seniausi", sortBal:"Didžiausias likutis", sortExp:"Greitai baigsis",
-    f_void:"Anuliuoti", f_unpaid:"Neapmokėti", terms:"Kupono suma negrąžinama ir nekeičiama į grynuosius pinigus. Kupono galiojimas nepratęsiamas. Jei kupono sumos nepakanka procedūrai, skirtumą reikia sumokėti vietoje.", badLoginEmail:"Neteisingas el. paštas arba slaptažodis", s_unpaid:"Laukia apmokėjimo", unpaidNote:"Užsakyta internetu, bet dar neapmokėta. Kai klientas sumokės, pažymėkite kuponą apmokėtu — tada jį bus galima naudoti.", markPaid:"Pažymėti apmokėtu", paidQ:"Patvirtinti, kad už {c} gauta {a}?", paidDone:"Kuponas apmokėtas ir galioja", notMaster:"Ši paskyra neturi meistro teisių", order:"Užsakyti", liveNote:"Kuponas įsigalios, kai meistrė patvirtins apmokėjimą. Su jumis susisieksime el. paštu dėl atsiskaitymo.", doneLive:"Užsakymas priimtas! Kupono kodas: {code}. Kuponas įsigalios, kai meistrė patvirtins apmokėjimą — susisieksime adresu {email}.", s_void:"Anuliuotas", extend:"+3 mėn.", extended:"Pratęsta iki {d}", voidB:"Anuliuoti", voidQ:"Anuliuoti kuponą {c}? Juo nebebus galima atsiskaityti.", voided:"Kuponas anuliuotas", restore:"Atkurti", restored:"Kuponas atkurtas",
+    f_void:"Anuliuoti", f_unpaid:"Neapmokėti", payGo:"Nukreipiama į apmokėjimą…", payErr:"Nepavyko pradėti apmokėjimo. Bandykite dar kartą.", payCancelled:"Apmokėjimas atšauktas", paidOk:"Apmokėta! Jūsų kupono kodas: {code}. Atsisiųskite arba atsispausdinkite kuponą.", paidWait:"Mokėjimas apdorojamas. Kupono kodas: {code}. Jis įsigalios per kelias minutes.", cardNote:"Saugiai apmokėsite kortele, Apple Pay arba Google Pay. Po apmokėjimo kuponas iškart galios.", terms:"Kupono suma negrąžinama ir nekeičiama į grynuosius pinigus. Kupono galiojimas nepratęsiamas. Jei kupono sumos nepakanka procedūrai, skirtumą reikia sumokėti vietoje.", badLoginEmail:"Neteisingas el. paštas arba slaptažodis", s_unpaid:"Laukia apmokėjimo", unpaidNote:"Užsakyta internetu, bet dar neapmokėta. Kai klientas sumokės, pažymėkite kuponą apmokėtu — tada jį bus galima naudoti.", markPaid:"Pažymėti apmokėtu", paidQ:"Patvirtinti, kad už {c} gauta {a}?", paidDone:"Kuponas apmokėtas ir galioja", notMaster:"Ši paskyra neturi meistro teisių", order:"Užsakyti", liveNote:"Kuponas įsigalios, kai meistrė patvirtins apmokėjimą. Su jumis susisieksime el. paštu dėl atsiskaitymo.", doneLive:"Užsakymas priimtas! Kupono kodas: {code}. Kuponas įsigalios, kai meistrė patvirtins apmokėjimą — susisieksime adresu {email}.", s_void:"Anuliuotas", extend:"+3 mėn.", extended:"Pratęsta iki {d}", voidB:"Anuliuoti", voidQ:"Anuliuoti kuponą {c}? Juo nebebus galima atsiskaityti.", voided:"Kuponas anuliuotas", restore:"Atkurti", restored:"Kuponas atkurtas",
     newT:"Naujas kuponas", newD:"Kuponas, parduotas salone (grynais ar kortele). Jis atsiras sąraše ir gaus kodą bei QR.", vtype:"Tipas", byAmount:"Suma", byService:"Procedūra",
     payM:"Apmokėjimas", payCash:"Grynais", payCard:"Kortele salone", payOnline:"Internetu", payGift:"Dovana / akcija", create:"Sukurti kuponą", created:"Sukurtas {c}", buyerOpt:"Pirkėjo el. paštas (nebūtina)", srcSalon:"Salone", srcOnline:"Internetu", source:"Šaltinis",
     perDay:"{n} vnt. · {s}", vouchersN:"vnt."
@@ -813,7 +814,7 @@ const I18N = {
     download:"Скачать", dlErr:"Не удалось скачать", next:"Далее", sendOn:"Будет отправлен на {email} {date} (в тестовом режиме письма не отправляются).",
     chartT:"Продажи · 30 дней", feedT:"Последние списания", noFeed:"Списаний ещё не было", newV:"+ Новый сертификат", csv:"CSV",
     sortNew:"Сначала новые", sortOld:"Сначала старые", sortBal:"Больший остаток", sortExp:"Скоро истекают",
-    f_void:"Аннулированы", f_unpaid:"Не оплачены", terms:"Сумма сертификата не возвращается и не обменивается на наличные. Срок действия не продлевается. Если суммы сертификата не хватает на услугу, разницу нужно доплатить на месте.", badLoginEmail:"Неверный email или пароль", s_unpaid:"Ждёт оплаты", unpaidNote:"Заказан онлайн, но ещё не оплачен. Когда клиент заплатит, отметьте сертификат оплаченным — тогда им можно будет пользоваться.", markPaid:"Отметить оплаченным", paidQ:"Подтвердить, что за {c} получено {a}?", paidDone:"Сертификат оплачен и действует", notMaster:"У этого аккаунта нет прав мастера", order:"Заказать", liveNote:"Сертификат начнёт действовать, когда мастер подтвердит оплату. Мы свяжемся с вами по email насчёт оплаты.", doneLive:"Заказ принят! Код сертификата: {code}. Сертификат начнёт действовать после подтверждения оплаты — напишем на {email}.", s_void:"Аннулирован", extend:"+3 мес.", extended:"Продлён до {d}", voidB:"Аннулировать", voidQ:"Аннулировать сертификат {c}? Им больше нельзя будет расплатиться.", voided:"Сертификат аннулирован", restore:"Восстановить", restored:"Сертификат восстановлен",
+    f_void:"Аннулированы", f_unpaid:"Не оплачены", payGo:"Переходим к оплате…", payErr:"Не удалось начать оплату. Попробуйте ещё раз.", payCancelled:"Оплата отменена", paidOk:"Оплачено! Код сертификата: {code}. Скачайте или распечатайте сертификат.", paidWait:"Платёж обрабатывается. Код сертификата: {code}. Он начнёт действовать через несколько минут.", cardNote:"Безопасная оплата картой, Apple Pay или Google Pay. Сертификат действует сразу после оплаты.", terms:"Сумма сертификата не возвращается и не обменивается на наличные. Срок действия не продлевается. Если суммы сертификата не хватает на услугу, разницу нужно доплатить на месте.", badLoginEmail:"Неверный email или пароль", s_unpaid:"Ждёт оплаты", unpaidNote:"Заказан онлайн, но ещё не оплачен. Когда клиент заплатит, отметьте сертификат оплаченным — тогда им можно будет пользоваться.", markPaid:"Отметить оплаченным", paidQ:"Подтвердить, что за {c} получено {a}?", paidDone:"Сертификат оплачен и действует", notMaster:"У этого аккаунта нет прав мастера", order:"Заказать", liveNote:"Сертификат начнёт действовать, когда мастер подтвердит оплату. Мы свяжемся с вами по email насчёт оплаты.", doneLive:"Заказ принят! Код сертификата: {code}. Сертификат начнёт действовать после подтверждения оплаты — напишем на {email}.", s_void:"Аннулирован", extend:"+3 мес.", extended:"Продлён до {d}", voidB:"Аннулировать", voidQ:"Аннулировать сертификат {c}? Им больше нельзя будет расплатиться.", voided:"Сертификат аннулирован", restore:"Восстановить", restored:"Сертификат восстановлен",
     newT:"Новый сертификат", newD:"Сертификат, проданный в салоне (наличными или картой). Он появится в списке и получит код и QR.", vtype:"Тип", byAmount:"Сумма", byService:"Процедура",
     payM:"Оплата", payCash:"Наличными", payCard:"Картой в салоне", payOnline:"Онлайн", payGift:"Подарок / акция", create:"Создать сертификат", created:"Создан {c}", buyerOpt:"Email покупателя (необязательно)", srcSalon:"В салоне", srcOnline:"Онлайн", source:"Источник",
     perDay:"{n} шт. · {s}", vouchersN:"шт."
@@ -875,7 +876,7 @@ const store = {
     if (cfg && window.supabase && !window.claude) {
       state.menu = JSON.parse($('#menu-data').textContent);
       this.sb = window.supabase.createClient(cfg.url, cfg.key, { auth: { persistSession: false, autoRefreshToken: false } });
-      this.mode = 'supa'; this.ready = Promise.resolve(); document.body.classList.add('live');
+      this.mode = 'supa'; this.cfg = cfg; this.ready = Promise.resolve(); document.body.classList.add('live'); if (cfg.pay === 'stripe') document.body.classList.add('card-pay');
       ['#pCard','#pExp','#pCvc'].forEach(x => $(x).required = false); return;
     }
     try {
@@ -995,6 +996,29 @@ const store = {
   },
   async after(){ if (this.mode !== 'db' && this.refresh) await this.refresh(); },
 };
+
+async function payOnline(code){
+  const r = await fetch(`${store.cfg.url}/functions/v1/checkout`, { method: 'POST',
+    headers: { 'content-type': 'application/json', apikey: store.cfg.key }, body: JSON.stringify({ code, lang: state.lang }) });
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok || !j.url) throw j.error || 'pay';
+  location.href = j.url;
+}
+async function handlePayReturn(){
+  const q = new URLSearchParams(location.search), code = q.get('paid') || q.get('cancelled');
+  if (!code || store.mode !== 'supa') return;
+  history.replaceState(null, '', location.pathname + location.hash);
+  if (q.get('cancelled')) { toast(t('payCancelled')); return; }
+  let v = null;
+  for (let i = 0; i < 8; i++) { try { v = await store.lookup(code); } catch {} if (v && v.status !== 'unpaid') break; await new Promise(r => setTimeout(r, 1500)); }
+  if (!v) return;
+  const o = { title: t('voucher'), amount: v.amount, to: v.recipient || '', from: v.from || '', message: v.message || '' };
+  const card = $('#doneCard'); card.className = 'voucher ' + (v.design || 'noir');
+  card.innerHTML = cardHTML({ ...o, code: v.code });
+  state.lastSold = { ...v, title: o.title, recipient: o.to };
+  $('#doneText').textContent = (v.status === 'unpaid' ? t('paidWait') : t('paidOk')).replace('{code}', v.code);
+  $('#payForm').hidden = true; $('#done').hidden = false; $('#checkout').showModal();
+}
 
 /* ================= shop ================= */
 function applyI18n(){
@@ -1561,7 +1585,7 @@ $('#buyBtn').onclick = () => {
   }
   const o = current();
   $('#payWhat').textContent = `${o.title} · ${money(o.amount)}`;
-  $('#payBtn').textContent = `${t(store.mode === 'supa' ? 'order' : 'pay')} ${money(o.amount)}`;
+  $('#payBtn').textContent = `${t(store.mode === 'supa' && store.cfg?.pay !== 'stripe' ? 'order' : 'pay')} ${money(o.amount)}`;
   $('#payForm').hidden = false; $('#done').hidden = true; $('#payErr').hidden = true;
   dlg.showModal();
 };
@@ -1583,6 +1607,10 @@ $('#payForm').onsubmit = async e => {
       recipient: o.to, from: o.from, message: o.message, design: state.design, buyerEmail: email,
       delivery: state.delivery === 'recipient' ? { mode: 'recipient', email: $('#dEmail').value.trim(), date: $('#dDate').value } : { mode: 'me' } });
   } catch (x) { $('#payBtn').disabled = false; return err(t('saveErr') + (typeof x === 'string' ? ': ' + x : '')); }
+  if (store.mode === 'supa' && store.cfg?.pay === 'stripe') {
+    try { $('#payBtn').textContent = t('payGo'); return await payOnline(v.code); }
+    catch (x) { $('#payBtn').disabled = false; $('#payBtn').textContent = `${t('pay')} ${money(o.amount)}`; return err(t('payErr')); }
+  }
   $('#payBtn').disabled = false;
   const card = $('#doneCard'); card.className = 'voucher ' + state.design;
   card.innerHTML = cardHTML({ ...o, code: v.code });
@@ -1599,6 +1627,7 @@ $('#payForm').onsubmit = async e => {
   renderAll();
   initMbarObserver();
   route();
+  handlePayReturn();
 })();
 </script>
 </body>
