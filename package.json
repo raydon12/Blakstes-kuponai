@@ -1,0 +1,8 @@
+{
+  "name": "blakstes-kuponai",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Gift voucher shop for Blakstės studija: static site on Vercel, data in Supabase",
+  "scripts": { "start": "node server.js" },
+  "engines": { "node": ">=18" }
+}

@@ -1,0 +1,15 @@
+{
+  "outputDirectory": "public",
+  "buildCommand": "",
+  "redirects": [
+    { "source": "/admin", "destination": "/#admin", "permanent": false },
+    { "source": "/master", "destination": "/#admin", "permanent": false }
+  ],
+  "headers": [
+    { "source": "/(.*)", "headers": [
+      { "key": "X-Content-Type-Options", "value": "nosniff" },
+      { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+      { "key": "Permissions-Policy", "value": "camera=(self)" }
+    ] }
+  ]
+}
