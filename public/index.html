@@ -110,6 +110,18 @@ section{padding:96px 0}
 .chip{border:1px solid var(--line-light);background:none;padding:8px 16px;border-radius:999px;cursor:pointer;font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase}
 .chip[aria-pressed="true"]{background:var(--blush);border-color:var(--blush);color:var(--blush-ink)}
 #services{border-top:1px solid var(--on-light)}
+.plist{columns:2;column-gap:64px;padding-top:28px}
+.pcat{break-inside:avoid;margin:0 0 30px}
+.pcat h3{margin:0 0 4px;font-family:var(--display);font-weight:400;font-size:22px;text-transform:uppercase;letter-spacing:.02em}
+.pdesc{font:italic 400 14px/1.4 var(--serif);color:var(--greige);margin-bottom:4px}
+.pcat ul{list-style:none;margin:6px 0 0;padding:0}
+.pcat li{display:flex;align-items:baseline;gap:8px;padding:6px 0;font-family:var(--serif);font-size:17px;line-height:1.3}
+.pcat .pn{flex:0 1 auto}
+.pcat .pd{flex:1 1 20px;border-bottom:1px dotted var(--mist);transform:translateY(-4px);min-width:16px}
+.pcat .pp{flex:none;font-family:var(--display);font-size:19px;white-space:nowrap}
+.pbook{display:flex;justify-content:center;padding:10px 0 4px}
+@media (max-width:720px){.plist{columns:1}.pcat{margin-bottom:22px}.pcat li{font-size:16px;padding:5px 0}}
+
 .cat-name{display:flex;justify-content:space-between;align-items:baseline;padding:34px 0 10px;border-bottom:1px solid var(--line-light)}
 .cat-name h3{margin:0;font-family:var(--display);font-weight:400;font-size:30px;text-transform:uppercase;letter-spacing:.01em}
 .svc{display:grid;grid-template-columns:1fr auto auto;gap:10px 28px;align-items:center;padding:20px 0;border-bottom:1px solid var(--line-light);transition:background .2s}
@@ -1000,25 +1012,16 @@ function serviceRow(s){
 }
 function renderServices(){
   const cats = state.menu.categories || [];
+  $('#cats').innerHTML = '';
   if (!cats.length) {
-    $('#cats').innerHTML = '';
     $('#services').innerHTML = `<div class="empty"><strong>${t('emptyT')}</strong><p>${t('emptyD')}</p>
       <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
       <a class="btn pink" href="${esc(bookingUrl())}" target="_blank" rel="noopener">${t('bookAll')} ↗</a></div></div>`;
     return;
   }
-  const hadFocus = document.activeElement?.id === 'q';
-  $('#cats').innerHTML = `<input class="search" id="q" placeholder="${esc(t('search'))}" value="${esc(state.q)}">` +
-    [null, ...cats.map(c => c.name)].map(n => `<button class="chip" data-cat="${esc(n ?? '')}" aria-pressed="${state.cat === n}">${esc(n ?? t('all'))}</button>`).join('');
-  const q = state.q.toLowerCase();
-  $('#services').innerHTML = cats.filter(c => !state.cat || c.name === state.cat).map(c => {
-    const list = c.services.filter(s => !q || s.name.toLowerCase().includes(q));
-    if (!list.length) return '';
-    return `<div class="cat-name"><h3>${esc(c.name)}${c.description ? `<small class="cat-desc">${esc(c.description)}</small>` : ''}</h3><span class="mono" style="color:var(--greige)">${list.length}</span></div>` + list.map(serviceRow).join('');
-  }).join('');
-  const qi = $('#q');
-  qi.oninput = e => { state.q = e.target.value; renderServices(); };
-  if (hadFocus) { qi.focus(); qi.setSelectionRange(qi.value.length, qi.value.length); }
+  $('#services').innerHTML = `<div class="plist">` + cats.map(c => `<div class="pcat"><h3>${esc(c.name)}</h3>${c.description ? `<div class="pdesc">${esc(c.description)}</div>` : ''}
+    <ul>${c.services.map(s => `<li><span class="pn">${esc(s.name)}</span><span class="pd"></span><span class="pp">${s.priceFrom ? t('from') + ' ' : ''}${money(s.price)}</span></li>`).join('')}</ul></div>`).join('') +
+    `</div><div class="pbook"><a class="btn pink" href="${esc(bookingUrl())}" target="_blank" rel="noopener">${t('bookAll')} ↗</a></div>`;
 }
 function renderAmounts(){
   $('#amounts').innerHTML = AMOUNTS.map(a => `<button class="amt" data-amount="${a}" aria-pressed="false"><b>${a} €</b><span>${t('voucher')}</span></button>`).join('') +
