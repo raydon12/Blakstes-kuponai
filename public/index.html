@@ -3,9 +3,28 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Blakstės studija · Dovanų kuponai</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400;1,6..96,500&family=Inter:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<title>Dovanų kuponai · Blakstės studija · Meistrė Viktorija</title>
+<meta name="description" content="Dovanų kuponai Blakstės studijai: blakstienų priauginimas ir laminavimas pas meistrę Viktoriją. Kuponas nuo 40 € su QR kodu, galioja 12 mėn.">
+<link rel="canonical" href="https://blakstes-kuponai.vercel.app/">
+<meta name="theme-color" content="#111010">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Blakstės studija">
+<meta property="og:title" content="Dovanų kuponai · Blakstės studija">
+<meta property="og:description" content="Dovanų kuponai Blakstės studijai: blakstienų priauginimas ir laminavimas pas meistrę Viktoriją. Kuponas nuo 40 € su QR kodu, galioja 12 mėn.">
+<meta property="og:url" content="https://blakstes-kuponai.vercel.app/">
+<meta property="og:image" content="https://blakstes-kuponai.vercel.app/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="lt_LT">
+<meta property="og:locale:alternate" content="ru_RU">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BeautySalon", "name": "Blakstės studija", "url": "https://blakstes-kuponai.vercel.app/", "image": "https://blakstes-kuponai.vercel.app/og.png", "description": "Dovanų kuponai Blakstės studijai: blakstienų priauginimas ir laminavimas pas meistrę Viktoriją. Kuponas nuo 40 € su QR kodu, galioja 12 mėn.", "sameAs": ["https://www.instagram.com/grin_lashes/", "https://book.treatwell.lt/salonas/397163/meniu"], "priceRange": "10–55 €", "employee": {"@type": "Person", "name": "Viktorija", "jobTitle": "Blakstienų meistrė"}}</script>
+<link rel="stylesheet" href="/fonts/fonts.css?v=1" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="/fonts/fonts.css?v=1"></noscript>
 <style>
 :root{
   --ink:#111010; --ink-2:#1b1919; --ink-3:#262322;
@@ -96,6 +115,8 @@ nav.menu a.hl{background:var(--blush);color:var(--blush-ink);border-color:var(--
 section{padding:96px 0}
 .sec-head{display:grid;grid-template-columns:1fr auto;align-items:end;gap:24px;margin-bottom:44px}
 .kicker{display:flex;align-items:center;gap:12px;color:var(--greige)}
+.light{--greige:#665d58}
+.light .sec-title .it,.light .step b{color:#b5577f}
 .kicker::before{content:"";width:34px;height:1px;background:currentColor}
 .sec-title{margin:14px 0 0;line-height:.9}
 .sec-title .big{font-family:var(--display);font-weight:400;font-size:clamp(54px,7.5vw,104px);text-transform:uppercase;letter-spacing:-.005em}
@@ -205,13 +226,13 @@ section{scroll-margin-top:72px}
 .step+.step{padding-left:28px}
 .step:last-child{border-right:0}
 .step b{display:block;font-family:var(--display);font-weight:400;font-size:64px;line-height:1;color:var(--blush-2)}
-.step h4{margin:14px 0 6px;font-family:var(--serif);font-weight:400;font-size:24px}
+.step h3{margin:14px 0 6px;font-family:var(--serif);font-weight:400;font-size:24px}
 .step p{margin:0;color:var(--greige)}
 
 /* footer */
 footer{background:var(--ink);border-top:1px solid var(--line-dark);padding:72px 0 28px}
 .foot{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:32px}
-.foot h5{margin:0 0 14px;font-family:var(--mono);font-size:10.5px;letter-spacing:.2em;color:var(--mist);font-weight:400}
+.foot h3{margin:0 0 14px;font-family:var(--mono);font-size:10.5px;letter-spacing:.2em;color:var(--mist);font-weight:400}
 .foot a,.foot span{display:block;text-decoration:none;color:var(--on-dark);margin-bottom:8px;font-size:14px}
 .foot a:hover{color:var(--blush)}
 .foot .brand{font-family:var(--serif);font-size:34px;line-height:1.05;text-transform:uppercase;letter-spacing:.04em}
@@ -443,15 +464,15 @@ dialog::backdrop{background:rgba(10,9,9,.7);backdrop-filter:blur(4px)}
 <body>
 <header>
   <div class="wrap bar">
-    <a class="logo" href="#top" id="logoLink"><b id="brandName">Blakstės studija</b><small data-i18n="logoSub"></small></a>
+    <a class="logo" href="#top" id="logoLink"><b id="brandName">Blakstės studija</b><small data-i18n="logoSub">MEISTRĖ VIKTORIJA</small></a>
     <nav class="menu" id="shopNav">
-      <a href="#choose" data-i18n="navPrices"></a>
-      <a href="#check" data-i18n="navCheck"></a>
-      <a class="hl" id="headBook" target="_blank" rel="noopener" data-i18n="bookNow"></a>
+      <a href="#choose" data-i18n="navPrices">Kainos</a>
+      <a href="#check" data-i18n="navCheck">Likutis</a>
+      <a class="hl" id="headBook" target="_blank" rel="noopener" data-i18n="bookNow">Registruotis</a>
     </nav>
     <div class="head-r">
       <a class="ig-link" href="https://www.instagram.com/grin_lashes/" target="_blank" rel="noopener" aria-label="Instagram" title="Instagram @grin_lashes"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.4" cy="6.6" r="1" fill="currentColor" stroke="none"/></svg></a>
-      <a class="admin-link" id="adminLink" href="#admin"><span data-i18n="admin"></span></a>
+      <a class="admin-link" id="adminLink" href="#admin"><span data-i18n="admin">Admin</span></a>
       <div class="lang" role="group" aria-label="Language">
         <button data-lang="lt" aria-pressed="true">LT</button>
         <button data-lang="ru" aria-pressed="false">RU</button>
@@ -463,19 +484,19 @@ dialog::backdrop{background:rgba(10,9,9,.7);backdrop-filter:blur(4px)}
 <div id="shopView">
 <div class="hero" id="top">
   <div class="hero-l">
-    <div class="mono kicker" data-i18n="eyebrow"></div>
-    <h1><span class="big" data-i18n="heroBig"></span><span class="it" data-i18n="heroIt"></span></h1>
-    <p data-i18n="heroText"></p>
+    <div class="mono kicker" data-i18n="eyebrow">Dovanų kuponai</div>
+    <h1><span class="big" data-i18n="heroBig">Dovanok</span><span class="it" data-i18n="heroIt">grožį</span></h1>
+    <p data-i18n="heroText">Užsiregistruokite į procedūrą arba padovanokite elegantišką kuponą.</p>
     <div class="ctas">
-      <a class="btn pink" href="#gift" id="giftCta"><span data-i18n="heroCta"></span><span class="arr">→</span></a>
-      <a class="btn" id="heroBook" target="_blank" rel="noopener"><span data-i18n="bookNow"></span><span class="arr">↗</span></a>
+      <a class="btn pink" href="#gift" id="giftCta"><span data-i18n="heroCta">Išsirinkti kuponą</span><span class="arr">→</span></a>
+      <a class="btn" id="heroBook" target="_blank" rel="noopener"><span data-i18n="bookNow">Registruotis</span><span class="arr">↗</span></a>
     </div>
   </div>
   <div class="hero-r grain">
     <div class="ring"></div><div class="ring two"></div>
-    <div class="stamp"><span data-i18n="stampFrom"></span><b>40 €</b><span data-i18n="stampGift"></span></div>
+    <div class="stamp"><span data-i18n="stampFrom">nuo</span><b>40 €</b><span data-i18n="stampGift">dovana</span></div>
     <div class="voucher noir" id="heroCard"></div>
-    <div class="vert" data-i18n="vert"></div>
+    <div class="vert" data-i18n="vert">DOVANŲ KUPONAI · GALIOJA 12 MĖN.</div>
   </div>
 </div>
 
@@ -484,8 +505,8 @@ dialog::backdrop{background:rgba(10,9,9,.7);backdrop-filter:blur(4px)}
   <div class="wrap">
     <div class="sec-head">
       <div>
-        <div class="mono kicker" data-i18n="k1"></div>
-        <h2 class="sec-title"><span class="big" data-i18n="chooseBig"></span></h2>
+        <div class="mono kicker" data-i18n="k1">01 — Kainos</div>
+        <h2 class="sec-title"><span class="big" data-i18n="chooseBig">Kainos</span></h2>
       </div>
     </div>
     <div id="serviceMode"><div class="cats" id="cats"></div><div id="services"></div></div>
@@ -495,29 +516,29 @@ dialog::backdrop{background:rgba(10,9,9,.7);backdrop-filter:blur(4px)}
 <section class="light" id="gift" hidden>
   <div class="wrap">
     <div class="sec-head"><div>
-      <div class="mono kicker" data-i18n="giftK"></div>
-      <h2 class="sec-title"><span class="big" data-i18n="giftBig"></span></h2>
+      <div class="mono kicker" data-i18n="giftK">Dovanų kuponas</div>
+      <h2 class="sec-title"><span class="big" data-i18n="giftBig">Kupono suma</span></h2>
     </div></div>
     <div class="amount-grid" id="amounts"></div>
-    <p class="note" data-i18n="amountNote" style="margin-top:18px"></p>
+    <p class="note" data-i18n="amountNote" style="margin-top:18px">Suma gali būti panaudota bet kuriai salono paslaugai.</p>
   </div>
 </section>
 
 <section class="dark grain" id="personalize">
   <div class="wrap" style="position:relative;z-index:2">
     <div class="sec-head"><div>
-      <div class="mono kicker" data-i18n="k2"></div>
-      <h2 class="sec-title"><span class="big" data-i18n="persBig"></span><span class="it" data-i18n="persIt"></span></h2>
+      <div class="mono kicker" data-i18n="k2">Asmeninis kuponas</div>
+      <h2 class="sec-title"><span class="big" data-i18n="persBig">Jūsų</span><span class="it" data-i18n="persIt">žodžiai</span></h2>
     </div></div>
     <div class="builder">
       <div>
         <div class="two">
-          <div class="field"><label class="mono" for="fTo" data-i18n="fTo"></label><input id="fTo" maxlength="40"></div>
-          <div class="field"><label class="mono" for="fFrom" data-i18n="fFrom"></label><input id="fFrom" maxlength="40"></div>
+          <div class="field"><label class="mono" for="fTo" data-i18n="fTo">Kam</label><input id="fTo" maxlength="40"></div>
+          <div class="field"><label class="mono" for="fFrom" data-i18n="fFrom">Nuo ko</label><input id="fFrom" maxlength="40"></div>
         </div>
-        <div class="field"><label class="mono" for="fMsg" data-i18n="fMsg"></label><textarea id="fMsg" rows="2" maxlength="140"></textarea></div>
+        <div class="field"><label class="mono" for="fMsg" data-i18n="fMsg">Palinkėjimas</label><textarea id="fMsg" rows="2" maxlength="140"></textarea></div>
         <div class="occ" id="occ" aria-label="Occasion"></div>
-        <div class="field"><label class="mono" data-i18n="fDesign"></label>
+        <div class="field"><label class="mono" data-i18n="fDesign">Dizainas</label>
           <div class="designs" id="designs">
             <button data-design="noir" aria-pressed="true"><i style="background:linear-gradient(150deg,#2a2524,#0b0a0a)"></i><span>Noir</span></button>
             <button data-design="blush" aria-pressed="false"><i style="background:linear-gradient(150deg,#f2b9cc,#d98ba6)"></i><span>Blush</span></button>
@@ -525,27 +546,27 @@ dialog::backdrop{background:rgba(10,9,9,.7);backdrop-filter:blur(4px)}
             <button data-design="mocha" aria-pressed="false"><i style="background:linear-gradient(150deg,#5b4d47,#2e2522)"></i><span>Mocha</span></button>
           </div>
         </div>
-        <div class="field"><label class="mono" data-i18n="delivery"></label>
+        <div class="field"><label class="mono" data-i18n="delivery">Pristatymas</label>
           <div class="deliv">
-            <label><input type="radio" name="deliv" value="me" checked><span><b data-i18n="dMe"></b><small data-i18n="dMeD"></small></span></label>
-            <label><input type="radio" name="deliv" value="recipient"><span><b data-i18n="dRec"></b><small data-i18n="dRecD"></small></span></label>
+            <label><input type="radio" name="deliv" value="me" checked><span><b data-i18n="dMe">Gausiu aš</b><small data-i18n="dMeD">Kuponas iškart ateis į jūsų el. paštą — galėsite atsispausdinti ar persiųsti.</small></span></label>
+            <label><input type="radio" name="deliv" value="recipient"><span><b data-i18n="dRec">Siųsti gavėjui</b><small data-i18n="dRecD">Išsiųsime gavėjui jūsų pasirinktą dieną, pvz., gimtadienio rytą.</small></span></label>
           </div>
           <div class="deliv-extra" id="delivExtra" hidden>
-            <div class="field"><label class="mono" for="dEmail" data-i18n="dEmail"></label><input id="dEmail" type="email" autocomplete="off"></div>
-            <div class="field"><label class="mono" for="dDate" data-i18n="dDate"></label><input id="dDate" type="date"></div>
+            <div class="field"><label class="mono" for="dEmail" data-i18n="dEmail">Gavėjo el. paštas</label><input id="dEmail" type="email" autocomplete="off"></div>
+            <div class="field"><label class="mono" for="dDate" data-i18n="dDate">Siuntimo diena</label><input id="dDate" type="date"></div>
           </div>
           <p class="err-inline" id="delivErr" hidden></p>
         </div>
         <div class="summary">
-          <div><div class="mono" style="color:var(--mist)" data-i18n="total"></div><div class="total" id="total">—</div></div>
-          <button class="btn pink" id="buyBtn" disabled><span data-i18n="buy"></span><span class="arr">→</span></button>
+          <div><div class="mono" style="color:var(--mist)" data-i18n="total">Viso</div><div class="total" id="total">—</div></div>
+          <button class="btn pink" id="buyBtn" disabled><span data-i18n="buy">Pirkti kuponą</span><span class="arr">→</span></button>
         </div>
-        <div class="trust"><span data-i18n="tr1"></span><span data-i18n="tr2"></span><span data-i18n="tr3"></span></div>
-        <p class="note terms" data-i18n="terms"></p>
+        <div class="trust"><span data-i18n="tr1">Saugus mokėjimas</span><span data-i18n="tr2">Kuponas iškart</span><span data-i18n="tr3">Galioja 12 mėn.</span></div>
+        <p class="note terms" data-i18n="terms">Kupono suma negrąžinama ir nekeičiama į grynuosius pinigus. Kupono galiojimas nepratęsiamas. Jei kupono sumos nepakanka procedūrai, skirtumą reikia sumokėti vietoje.</p>
       </div>
       <div class="stick">
         <div class="voucher noir" id="previewCard"></div>
-        <div class="mono cap" data-i18n="cap"></div>
+        <div class="mono cap" data-i18n="cap">Peržiūra atsinaujina iškart</div>
       </div>
     </div>
   </div>
@@ -554,13 +575,13 @@ dialog::backdrop{background:rgba(10,9,9,.7);backdrop-filter:blur(4px)}
 <section class="light" id="how">
   <div class="wrap">
     <div class="sec-head"><div>
-      <div class="mono kicker" data-i18n="k3"></div>
-      <h2 class="sec-title"><span class="big" data-i18n="howBig"></span><span class="it" data-i18n="howIt"></span></h2>
+      <div class="mono kicker" data-i18n="k3">02 — Kaip tai veikia</div>
+      <h2 class="sec-title"><span class="big" data-i18n="howBig">Trys</span><span class="it" data-i18n="howIt">žingsniai</span></h2>
     </div></div>
     <div class="steps">
-      <div class="step"><b>01</b><h4 data-i18n="s1t"></h4><p data-i18n="s1d"></p></div>
-      <div class="step"><b>02</b><h4 data-i18n="s2t"></h4><p data-i18n="s2d"></p></div>
-      <div class="step"><b>03</b><h4 data-i18n="s3t"></h4><p data-i18n="s3d"></p></div>
+      <div class="step"><b>01</b><h3 data-i18n="s1t">Išsirinkite sumą</h3><p data-i18n="s1d">Paspauskite „Išsirinkti kuponą“ ir pasirinkite sumą nuo 40 €.</p></div>
+      <div class="step"><b>02</b><h3 data-i18n="s2t">Pasirašykite</h3><p data-i18n="s2d">Įrašykite gavėjo vardą, palinkėjimą ir išsirinkite kupono dizainą.</p></div>
+      <div class="step"><b>03</b><h3 data-i18n="s3t">Dovanokite</h3><p data-i18n="s3d">Gausite kuponą su unikaliu kodu ir QR. Jį galima atsisiųsti, atsispausdinti arba išsiųsti gavėjui. Atvykus pas meistrę užtenka parodyti QR kodą.</p></div>
     </div>
   </div>
 </section>
@@ -569,14 +590,14 @@ dialog::backdrop{background:rgba(10,9,9,.7);backdrop-filter:blur(4px)}
   <div class="wrap" style="position:relative;z-index:2">
     <div class="check">
       <div>
-        <div class="mono kicker" data-i18n="k4"></div>
-        <h2 class="sec-title"><span class="big" data-i18n="chkBig"></span><span class="it" data-i18n="chkIt"></span></h2>
-        <p class="sec-text" style="color:var(--mist)" data-i18n="chkText"></p>
+        <div class="mono kicker" data-i18n="k4">03 — Likutis</div>
+        <h2 class="sec-title"><span class="big" data-i18n="chkBig">Kupono</span><span class="it" data-i18n="chkIt">likutis</span></h2>
+        <p class="sec-text" style="color:var(--mist)" data-i18n="chkText">Įveskite kodą iš kupono ir pamatysite, kiek liko ir iki kada jis galioja.</p>
       </div>
       <div>
         <form id="chkForm" class="check-form" style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end">
           <input id="chkCode" placeholder="GIFT-XXXX-XXXX" autocapitalize="characters" spellcheck="false" aria-label="Code" style="flex:1 1 220px;border:0;border-bottom:1px solid var(--line-dark);background:none;padding:12px 2px;outline:none;font-family:var(--mono);font-size:20px;letter-spacing:.08em;text-transform:uppercase;color:var(--on-dark)">
-          <button class="btn pink" type="submit" data-i18n="chkBtn"></button>
+          <button class="btn pink" type="submit" data-i18n="chkBtn">Tikrinti</button>
         </form>
         <div id="chkRes" aria-live="polite" style="margin-top:22px"></div>
       </div>
@@ -587,8 +608,8 @@ dialog::backdrop{background:rgba(10,9,9,.7);backdrop-filter:blur(4px)}
 <section class="light faq" id="faq">
   <div class="wrap">
     <div class="sec-head"><div>
-      <div class="mono kicker" data-i18n="k5"></div>
-      <h2 class="sec-title"><span class="big">FAQ</span><span class="it" data-i18n="faqIt"></span></h2>
+      <div class="mono kicker" data-i18n="k5">04 — Klausimai</div>
+      <h2 class="sec-title"><span class="big">FAQ</span><span class="it" data-i18n="faqIt">dažni klausimai</span></h2>
     </div></div>
     <div id="faqList"></div>
   </div>
@@ -598,11 +619,11 @@ dialog::backdrop{background:rgba(10,9,9,.7);backdrop-filter:blur(4px)}
   <div class="wrap">
     <div class="foot">
       <div><div class="brand" id="footBrand"></div><span id="footSalon" style="color:var(--mist);margin-top:14px"></span></div>
-      <div><h5 data-i18n="fExplore"></h5><a href="#choose" data-i18n="navPrices"></a><a href="#check" data-i18n="navCheck"></a><a href="#faq">FAQ</a></div>
-      <div><h5 data-i18n="fBook"></h5><a id="footBook" target="_blank" rel="noopener">Treatwell ↗</a></div>
-      <div><h5 data-i18n="fGift"></h5><span data-i18n="perk1"></span><span data-i18n="perk2"></span><span data-i18n="perk3"></span></div>
+      <div><h3 data-i18n="fExplore">NARŠYTI</h3><a href="#choose" data-i18n="navPrices">Kainos</a><a href="#check" data-i18n="navCheck">Likutis</a><a href="#faq">FAQ</a></div>
+      <div><h3 data-i18n="fBook">REGISTRACIJA</h3><a id="footBook" target="_blank" rel="noopener">Treatwell ↗</a></div>
+      <div><h3 data-i18n="fGift">KUPONAS</h3><span data-i18n="perk1">Galioja 12 mėn.</span><span data-i18n="perk2">Unikalus kodas ir QR</span><span data-i18n="perk3">Galima atsispausdinti</span></div>
     </div>
-    <div class="fine mono"><span>© <span id="yr"></span></span><span data-i18n="mockFoot"></span><a href="#admin" data-i18n="adminArrow" style="color:var(--mist)"></a></div>
+    <div class="fine mono"><span>© <span id="yr"></span></span><span data-i18n="mockFoot">Testinis režimas: mokėjimai neveikia</span><a href="#admin" data-i18n="adminArrow" style="color:var(--mist)">Administravimas →</a></div>
   </div>
 </footer>
 <div class="mbar" id="mbar"><div class="mt"><div id="mbTitle"></div><b id="mbTotal"></b></div><button class="btn pink" id="mbBtn"></button></div>
@@ -613,37 +634,37 @@ dialog::backdrop{background:rgba(10,9,9,.7);backdrop-filter:blur(4px)}
   <div class="wrap">
     <div class="a-head">
       <div>
-        <div class="mono kicker" data-i18n="aKicker"></div>
-        <h1 class="sec-title" style="margin-top:12px"><span class="big" data-i18n="aBig"></span><span class="it" data-i18n="aIt"></span></h1>
+        <div class="mono kicker" data-i18n="aKicker">Administravimas</div>
+        <h1 class="sec-title" style="margin-top:12px"><span class="big" data-i18n="aBig">Kuponai</span><span class="it" data-i18n="aIt">&amp; likučiai</span></h1>
       </div>
-      <div class="who" id="aWho" hidden><span class="mono" id="aName"></span><button class="btn small" id="logoutBtn" data-i18n="logout"></button></div>
+      <div class="who" id="aWho" hidden><span class="mono" id="aName"></span><button class="btn small" id="logoutBtn" data-i18n="logout">Atsijungti</button></div>
     </div>
 
-    <div id="aLoading" class="a-empty mono" data-i18n="loading"></div>
+    <div id="aLoading" class="a-empty mono" data-i18n="loading">Įkeliama…</div>
 
     <form class="login-card" id="loginForm" hidden>
-      <div class="field"><label class="mono" for="lName" data-i18n="name"></label><input id="lName" autocomplete="username" required></div>
-      <div class="field"><label class="mono" for="lPass" data-i18n="password"></label><input id="lPass" type="password" autocomplete="current-password" required></div>
-      <button class="btn pink" type="submit" data-i18n="signIn"></button>
+      <div class="field"><label class="mono" for="lName" data-i18n="name">Vardas</label><input id="lName" autocomplete="username" required></div>
+      <div class="field"><label class="mono" for="lPass" data-i18n="password">Slaptažodis</label><input id="lPass" type="password" autocomplete="current-password" required></div>
+      <button class="btn pink" type="submit" data-i18n="signIn">Prisijungti</button>
       <p class="err" id="loginErr" hidden></p>
     </form>
 
     <div id="aPanel" hidden>
       <div class="stats" id="stats"></div>
       <div class="a-grid">
-        <div class="a-card"><h3><span data-i18n="chartT"></span><span id="chartSum"></span></h3><div class="chart" id="chart"></div></div>
-        <div class="a-card"><h3 data-i18n="feedT"></h3><ul class="feed" id="feed"></ul></div>
+        <div class="a-card"><h3><span data-i18n="chartT">Pardavimai · 30 d.</span><span id="chartSum"></span></h3><div class="chart" id="chart"></div></div>
+        <div class="a-card"><h3 data-i18n="feedT">Paskutiniai nurašymai</h3><ul class="feed" id="feed"></ul></div>
       </div>
       <div class="a-tools">
-        <input class="a-search" id="aSearch" type="search" data-i18n-ph="aSearch">
-        <button class="btn pink" id="scanOpen"><span data-i18n="scan"></span></button>
-        <button class="btn" id="newBtn"><span data-i18n="newV"></span></button>
+        <input class="a-search" id="aSearch" type="search" data-i18n-ph="aSearch" placeholder="Ieškoti: kodas, vardas, el. paštas…">
+        <button class="btn pink" id="scanOpen"><span data-i18n="scan">Skenuoti QR</span></button>
+        <button class="btn" id="newBtn"><span data-i18n="newV">+ Naujas kuponas</span></button>
       </div>
       <div class="a-tools" style="justify-content:space-between">
         <div class="a-filters" id="aFilters"></div>
         <div style="display:flex;gap:8px;align-items:center">
           <select class="a-sort" id="aSort" aria-label="Sort"></select>
-          <button class="btn small" id="csvBtn" data-i18n="csv"></button>
+          <button class="btn small" id="csvBtn" data-i18n="csv">CSV</button>
         </div>
       </div>
       <div class="a-list" id="aList"></div>
@@ -659,39 +680,39 @@ dialog::backdrop{background:rgba(10,9,9,.7);backdrop-filter:blur(4px)}
 
 <div class="scan-modal" id="scanModal" hidden>
   <div class="scan-box" id="scanBox"><video id="video" playsinline muted></video><div class="frame"></div></div>
-  <p id="scanMsg" data-i18n="scanHint"></p>
+  <p id="scanMsg" data-i18n="scanHint">Nukreipkite kamerą į kupono QR kodą</p>
   <div class="acts2">
-    <label class="btn"><span data-i18n="photo"></span><input type="file" id="photoIn" accept="image/*" capture="environment" hidden></label>
-    <button class="btn pink" id="scanClose" data-i18n="close"></button>
+    <label class="btn"><span data-i18n="photo">Nufotografuoti QR</span><input type="file" id="photoIn" accept="image/*" capture="environment" hidden></label>
+    <button class="btn pink" id="scanClose" data-i18n="close">Uždaryti</button>
   </div>
 </div>
 
 <dialog id="checkout">
   <form class="m-body" id="payForm" method="dialog">
-    <h2 data-i18n="payTitle"></h2>
+    <h2 data-i18n="payTitle">Apmokėjimas</h2>
     <p class="note" id="payWhat" style="margin:10px 0 0"></p>
-    <div class="mono mock mock-only" data-i18n="mockNote"></div><p class="note live-only no-card" data-i18n="liveNote" style="margin:14px 0 0"></p><p class="note card-only" data-i18n="cardNote" style="margin:14px 0 0"></p>
-    <div class="field"><label class="mono" for="pEmail" data-i18n="pEmail"></label><input id="pEmail" type="email" required autocomplete="email"></div>
-    <div class="field mock-only"><label class="mono" for="pCard" data-i18n="pCard"></label><input id="pCard" inputmode="numeric" placeholder="4242 4242 4242 4242" required></div>
+    <div class="mono mock mock-only" data-i18n="mockNote">Testinis režimas — pinigai nenuskaitomi</div><p class="note live-only no-card" data-i18n="liveNote" style="margin:14px 0 0">Kuponas įsigalios, kai meistrė patvirtins apmokėjimą. Su jumis susisieksime el. paštu dėl atsiskaitymo.</p><p class="note card-only" data-i18n="cardNote" style="margin:14px 0 0">Saugiai apmokėsite kortele, Apple Pay arba Google Pay. Po apmokėjimo kuponas iškart galios.</p>
+    <div class="field"><label class="mono" for="pEmail" data-i18n="pEmail">El. paštas</label><input id="pEmail" type="email" required autocomplete="email"></div>
+    <div class="field mock-only"><label class="mono" for="pCard" data-i18n="pCard">Kortelės numeris</label><input id="pCard" inputmode="numeric" placeholder="4242 4242 4242 4242" required></div>
     <div class="two mock-only">
       <div class="field"><label class="mono" for="pExp">MM/YY</label><input id="pExp" placeholder="12/28" required></div>
       <div class="field"><label class="mono" for="pCvc">CVC</label><input id="pCvc" inputmode="numeric" placeholder="123" required></div>
     </div>
-    <p class="note terms" data-i18n="terms"></p>
+    <p class="note terms" data-i18n="terms">Kupono suma negrąžinama ir nekeičiama į grynuosius pinigus. Kupono galiojimas nepratęsiamas. Jei kupono sumos nepakanka procedūrai, skirtumą reikia sumokėti vietoje.</p>
     <p class="note" id="payErr" style="color:#b23a48" hidden></p>
     <div class="summary m-actions">
-      <button type="button" class="btn" id="payCancel" data-i18n="cancel"></button>
+      <button type="button" class="btn" id="payCancel" data-i18n="cancel">Atšaukti</button>
       <button type="submit" class="btn pink" id="payBtn"></button>
     </div>
   </form>
   <div class="m-body success" id="done" hidden>
-    <h2 data-i18n="doneTitle"></h2>
+    <h2 data-i18n="doneTitle">Ačiū!</h2>
     <div class="voucher" id="doneCard"></div>
     <p class="note" id="doneText"></p>
     <div class="summary m-actions" style="justify-content:center">
-      <button class="btn" id="pngBtn" data-i18n="download"></button>
-      <button class="btn" id="printBtn" data-i18n="print"></button>
-      <button class="btn pink" id="closeBtn" data-i18n="close"></button>
+      <button class="btn" id="pngBtn" data-i18n="download">Atsisiųsti</button>
+      <button class="btn" id="printBtn" data-i18n="print">Spausdinti</button>
+      <button class="btn pink" id="closeBtn" data-i18n="close">Uždaryti</button>
     </div>
   </div>
 </dialog>
@@ -701,9 +722,7 @@ dialog::backdrop{background:rgba(10,9,9,.7);backdrop-filter:blur(4px)}
 
 <!-- Live database (Supabase). The key below is the public "publishable" key; all rules live in the database functions. -->
 <script id="supa-config" type="application/json">{"url":"https://hermojruniqfvxksunrj.supabase.co","key":"sb_publishable_dUxM0CR3woUXiq0or0yGZQ_tel1mICB"}</script>
-<script src="vendor/supabase.js"></script>
-<script src="vendor/qrcode.js"></script>
-<script src="vendor/jsQR.js"></script>
+<script defer src="vendor/qrcode.min.js?v=1"></script>
 <script>
 const I18N = {
   lt: {
@@ -873,9 +892,8 @@ const store = {
   mode: 'local', db: null, ready: null, unsub: null,
   async init(){
     const cfg = (() => { try { return JSON.parse($('#supa-config').textContent) } catch { return null } })();
-    if (cfg && window.supabase && !window.claude) {
+    if (cfg && cfg.url && !window.claude) {
       state.menu = JSON.parse($('#menu-data').textContent);
-      this.sb = window.supabase.createClient(cfg.url, cfg.key, { auth: { persistSession: false, autoRefreshToken: false } });
       this.mode = 'supa'; this.cfg = cfg; this.ready = Promise.resolve(); document.body.classList.add('live'); if (cfg.pay === 'stripe') document.body.classList.add('card-pay');
       ['#pCard','#pExp','#pCvc'].forEach(x => $(x).required = false); return;
     }
@@ -897,7 +915,13 @@ const store = {
   get token(){ try { return localStorage.getItem('kpToken') || '' } catch { return '' } },
   set token(v){ try { v ? localStorage.setItem('kpToken', v) : localStorage.removeItem('kpToken') } catch {} },
   async rpc(fn, args){
-    const { data, error } = await this.sb.rpc(fn, args);
+    let data = null, error = null;
+    try {
+      const r = await fetch(`${this.cfg.url}/rest/v1/rpc/${fn}`, { method: 'POST',
+        headers: { apikey: this.cfg.key, 'content-type': 'application/json', accept: 'application/json' }, body: JSON.stringify(args || {}) });
+      const txt = await r.text(); const j = txt ? JSON.parse(txt) : null;
+      if (r.ok) data = j; else error = j || { message: 'http_' + r.status };
+    } catch (x) { error = { message: 'network' }; }
     if (error) {
       const m = String(error.message || '');
       if (/not_master/i.test(m)) { this.token = ''; if (state.me) { state.me = null; renderAdmin(); } throw 'badLogin'; }
@@ -1095,8 +1119,7 @@ function renderPreview(){
   renderMbar();
 }
 function renderStatic(){
-  const s = allServices()[0];
-  $('#heroCard').innerHTML = cardHTML({ title: s ? s.name : t('voucher'), amount: s ? s.price : 50, message: t('heroMsg'), code:'GIFT-DEMO-2026', qr:'GIFT-DEMO-2026' });
+  $('#heroCard').innerHTML = cardHTML({ title: t('voucher'), amount: 50, message: t('heroMsg'), code:'GIFT-DEMO-2026', qr:'GIFT-DEMO-2026' });
   const m = state.menu, name = m.salon?.name || 'Blakstės studija';
   $('#brandName').textContent = name;
   $('#footBrand').textContent = name;
@@ -1475,6 +1498,11 @@ async function onRedeem(e, v){
 
 /* ---- QR scanner: live camera (BarcodeDetector or jsQR), or a photo as fallback ---- */
 const scan = { stream: null, on: false };
+let jsQRLoad = null;
+function loadJsQR(){
+  if (window.jsQR) return Promise.resolve();
+  return jsQRLoad ||= new Promise((ok, no) => { const el = document.createElement('script'); el.src = 'vendor/jsQR.min.js?v=1'; el.onload = ok; el.onerror = no; document.head.append(el); });
+}
 async function startScan(){
   $('#scanModal').hidden = false; $('#scanMsg').textContent = t('scanHint'); $('#scanBox').hidden = false;
   try {
@@ -1484,6 +1512,7 @@ async function startScan(){
   try { await video.play(); } catch {}
   scan.on = true;
   const detector = 'BarcodeDetector' in window ? new BarcodeDetector({ formats: ['qr_code'] }) : null;
+  if (!detector) { try { await loadJsQR(); } catch {} }
   const canvas = document.createElement('canvas'), ctx = canvas.getContext('2d', { willReadFrequently: true });
   const tick = async () => {
     if (!scan.on) return;
@@ -1509,6 +1538,7 @@ function stopScan(){
   $('#scanModal').hidden = true;
 }
 async function scanPhoto(file){
+  try { await loadJsQR(); } catch { $('#scanMsg').textContent = t('noQr'); return; }
   const img = await createImageBitmap(file);
   const w = Math.min(1200, img.width), h = Math.round(w * img.height / img.width);
   const c = document.createElement('canvas'); c.width = w; c.height = h;
@@ -1621,6 +1651,8 @@ $('#payForm').onsubmit = async e => {
   $('#payForm').hidden = true; $('#done').hidden = false;
 };
 
+// qrcode.min.js is deferred: redraw the cards with real QR codes once it has loaded.
+if (typeof qrcode !== 'function') document.querySelector('script[src*="qrcode"]')?.addEventListener('load', () => { renderStatic(); renderPreview(); });
 (async () => {
   await store.init();
   syncDelivery();
