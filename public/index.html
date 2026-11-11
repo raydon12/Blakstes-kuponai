@@ -675,7 +675,7 @@ dialog::backdrop{background:rgba(10,9,9,.7);backdrop-filter:blur(4px)}
 <script id="menu-data" type="application/json">{"salon":{"name":"Blakstės studija","address":"","bookingUrl":"https://book.treatwell.lt/salonas/397163/meniu"},"categories":[]}</script>
 
 <!-- Live database (Supabase). The key below is the public "publishable" key; all rules live in the database functions. -->
-<script id="supa-config" type="application/json">{"url":"https://hcuzibplcmhgolofexkx.supabase.co","key":"sb_publishable_itIUrjk3pLbIZvYW-TK8fQ_x4z2jmDA"}</script>
+<script id="supa-config" type="application/json">{"url":"https://hermojruniqfvxksunrj.supabase.co","key":"sb_publishable_dUxM0CR3woUXiq0or0yGZQ_tel1mICB"}</script>
 <script src="vendor/supabase.js"></script>
 <script src="vendor/qrcode.js"></script>
 <script src="vendor/jsQR.js"></script>
@@ -846,7 +846,7 @@ const store = {
     const cfg = (() => { try { return JSON.parse($('#supa-config').textContent) } catch { return null } })();
     if (cfg && window.supabase && !window.claude) {
       state.menu = JSON.parse($('#menu-data').textContent);
-      this.sb = window.supabase.createClient(cfg.url, cfg.key, { auth: { persistSession: true, autoRefreshToken: true } });
+      this.sb = window.supabase.createClient(cfg.url, cfg.key, { auth: { persistSession: false, autoRefreshToken: false } });
       this.mode = 'supa'; this.ready = Promise.resolve(); document.body.classList.add('live');
       ['#pCard','#pExp','#pCvc'].forEach(x => $(x).required = false); return;
     }
@@ -865,17 +865,19 @@ const store = {
   lset(l){ try { localStorage.setItem('demoVouchers', JSON.stringify(l)) } catch {} },
   ref(code){ return this.db.doc('vouchers/' + code); },
 
+  get token(){ try { return localStorage.getItem('kpToken') || '' } catch { return '' } },
+  set token(v){ try { v ? localStorage.setItem('kpToken', v) : localStorage.removeItem('kpToken') } catch {} },
   async rpc(fn, args){
     const { data, error } = await this.sb.rpc(fn, args);
     if (error) {
       const m = String(error.message || '');
-      if (/not_master|permission denied|JWT/i.test(m)) { if (state.me) { state.me = null; renderAdmin(); } throw 'badLogin'; }
+      if (/not_master/i.test(m)) { this.token = ''; if (state.me) { state.me = null; renderAdmin(); } throw 'badLogin'; }
       throw (m.match(/^(bad_amount|bad_email|bad_date|not_found|insufficient|unpaid|void|used|expired)$/) || [])[1] || m || 'error';
     }
     return data;
   },
   async create(body, admin){
-    if (this.mode === 'supa') return this.rpc('kp_create', { p: { ...body, amount: body.amountValue ?? body.amount } });
+    if (this.mode === 'supa') return this.rpc('kp_create', { p: { ...body, amount: body.amountValue ?? body.amount }, p_token: admin ? this.token : null });
     if (this.mode === 'server') {
       if (admin) return this.api('POST', 'api/master/vouchers', body);
       const r = await fetch('api/orders', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) });
@@ -898,25 +900,24 @@ const store = {
     return enrich(await this.get(code));
   },
   async me(){
-    if (this.mode === 'supa') { const { data } = await this.sb.auth.getSession(); if (!data.session) return null; try { return await this.rpc('kp_me') } catch { return null } }
+    if (this.mode === 'supa') { if (!this.token) return null; try { return await this.rpc('kp_me', { p_token: this.token }) } catch { return null } }
     if (this.mode !== 'server') return 'Admin';
     const r = await fetch('api/master/me', { cache:'no-store' });
     return r.ok ? (await r.json()).name : null;
   },
   async login(name, password){
     if (this.mode === 'supa') {
-      const { error } = await this.sb.auth.signInWithPassword({ email: name.trim().toLowerCase(), password });
-      if (error) throw /rate|too many/i.test(error.message) ? 'tooMany' : 'badLoginEmail';
-      const n = await this.rpc('kp_me');
-      if (!n) { await this.sb.auth.signOut(); throw 'notMaster'; }
-      return n;
+      const r = await this.rpc('kp_login', { p_email: name.trim().toLowerCase(), p_password: password });
+      if (!r || r.error) throw r && r.error === 'too_many' ? 'tooMany' : 'badLoginEmail';
+      this.token = r.token;
+      return r.name;
     }
     const r = await fetch('api/master/login', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ name, password }) });
     if (r.status === 429) throw 'tooMany';
     if (!r.ok) throw 'badLogin';
     return (await r.json()).name;
   },
-  async logout(){ if (this.mode === 'supa') return this.sb.auth.signOut(); if (this.mode === 'server') await fetch('api/master/logout', { method:'POST' }); },
+  async logout(){ if (this.mode === 'supa') { const tk = this.token; this.token = ''; return this.rpc('kp_logout', { p_token: tk }).catch(() => {}); } if (this.mode === 'server') await fetch('api/master/logout', { method:'POST' }); },
   // Live list for the panel. Calls onChange(list) now and on every change it can see.
   watch(onChange){
     if (this.mode === 'db') {
@@ -924,7 +925,7 @@ const store = {
       this.unsub = this.db.collection('vouchers').onSnapshot(s => onChange(s.docs.map(d => d.data())), () => { this.unsub = null; });
       return;
     }
-    this.refresh = async () => onChange(this.mode === 'supa' ? await this.rpc('kp_list') : this.mode === 'server' ? await this.api('GET', 'api/master/vouchers') : this.lget());
+    this.refresh = async () => onChange(this.mode === 'supa' ? await this.rpc('kp_list', { p_token: this.token }) : this.mode === 'server' ? await this.api('GET', 'api/master/vouchers') : this.lget());
     this.refresh().catch(() => {});
     if (this.mode === 'supa' && !this.poll) {
       this.poll = setInterval(() => { if (state.me && isAdminRoute() && !document.hidden) this.refresh().catch(() => {}); }, 20000);
@@ -937,7 +938,7 @@ const store = {
     const j = await r.json(); if (!r.ok) throw j.error || 'error'; return j;
   },
   async get(code){
-    if (this.mode === 'supa') return this.rpc('kp_get', { p_code: code });
+    if (this.mode === 'supa') return this.rpc('kp_get', { p_token: this.token, p_code: code });
     if (this.mode === 'server') return this.api('GET', 'api/master/vouchers/' + code);
     if (this.mode === 'db') { const s = await this.ref(code).get(); if (!s.exists) throw 'not_found'; return s.data(); }
     const v = this.lget().find(x => x.code === code); if (!v) throw 'not_found'; return v;
@@ -947,7 +948,7 @@ const store = {
     const l = this.lget(); const v = l.find(x => x.code === code); if (!v) throw 'not_found'; fn(v); this.lset(l); return v;
   },
   async redeem(code, amount, note){
-    if (this.mode === 'supa') return this.rpc('kp_redeem', { p_code: code, p_amount: amount, p_note: note || '' });
+    if (this.mode === 'supa') return this.rpc('kp_redeem', { p_token: this.token, p_code: code, p_amount: amount, p_note: note || '' });
     if (this.mode === 'server') return this.api('POST', `api/master/vouchers/${code}/redeem`, { amount, note });
     return this.mutate(code, v => {
       const e = enrich(v); if (e.status !== 'active') throw e.status; if (amount > e.balance) throw 'insufficient';
@@ -955,12 +956,12 @@ const store = {
     });
   },
   async edit(code, patch){
-    if (this.mode === 'supa') return this.rpc('kp_edit', { p_code: code, p: patch });
+    if (this.mode === 'supa') return this.rpc('kp_edit', { p_token: this.token, p_code: code, p: patch });
     if (this.mode === 'server') return this.api('PATCH', `api/master/vouchers/${code}`, patch);
     return this.mutate(code, v => Object.assign(v, patch));
   },
   async undo(code, rid){
-    if (this.mode === 'supa') return this.rpc('kp_undo', { p_code: code, p_rid: rid });
+    if (this.mode === 'supa') return this.rpc('kp_undo', { p_token: this.token, p_code: code, p_rid: rid });
     if (this.mode === 'server') return this.api('DELETE', `api/master/vouchers/${code}/redemptions/${rid}`);
     return this.mutate(code, v => { v.redemptions = (v.redemptions || []).filter(r => r.id !== rid); });
   },

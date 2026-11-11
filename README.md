@@ -5,19 +5,23 @@
 ## Как устроено
 
 - **Сайт** — один файл `public/index.html` (+ `public/vendor/`). Хостинг: Vercel, без сборки (`vercel.json`, папка `public`).
-- **База** — Supabase, проект NeeDo, отдельная закрытая схема `kuponai` (таблицы `vouchers`, `masters`).
+- **База** — отдельный проект Supabase «Blakstes kuponai» (`hermojruniqfvxksunrj`), не связан с NeeDo. Закрытая схема `kuponai` (таблицы `vouchers`, `staff`, `sessions`, `login_fails`).
   Сайт обращается к ней только через функции `kp_*` (файл `supabase/schema.sql`), поэтому все правила (минимум 40 €, нельзя списать больше остатка, только мастер видит купоны) проверяются в базе.
 - Публичный ключ Supabase лежит в `index.html` (`#supa-config`). Это publishable-ключ, он предназначен для браузера.
 
 ## Мастера (вход в админку)
 
-Админка: `https://<сайт>/#admin` или `/admin`. Вход по email и паролю (Supabase Auth).
-Чтобы дать человеку права мастера:
-1. Создать пользователя в Supabase → Authentication → Users → Add user (email + пароль, «Auto confirm»).
-2. Выполнить в SQL Editor:
-   `insert into kuponai.masters(user_id, name) select id, 'Viktorija' from auth.users where email = '<email>';`
+Админка: `https://<сайт>/#admin` или `/admin`. Вход по email и паролю (своя таблица `kuponai.staff`, пароль хранится только как bcrypt-хеш; 5 неверных попыток — блок на 10 минут; сессия 30 дней).
 
-Забрать права: `delete from kuponai.masters where name = 'Viktorija';`
+Добавить мастера (Supabase → SQL Editor):
+```sql
+insert into kuponai.staff(name, email, pw_hash)
+values ('Имя', 'email@example.com', extensions.crypt('ПАРОЛЬ', extensions.gen_salt('bf')));
+```
+Сменить пароль:
+```sql
+update kuponai.staff set pw_hash = extensions.crypt('НОВЫЙ', extensions.gen_salt('bf')) where email = 'email@example.com';
+```
 
 ## Оплата
 
