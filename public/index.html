@@ -416,6 +416,7 @@ dialog::backdrop{background:rgba(10,9,9,.7);backdrop-filter:blur(4px)}
   header,footer,section,.hero,.marquee,.m-actions,.mock,#adminView,.mbar,.drawer-bg{display:none!important}
   dialog{box-shadow:none}
 }
+.cat-desc{display:block;font:italic 400 15px/1.4 var(--serif);color:var(--greige);margin-top:6px;letter-spacing:0;text-transform:none}
 </style>
 </head>
 <body>
@@ -672,7 +673,7 @@ dialog::backdrop{background:rgba(10,9,9,.7);backdrop-filter:blur(4px)}
 </dialog>
 
 <!-- Service list for the static preview. The server version reads data/menu.json via /api/menu. -->
-<script id="menu-data" type="application/json">{"salon":{"name":"Blakstės studija","address":"","bookingUrl":"https://book.treatwell.lt/salonas/397163/meniu"},"categories":[]}</script>
+<script id="menu-data" type="application/json">{"salon": {"name": "Blakstės studija", "address": "", "bookingUrl": "https://book.treatwell.lt/salonas/397163/meniu"}, "categories": [{"name": "Blakstienų laminavimas", "services": [{"id": "s1", "name": "Blakstienų laminavimas su dažymu", "price": 30, "bookingUrl": "https://book.treatwell.lt/salonas/397163/meniu"}]}, {"name": "Nude / Classic", "services": [{"id": "s2", "name": "Korekcija (po 4 savaičių)", "price": 35, "bookingUrl": "https://book.treatwell.lt/salonas/397163/meniu"}, {"id": "s3", "name": "Pilnas priauginimas", "price": 40, "bookingUrl": "https://book.treatwell.lt/salonas/397163/meniu"}, {"id": "s4", "name": "Korekcija po kito meistro", "price": 38, "bookingUrl": "https://book.treatwell.lt/salonas/397163/meniu"}, {"id": "s5", "name": "Priauginimas + nuėmimas", "price": 45, "bookingUrl": "https://book.treatwell.lt/salonas/397163/meniu"}]}, {"name": "Wet Lashes", "services": [{"id": "s6", "name": "Korekcija", "price": 40, "bookingUrl": "https://book.treatwell.lt/salonas/397163/meniu"}, {"id": "s7", "name": "Pilnas priauginimas", "price": 45, "bookingUrl": "https://book.treatwell.lt/salonas/397163/meniu"}]}, {"name": "M / L linkis", "services": [{"id": "s8", "name": "Pilnas priauginimas", "price": 45, "bookingUrl": "https://book.treatwell.lt/salonas/397163/meniu"}, {"id": "s9", "name": "Korekcija", "price": 40, "bookingUrl": "https://book.treatwell.lt/salonas/397163/meniu"}]}, {"name": "Wispy / Kim K / Anime", "services": [{"id": "s10", "name": "Pilnas priauginimas", "price": 55, "bookingUrl": "https://book.treatwell.lt/salonas/397163/meniu"}, {"id": "s11", "name": "Korekcija", "price": 45, "bookingUrl": "https://book.treatwell.lt/salonas/397163/meniu"}]}, {"name": "Express priauginimas", "services": [{"id": "s12", "name": "Priauginimas", "price": 35, "bookingUrl": "https://book.treatwell.lt/salonas/397163/meniu"}]}, {"name": "Speedy Lashes", "services": [{"id": "s13", "name": "Pilnas priauginimas", "price": 45, "bookingUrl": "https://book.treatwell.lt/salonas/397163/meniu"}, {"id": "s14", "name": "Korekcija", "price": 40, "bookingUrl": "https://book.treatwell.lt/salonas/397163/meniu"}], "description": "Priauginimas paruoštais kuokšteliais"}, {"name": "Blakstienų nuėmimas", "services": [{"id": "s15", "name": "Nuėmimas", "price": 10, "bookingUrl": "https://book.treatwell.lt/salonas/397163/meniu"}, {"id": "s16", "name": "Nuėmimas po kito meistro", "price": 15, "bookingUrl": "https://book.treatwell.lt/salonas/397163/meniu"}]}]}</script>
 
 <!-- Live database (Supabase). The key below is the public "publishable" key; all rules live in the database functions. -->
 <script id="supa-config" type="application/json">{"url":"https://hermojruniqfvxksunrj.supabase.co","key":"sb_publishable_dUxM0CR3woUXiq0or0yGZQ_tel1mICB"}</script>
@@ -983,7 +984,7 @@ function serviceRow(s){
   const on = state.service?.id === s.id;
   return `<div class="svc${on ? ' on' : ''}">
     <div><h4>${esc(s.name)}</h4>${s.description ? `<div class="desc">${esc(s.description)}</div>` : ''}</div>
-    <div class="meta"><span class="dur">${s.durationMin ? s.durationMin + ' ' + t('min') : ''}</span>
+    <div class="meta">${s.durationMin ? `<span class="dur">${s.durationMin} ${t('min')}</span>` : ''}
       <span class="price">${s.priceFrom ? `<small>${t('from')}</small>` : ''}${money(s.price)}</span></div>
     <div class="acts">
       <a class="btn" href="${esc(bookingUrl(s))}" target="_blank" rel="noopener">${t('bookNow')} ↗</a>
@@ -1006,7 +1007,7 @@ function renderServices(){
   $('#services').innerHTML = cats.filter(c => !state.cat || c.name === state.cat).map(c => {
     const list = c.services.filter(s => !q || s.name.toLowerCase().includes(q));
     if (!list.length) return '';
-    return `<div class="cat-name"><h3>${esc(c.name)}</h3><span class="mono" style="color:var(--greige)">${list.length}</span></div>` + list.map(serviceRow).join('');
+    return `<div class="cat-name"><h3>${esc(c.name)}${c.description ? `<small class="cat-desc">${esc(c.description)}</small>` : ''}</h3><span class="mono" style="color:var(--greige)">${list.length}</span></div>` + list.map(serviceRow).join('');
   }).join('');
   const qi = $('#q');
   qi.oninput = e => { state.q = e.target.value; renderServices(); };
