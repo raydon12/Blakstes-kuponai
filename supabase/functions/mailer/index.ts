@@ -9,9 +9,9 @@
 //     Brevo:             BREVO_API_KEY
 //     Resend:            RESEND_API_KEY
 //   MAIL_FROM       sender address (default SMTP_USER); shown as "Blakstės studija <MAIL_FROM>"
-//   optional: SITE_URL, SALON_CONTACT (phone/address line for the email footer), MAIL_PROVIDER (smtp|brevo|resend)
+//   optional: BACKUP_EMAIL (weekly backup, default NOTIFY_EMAIL), SITE_URL, SALON_CONTACT (phone/address line for the email footer), MAIL_PROVIDER (smtp|brevo|resend)
 import nodemailer from 'nodemailer';
-import { buildMail, voucherPdf, type Ctx, type Voucher } from './render.ts';
+import { backupCsv, buildBackupMail, buildMail, voucherPdf, type Ctx, type Voucher } from './render.ts';
 import { fonts } from './fonts.ts';
 
 const env = (k: string, d = '') => Deno.env.get(k) || d;
@@ -41,7 +41,8 @@ async function rpc(fn: string, args: Record<string, unknown>) {
   return t ? JSON.parse(t) : null;
 }
 
-type Out = { to: string; subject: string; html: string; text: string; pdf?: { name: string; data: Uint8Array } };
+type Att = { name: string; data: Uint8Array; type: string };
+type Out = { to: string; subject: string; html: string; text: string; files?: Att[] };
 const b64 = (u: Uint8Array) => { let s = ''; for (let i = 0; i < u.length; i += 0x8000) s += String.fromCharCode(...u.subarray(i, i + 0x8000)); return btoa(s); };
 
 let smtp: ReturnType<typeof nodemailer.createTransport> | null = null;
@@ -55,14 +56,14 @@ async function send(m: Out) {
       auth: { user: env('SMTP_USER'), pass: env('SMTP_PASS') },
     });
     await smtp.sendMail({ from: { name: fromName, address: fromAddr }, to: m.to, replyTo, subject: m.subject, html: m.html, text: m.text,
-      attachments: m.pdf ? [{ filename: m.pdf.name, content: b64(m.pdf.data), encoding: 'base64', contentType: 'application/pdf' }] : [] });
+      attachments: (m.files || []).map((f) => ({ filename: f.name, content: b64(f.data), encoding: 'base64', contentType: f.type })) });
     return;
   }
   if (p === 'brevo') {
     const r = await fetch('https://api.brevo.com/v3/smtp/email', {
       method: 'POST', headers: { 'api-key': env('BREVO_API_KEY'), 'content-type': 'application/json', accept: 'application/json' },
       body: JSON.stringify({ sender: { name: fromName, email: fromAddr }, to: [{ email: m.to }], replyTo: { email: replyTo }, subject: m.subject,
-        htmlContent: m.html, textContent: m.text, attachment: m.pdf ? [{ name: m.pdf.name, content: b64(m.pdf.data) }] : undefined }),
+        htmlContent: m.html, textContent: m.text, attachment: m.files?.length ? m.files.map((f) => ({ name: f.name, content: b64(f.data) })) : undefined }),
     });
     if (!r.ok) throw new Error(`brevo ${r.status} ${await r.text()}`);
     return;
@@ -71,7 +72,7 @@ async function send(m: Out) {
     const r = await fetch('https://api.resend.com/emails', {
       method: 'POST', headers: { authorization: `Bearer ${env('RESEND_API_KEY')}`, 'content-type': 'application/json' },
       body: JSON.stringify({ from: `${fromName} <${fromAddr}>`, to: [m.to], reply_to: replyTo, subject: m.subject, html: m.html, text: m.text,
-        attachments: m.pdf ? [{ filename: m.pdf.name, content: b64(m.pdf.data) }] : undefined }),
+        attachments: m.files?.length ? m.files.map((f) => ({ filename: f.name, content: b64(f.data) })) : undefined }),
     });
     if (!r.ok) throw new Error(`resend ${r.status} ${await r.text()}`);
     return;
@@ -88,8 +89,8 @@ async function run() {
       const to = j.kind === 'staff' ? env('NOTIFY_EMAIL') : j.to;
       if (!to) { await rpc('kp_mail_done', { p_code: v.code, p_kind: j.kind, p_ok: true, p_err: 'no_address' }); res.push({ code: v.code, kind: j.kind, ok: true, err: 'skipped' }); continue; }
       const m = buildMail(j.kind, v, ctx);
-      const pdf = m.attach ? { name: `${v.code}.pdf`, data: await voucherPdf(v, fonts, ctx) } : undefined;
-      await send({ to, subject: m.subject, html: m.html, text: m.text, pdf });
+      const files = m.attach ? [{ name: `${v.code}.pdf`, data: await voucherPdf(v, fonts, ctx), type: 'application/pdf' }] : [];
+      await send({ to, subject: m.subject, html: m.html, text: m.text, files });
       await rpc('kp_mail_done', { p_code: v.code, p_kind: j.kind, p_ok: true });
       res.push({ code: v.code, kind: j.kind, ok: true });
     } catch (e) {
@@ -102,6 +103,21 @@ async function run() {
   return res;
 }
 
+// Weekly backup: every voucher as CSV (opens in Excel) and as full JSON, to BACKUP_EMAIL or NOTIFY_EMAIL.
+async function backup() {
+  const to = env('BACKUP_EMAIL') || env('NOTIFY_EMAIL');
+  if (!to) return { skipped: 'no_address' };
+  const list: Voucher[] = (await rpc('kp_backup_export', {})) || [];
+  const enc = new TextEncoder(), day = new Date().toISOString().slice(0, 10);
+  const files: Att[] = [
+    { name: `kuponai-${day}.csv`, data: enc.encode(backupCsv(list)), type: 'text/csv' },
+    { name: `kuponai-${day}.json`, data: enc.encode(JSON.stringify(list, null, 1)), type: 'application/json' },
+  ];
+  const m = buildBackupMail(list, ctx);
+  await send({ to, subject: m.subject, html: m.html, text: m.text, files });
+  return { backup: list.length };
+}
+
 let busy: Promise<unknown> | null = null;
 Deno.serve(async (req) => {
   const key = env('MAILER_KEY');
@@ -111,6 +127,7 @@ Deno.serve(async (req) => {
   // Preview a PDF without sending: POST {"preview": {...voucher}}
   const body = await req.json().catch(() => ({}));
   if (body?.preview) return new Response(await voucherPdf(body.preview, fonts, ctx), { headers: { 'content-type': 'application/pdf' } });
+  if (body?.backup) { try { return Response.json(await backup()); } catch (e) { console.error('backup', e); return Response.json({ error: String(e) }, { status: 500 }); } }
   if (busy) await busy.catch(() => {});
   const p = run(); busy = p;
   try { return Response.json({ sent: await p }); } catch (e) { console.error(e); return Response.json({ error: String(e) }, { status: 500 }); } finally { if (busy === p) busy = null; }

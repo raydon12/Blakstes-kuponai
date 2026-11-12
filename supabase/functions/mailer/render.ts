@@ -7,6 +7,7 @@ export type Voucher = {
   code: string; title?: string; amount: number; balance?: number; status?: string; recipient?: string; from?: string; message?: string;
   design?: string; buyerEmail?: string; validUntil?: string; createdAt?: string; lang?: string; source?: string;
   delivery?: { mode?: string; email?: string; date?: string } | null;
+  payMethod?: string; soldBy?: string; redemptions?: { amount: number; at?: string; note?: string; by?: string }[];
 };
 export type Fonts = Record<'anton' | 'bodoni' | 'bodoniItalic' | 'mono' | 'serifFallback', Uint8Array>;
 export type Ctx = { site: string; salon: string; master: string; booking: string; instagram: string; contact: string };
@@ -166,7 +167,7 @@ ${p}${c}${b}
 <p style="font-size:12px;color:#8a817c;margin:14px 0 0"><a href="${esc(ctx.site)}" style="color:#8a817c">${esc(ctx.site.replace(/^https?:\/\//, ''))}</a> · <a href="${esc(ctx.instagram)}" style="color:#8a817c">Instagram</a></p>
 </td></tr></table></body></html>`;
 }
-const strip = (html: string) => html.replace(/<head>[\s\S]*?<\/head>/, '').replace(/<a [^>]*href="([^"]+)"[^>]*>([^<]*)<\/a>/g, '$2: $1')
+const strip = (html: string) => html.replace(/<head>[\s\S]*?<\/head>/, '').replace(/<br>/g, '\n').replace(/<a [^>]*href="([^"]+)"[^>]*>([^<]*)<\/a>/g, '$2: $1')
   .replace(/<\/(p|h1|div|tr)>/g, '\n').replace(/<[^>]+>/g, '').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'")
   .split('\n').map((l) => l.trim()).filter(Boolean).join('\n\n');
 
@@ -227,4 +228,32 @@ export function buildMail(kind: string, v: Voucher, ctx: Ctx): Mail {
   }
   const html = layout(ctx, lang, heading, paras, card, cta, footer);
   return { subject, html, text: strip(html), attach };
+}
+
+/* ---------------- weekly backup ---------------- */
+export function backupCsv(list: Voucher[]) {
+  const cols: [string, (v: Voucher) => unknown][] = [
+    ['code', (v) => v.code], ['status', (v) => v.status], ['amount', (v) => v.amount], ['balance', (v) => v.balance],
+    ['redeemed', (v) => Math.round((Number(v.amount) - Number(v.balance ?? v.amount)) * 100) / 100],
+    ['title', (v) => v.title], ['recipient', (v) => v.recipient], ['from', (v) => v.from], ['message', (v) => v.message],
+    ['buyerEmail', (v) => v.buyerEmail], ['deliveryEmail', (v) => v.delivery?.email], ['deliveryDate', (v) => v.delivery?.date],
+    ['createdAt', (v) => v.createdAt], ['validUntil', (v) => v.validUntil], ['source', (v) => v.source], ['payMethod', (v) => v.payMethod],
+    ['soldBy', (v) => v.soldBy],
+    ['redemptions', (v) => (v.redemptions || []).map((r) => `${(r.at || '').slice(0, 10)} ${r.amount}€ ${r.note || ''}`.trim()).join(' | ')],
+  ];
+  const q = (x: unknown) => { const t = String(x ?? ''); return /[",\n;]/.test(t) ? '"' + t.replace(/"/g, '""') + '"' : t; };
+  return '\ufeff' + [cols.map((c) => c[0]).join(','), ...list.map((v) => cols.map(([, f]) => q(f(v))).join(','))].join('\n');
+}
+export function buildBackupMail(list: Voucher[], ctx: Ctx): Mail {
+  const by = (st: string) => list.filter((v) => v.status === st);
+  const sum = (a: Voucher[], f: (v: Voucher) => number) => Math.round(a.reduce((x, v) => x + f(v), 0) * 100) / 100;
+  const active = by('active');
+  const day = new Date().toISOString().slice(0, 10);
+  const html = layout(ctx, 'lt', 'Savaitės kuponų kopija', [
+    `Prisegta visų kuponų kopija (${list.length} vnt.): CSV failas atsidaro Excel ar Google Sheets, JSON – pilna atsarginė kopija.`,
+    `Galiojantys: <b>${active.length}</b>, nepanaudotas likutis <b>${esc(money(sum(active, (v) => Number(v.balance ?? 0))))}</b><br>` +
+      `Laukia apmokėjimo: <b>${by('unpaid').length}</b> · Panaudoti: <b>${by('used').length}</b> · Pasibaigę: <b>${by('expired').length}</b>`,
+    'Šių laiškų neištrinkite: jei kas nors atsitiktų duomenų bazei, iš šios kopijos kuponus galima atkurti.',
+  ], null, { href: `${ctx.site}/#admin`, label: 'Atidaryti administravimą' }, 'Šis laiškas siunčiamas automatiškai kiekvieną pirmadienį.');
+  return { subject: `Kuponų kopija ${day} · ${list.length} vnt.`, html, text: strip(html) };
 }

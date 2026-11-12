@@ -49,6 +49,16 @@ update kuponai.staff set pw_hash = extensions.crypt('НОВЫЙ', extensions.gen
 
 Шрифты PDF лежат в `supabase/functions/mailer/fonts.ts`, пересобрать: `python3 scripts/pdf-fonts.py`.
 
+## Автоотмена, бэкап, мастера (`supabase/extras.sql`, после `mail.sql`)
+
+- Неоплаченный онлайн-заказ аннулируется через 7 дней (pg_cron, каждую ночь). В журнале купона: «auto_cancel».
+- По понедельникам `mailer` отправляет на `BACKUP_EMAIL` (или `NOTIFY_EMAIL`) все купоны: CSV для Excel и полный JSON.
+- В админке кнопка «Nustatymai»: смена своего пароля (другие устройства разлогиниваются), список мастеров, добавить или удалить мастера. SQL для этого больше не нужен.
+
+## Фото работ и отзывы
+
+Блок «Darbai ir atsiliepimai» на главной берёт данные из `<script id="works-data">` в `public/index.html`. Фото кладите в `public/works/` (JPG/WebP ~1200 px). Пока списки пустые, блок скрыт.
+
 ## Правила и конфиденциальность
 
 `public/taisykles.html` и `public/privatumas.html` (LT). Ссылки в подвале и в окне оформления. Реквизиты продавца отмечены жёлтыми заглушками `[…]`, их нужно заполнить.

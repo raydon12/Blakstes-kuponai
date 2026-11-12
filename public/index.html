@@ -229,6 +229,16 @@ section{scroll-margin-top:72px}
 .step h3{margin:14px 0 6px;font-family:var(--serif);font-weight:400;font-size:24px}
 .step p{margin:0;color:var(--greige)}
 
+/* works & reviews */
+.works{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(220px,1fr);gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px;margin-top:32px}
+.works figure{margin:0;scroll-snap-align:start;border-radius:12px;overflow:hidden;aspect-ratio:4/5;background:var(--bone)}
+.works img{width:100%;height:100%;object-fit:cover;display:block}
+.reviews{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:28px}
+.review{margin:0;background:#fff;border:1px solid var(--line-light);border-radius:12px;padding:22px}
+.review .stars{color:#b5577f;letter-spacing:2px}
+.review p{font-family:var(--serif);font-style:italic;font-size:19px;line-height:1.45;margin:10px 0 14px}
+.review .by{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--greige)}
+@media (max-width:820px){.reviews{grid-template-columns:1fr}.works{grid-auto-columns:72%}}
 /* footer */
 footer{background:var(--ink);border-top:1px solid var(--line-dark);padding:72px 0 28px}
 .foot{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr 1fr;gap:32px}
@@ -589,6 +599,17 @@ dialog::backdrop{background:rgba(10,9,9,.7);backdrop-filter:blur(4px)}
   </div>
 </section>
 
+<section class="light" id="works" hidden>
+  <div class="wrap">
+    <div class="sec-head"><div>
+      <div class="mono kicker" data-i18n="worksK">Meistrės Viktorijos darbai</div>
+      <h2 class="sec-title"><span class="big" data-i18n="worksBig">Darbai</span><span class="it" data-i18n="worksIt">ir atsiliepimai</span></h2>
+    </div></div>
+    <div class="works" id="worksGrid"></div>
+    <div class="reviews" id="reviews"></div>
+  </div>
+</section>
+
 <section class="dark grain" id="check">
   <div class="wrap" style="position:relative;z-index:2">
     <div class="check">
@@ -641,7 +662,7 @@ dialog::backdrop{background:rgba(10,9,9,.7);backdrop-filter:blur(4px)}
         <div class="mono kicker" data-i18n="aKicker">Administravimas</div>
         <h1 class="sec-title" style="margin-top:12px"><span class="big" data-i18n="aBig">Kuponai</span><span class="it" data-i18n="aIt">&amp; likučiai</span></h1>
       </div>
-      <div class="who" id="aWho" hidden><span class="mono" id="aName"></span><button class="btn small" id="logoutBtn" data-i18n="logout">Atsijungti</button></div>
+      <div class="who" id="aWho" hidden><span class="mono" id="aName"></span><button class="btn small" id="setBtn" data-i18n="settings">Nustatymai</button><button class="btn small" id="logoutBtn" data-i18n="logout">Atsijungti</button></div>
     </div>
 
     <div id="aLoading" class="a-empty mono" data-i18n="loading">Įkeliama…</div>
@@ -696,7 +717,7 @@ dialog::backdrop{background:rgba(10,9,9,.7);backdrop-filter:blur(4px)}
   <form class="m-body" id="payForm" method="dialog">
     <h2 data-i18n="payTitle">Apmokėjimas</h2>
     <p class="note" id="payWhat" style="margin:10px 0 0"></p>
-    <div class="mono mock mock-only" data-i18n="mockNote">Testinis režimas — pinigai nenuskaitomi</div><p class="note live-only no-card" data-i18n="liveNote" style="margin:14px 0 0">Kuponas įsigalios, kai meistrė patvirtins apmokėjimą. Su jumis susisieksime el. paštu dėl atsiskaitymo.</p><p class="note card-only" data-i18n="cardNote" style="margin:14px 0 0">Saugiai apmokėsite kortele, Apple Pay arba Google Pay. Po apmokėjimo kuponas iškart galios.</p>
+    <div class="mono mock mock-only" data-i18n="mockNote">Testinis režimas — pinigai nenuskaitomi</div><p class="note live-only no-card" data-i18n="liveNote" style="margin:14px 0 0">Kuponas įsigalios, kai meistrė patvirtins apmokėjimą. Su jumis susisieksime el. paštu dėl atsiskaitymo. Neapmokėtas užsakymas po 7 dienų atšaukiamas.</p><p class="note card-only" data-i18n="cardNote" style="margin:14px 0 0">Saugiai apmokėsite kortele, Apple Pay arba Google Pay. Po apmokėjimo kuponas iškart galios.</p>
     <div class="field"><label class="mono" for="pEmail" data-i18n="pEmail">El. paštas</label><input id="pEmail" type="email" required autocomplete="email"></div>
     <div class="field mock-only"><label class="mono" for="pCard" data-i18n="pCard">Kortelės numeris</label><input id="pCard" inputmode="numeric" placeholder="4242 4242 4242 4242" required></div>
     <div class="two mock-only">
@@ -723,6 +744,10 @@ dialog::backdrop{background:rgba(10,9,9,.7);backdrop-filter:blur(4px)}
   </div>
 </dialog>
 
+<!-- Photos of work and client reviews. Photos go to public/works/ (JPG/WebP, about 1200 px). Empty lists hide the section.
+     {"photos":[{"src":"/works/1.jpg","alt":"Klasikinis priauginimas"}],
+      "reviews":[{"name":"Ieva","text":"…","stars":5,"source":"Treatwell"}]} -->
+<script id="works-data" type="application/json">{"photos":[],"reviews":[]}</script>
 <!-- Service list for the static preview. The server version reads data/menu.json via /api/menu. -->
 <script id="menu-data" type="application/json">{"salon": {"name": "Blakstės studija", "address": "", "bookingUrl": "https://book.treatwell.lt/salonas/397163/meniu"}, "categories": [{"name": "Blakstienų laminavimas", "services": [{"id": "s1", "name": "Blakstienų laminavimas su dažymu", "price": 30, "bookingUrl": "https://book.treatwell.lt/salonas/397163/meniu"}]}, {"name": "Nude / Classic", "services": [{"id": "s2", "name": "Korekcija (po 4 savaičių)", "price": 35, "bookingUrl": "https://book.treatwell.lt/salonas/397163/meniu"}, {"id": "s3", "name": "Pilnas priauginimas", "price": 40, "bookingUrl": "https://book.treatwell.lt/salonas/397163/meniu"}, {"id": "s4", "name": "Korekcija po kito meistro", "price": 38, "bookingUrl": "https://book.treatwell.lt/salonas/397163/meniu"}, {"id": "s5", "name": "Priauginimas + nuėmimas", "price": 45, "bookingUrl": "https://book.treatwell.lt/salonas/397163/meniu"}]}, {"name": "Wet Lashes", "services": [{"id": "s6", "name": "Korekcija", "price": 40, "bookingUrl": "https://book.treatwell.lt/salonas/397163/meniu"}, {"id": "s7", "name": "Pilnas priauginimas", "price": 45, "bookingUrl": "https://book.treatwell.lt/salonas/397163/meniu"}]}, {"name": "M / L linkis", "services": [{"id": "s8", "name": "Pilnas priauginimas", "price": 45, "bookingUrl": "https://book.treatwell.lt/salonas/397163/meniu"}, {"id": "s9", "name": "Korekcija", "price": 40, "bookingUrl": "https://book.treatwell.lt/salonas/397163/meniu"}]}, {"name": "Wispy / Kim K / Anime", "services": [{"id": "s10", "name": "Pilnas priauginimas", "price": 55, "bookingUrl": "https://book.treatwell.lt/salonas/397163/meniu"}, {"id": "s11", "name": "Korekcija", "price": 45, "bookingUrl": "https://book.treatwell.lt/salonas/397163/meniu"}]}, {"name": "Express priauginimas", "services": [{"id": "s12", "name": "Priauginimas", "price": 35, "bookingUrl": "https://book.treatwell.lt/salonas/397163/meniu"}]}, {"name": "Speedy Lashes", "services": [{"id": "s13", "name": "Pilnas priauginimas", "price": 45, "bookingUrl": "https://book.treatwell.lt/salonas/397163/meniu"}, {"id": "s14", "name": "Korekcija", "price": 40, "bookingUrl": "https://book.treatwell.lt/salonas/397163/meniu"}], "description": "Priauginimas paruoštais kuokšteliais"}, {"name": "Blakstienų nuėmimas", "services": [{"id": "s15", "name": "Nuėmimas", "price": 10, "bookingUrl": "https://book.treatwell.lt/salonas/397163/meniu"}, {"id": "s16", "name": "Nuėmimas po kito meistro", "price": 15, "bookingUrl": "https://book.treatwell.lt/salonas/397163/meniu"}]}]}</script>
 
@@ -754,7 +779,12 @@ const I18N = {
     // admin
     aKicker:"Administravimas", aBig:"Kuponai", aIt:"& likučiai", loading:"Įkeliama…", logout:"Atsijungti",
     name:"Vardas", password:"Slaptažodis", signIn:"Prisijungti", badLogin:"Neteisingas vardas arba slaptažodis", tooMany:"Per daug bandymų. Palaukite 5 min.",
-    stPeriod:"Laikotarpis", p30:"30 d.", pMonth:"Šis mėnuo", pYear:"Šie metai", pAll:"Viskas",
+    settings:"Nustatymai", pwT:"Slaptažodis", pwOld:"Dabartinis slaptažodis", pwNew:"Naujas slaptažodis (min. 8 simboliai)", pwNew2:"Pakartokite naują", pwSave:"Pakeisti slaptažodį",
+    pwDone:"Slaptažodis pakeistas. Kituose įrenginiuose reikės prisijungti iš naujo.", pwMismatch:"Nauji slaptažodžiai nesutampa", pwShort:"Slaptažodis per trumpas (min. 8 simboliai)", pwBad:"Neteisingas dabartinis slaptažodis",
+    staffT:"Meistrai", staffAddT:"Pridėti meistrą", staffName:"Vardas", staffEmail:"El. paštas (prisijungimui)", staffPass:"Laikinas slaptažodis (min. 8)", staffAddB:"Pridėti",
+    staffAdded:"Meistras pridėtas. Perduokite jam el. paštą ir slaptažodį.", staffRemoveQ:"Pašalinti meistrą {n}? Jis nebegalės prisijungti.", staffRemoveB:"Pašalinti", staffRemoved:"Meistras pašalintas",
+    staffMe:"jūs", emailTaken:"Toks el. paštas jau naudojamas", badName:"Įrašykite vardą", demoOnly:"Veikia tik tikroje svetainėje",
+    worksK:"Meistrės Viktorijos darbai", worksBig:"Darbai", worksIt:"ir atsiliepimai", stPeriod:"Laikotarpis", p30:"30 d.", pMonth:"Šis mėnuo", pYear:"Šie metai", pAll:"Viskas",
     stRedeemed:"Panaudota suma", stUnpaid:"Laukia apmokėjimo", stExpiring:"Baigiasi per 30 d.", stExpired:"Nebegalioja nepanaudota", stAvg:"Vidutinis kuponas",
     stSplit:"internetu {a} · salone {b}", stFull:"{n} panaudoti iki galo", stNowAll:"dabar, visi kuponai", stRedN:"nurašymų: {n}",
     mailT:"El. laiškai", m_buyer:"Pirkėjui", m_recipient:"Gavėjui", m_reminder:"Priminimas apie galiojimą", m_staff:"Pranešimas salonui",
@@ -790,7 +820,7 @@ const I18N = {
     download:"Atsisiųsti", dlErr:"Nepavyko atsisiųsti", next:"Toliau", sendOn:"Bus išsiųsta {email} {date} (testiniame režime laiškai nesiunčiami).",
     chartT:"Pardavimai · 30 d.", feedT:"Paskutiniai nurašymai", noFeed:"Nurašymų dar nebuvo", newV:"+ Naujas kuponas", csv:"CSV",
     sortNew:"Naujausi", sortOld:"Seniausi", sortBal:"Didžiausias likutis", sortExp:"Greitai baigsis",
-    f_void:"Anuliuoti", f_unpaid:"Neapmokėti", payGo:"Nukreipiama į apmokėjimą…", payErr:"Nepavyko pradėti apmokėjimo. Bandykite dar kartą.", payCancelled:"Apmokėjimas atšauktas", paidOk:"Apmokėta! Jūsų kupono kodas: {code}. Atsisiųskite arba atsispausdinkite kuponą.", paidWait:"Mokėjimas apdorojamas. Kupono kodas: {code}. Jis įsigalios per kelias minutes.", cardNote:"Saugiai apmokėsite kortele, Apple Pay arba Google Pay. Po apmokėjimo kuponas iškart galios.", terms:"Nepanaudotą internetu pirktą kuponą galima grąžinti per 14 dienų nuo pirkimo. Vėliau kupono suma negrąžinama ir nekeičiama į grynuosius pinigus. Kupono galiojimas nepratęsiamas. Jei kupono sumos nepakanka procedūrai, skirtumą reikia sumokėti vietoje.", badLoginEmail:"Neteisingas el. paštas arba slaptažodis", s_unpaid:"Laukia apmokėjimo", unpaidNote:"Užsakyta internetu, bet dar neapmokėta. Kai klientas sumokės, pažymėkite kuponą apmokėtu — tada jį bus galima naudoti.", markPaid:"Pažymėti apmokėtu", paidQ:"Patvirtinti, kad už {c} gauta {a}?", paidDone:"Kuponas apmokėtas ir galioja", notMaster:"Ši paskyra neturi meistro teisių", order:"Užsakyti", liveNote:"Kuponas įsigalios, kai meistrė patvirtins apmokėjimą. Su jumis susisieksime el. paštu dėl atsiskaitymo.", doneLive:"Užsakymas priimtas! Kupono kodas: {code}. Kuponas įsigalios, kai meistrė patvirtins apmokėjimą — susisieksime adresu {email}.", s_void:"Anuliuotas", extend:"+3 mėn.", extended:"Pratęsta iki {d}", voidB:"Anuliuoti", voidQ:"Anuliuoti kuponą {c}? Juo nebebus galima atsiskaityti.", voided:"Kuponas anuliuotas", restore:"Atkurti", restored:"Kuponas atkurtas",
+    f_void:"Anuliuoti", f_unpaid:"Neapmokėti", payGo:"Nukreipiama į apmokėjimą…", payErr:"Nepavyko pradėti apmokėjimo. Bandykite dar kartą.", payCancelled:"Apmokėjimas atšauktas", paidOk:"Apmokėta! Jūsų kupono kodas: {code}. Atsisiųskite arba atsispausdinkite kuponą.", paidWait:"Mokėjimas apdorojamas. Kupono kodas: {code}. Jis įsigalios per kelias minutes.", cardNote:"Saugiai apmokėsite kortele, Apple Pay arba Google Pay. Po apmokėjimo kuponas iškart galios.", terms:"Nepanaudotą internetu pirktą kuponą galima grąžinti per 14 dienų nuo pirkimo. Vėliau kupono suma negrąžinama ir nekeičiama į grynuosius pinigus. Kupono galiojimas nepratęsiamas. Jei kupono sumos nepakanka procedūrai, skirtumą reikia sumokėti vietoje.", badLoginEmail:"Neteisingas el. paštas arba slaptažodis", s_unpaid:"Laukia apmokėjimo", unpaidNote:"Užsakyta internetu, bet dar neapmokėta. Kai klientas sumokės, pažymėkite kuponą apmokėtu — tada jį bus galima naudoti.", markPaid:"Pažymėti apmokėtu", paidQ:"Patvirtinti, kad už {c} gauta {a}?", paidDone:"Kuponas apmokėtas ir galioja", notMaster:"Ši paskyra neturi meistro teisių", order:"Užsakyti", liveNote:"Kuponas įsigalios, kai meistrė patvirtins apmokėjimą. Su jumis susisieksime el. paštu dėl atsiskaitymo. Neapmokėtas užsakymas po 7 dienų atšaukiamas.", doneLive:"Užsakymas priimtas! Kupono kodas: {code}. Kuponas įsigalios, kai meistrė patvirtins apmokėjimą — susisieksime adresu {email}.", s_void:"Anuliuotas", extend:"+3 mėn.", extended:"Pratęsta iki {d}", voidB:"Anuliuoti", voidQ:"Anuliuoti kuponą {c}? Juo nebebus galima atsiskaityti.", voided:"Kuponas anuliuotas", restore:"Atkurti", restored:"Kuponas atkurtas",
     newT:"Naujas kuponas", newD:"Kuponas, parduotas salone (grynais ar kortele). Jis atsiras sąraše ir gaus kodą bei QR.", vtype:"Tipas", byAmount:"Suma", byService:"Procedūra",
     payM:"Apmokėjimas", payCash:"Grynais", payCard:"Kortele salone", payOnline:"Internetu", payGift:"Dovana / akcija", create:"Sukurti kuponą", created:"Sukurtas {c}", buyerOpt:"Pirkėjo el. paštas (nebūtina)", srcSalon:"Salone", srcOnline:"Internetu", source:"Šaltinis",
     perDay:"{n} vnt. · {s}", vouchersN:"vnt."
@@ -817,7 +847,12 @@ const I18N = {
     print:"Распечатать", close:"Закрыть", errEmail:"Введите email", errCard:"Проверьте данные карты", heroMsg:"Время только для тебя", saveErr:"Не удалось сохранить сертификат",
     aKicker:"Админ-панель", aBig:"Сертификаты", aIt:"& остатки", loading:"Загрузка…", logout:"Выйти",
     name:"Имя", password:"Пароль", signIn:"Войти", badLogin:"Неверное имя или пароль", tooMany:"Слишком много попыток. Подождите 5 минут.",
-    stPeriod:"Период", p30:"30 дней", pMonth:"Этот месяц", pYear:"Этот год", pAll:"Всё время",
+    settings:"Настройки", pwT:"Пароль", pwOld:"Текущий пароль", pwNew:"Новый пароль (мин. 8 символов)", pwNew2:"Повторите новый", pwSave:"Сменить пароль",
+    pwDone:"Пароль изменён. На других устройствах нужно будет войти заново.", pwMismatch:"Новые пароли не совпадают", pwShort:"Пароль слишком короткий (мин. 8 символов)", pwBad:"Неверный текущий пароль",
+    staffT:"Мастера", staffAddT:"Добавить мастера", staffName:"Имя", staffEmail:"Email (для входа)", staffPass:"Временный пароль (мин. 8)", staffAddB:"Добавить",
+    staffAdded:"Мастер добавлен. Передайте ему email и пароль.", staffRemoveQ:"Удалить мастера {n}? Он больше не сможет войти.", staffRemoveB:"Удалить", staffRemoved:"Мастер удалён",
+    staffMe:"вы", emailTaken:"Такой email уже используется", badName:"Введите имя", demoOnly:"Работает только на настоящем сайте",
+    worksK:"Работы мастера Виктории", worksBig:"Работы", worksIt:"и отзывы", stPeriod:"Период", p30:"30 дней", pMonth:"Этот месяц", pYear:"Этот год", pAll:"Всё время",
     stRedeemed:"Использовано на сумму", stUnpaid:"Ждут оплаты", stExpiring:"Истекают за 30 дней", stExpired:"Истекли неиспользованными", stAvg:"Средний сертификат",
     stSplit:"онлайн {a} · в салоне {b}", stFull:"{n} использованы полностью", stNowAll:"сейчас, все сертификаты", stRedN:"списаний: {n}",
     mailT:"Письма", m_buyer:"Покупателю", m_recipient:"Получателю", m_reminder:"Напоминание о сроке", m_staff:"Уведомление салону",
@@ -853,7 +888,7 @@ const I18N = {
     download:"Скачать", dlErr:"Не удалось скачать", next:"Далее", sendOn:"Будет отправлен на {email} {date} (в тестовом режиме письма не отправляются).",
     chartT:"Продажи · 30 дней", feedT:"Последние списания", noFeed:"Списаний ещё не было", newV:"+ Новый сертификат", csv:"CSV",
     sortNew:"Сначала новые", sortOld:"Сначала старые", sortBal:"Больший остаток", sortExp:"Скоро истекают",
-    f_void:"Аннулированы", f_unpaid:"Не оплачены", payGo:"Переходим к оплате…", payErr:"Не удалось начать оплату. Попробуйте ещё раз.", payCancelled:"Оплата отменена", paidOk:"Оплачено! Код сертификата: {code}. Скачайте или распечатайте сертификат.", paidWait:"Платёж обрабатывается. Код сертификата: {code}. Он начнёт действовать через несколько минут.", cardNote:"Безопасная оплата картой, Apple Pay или Google Pay. Сертификат действует сразу после оплаты.", terms:"Неиспользованный сертификат, купленный онлайн, можно вернуть в течение 14 дней с покупки. Позже сумма не возвращается и не обменивается на наличные. Срок действия не продлевается. Если суммы сертификата не хватает на процедуру, разницу нужно доплатить на месте.", badLoginEmail:"Неверный email или пароль", s_unpaid:"Ждёт оплаты", unpaidNote:"Заказан онлайн, но ещё не оплачен. Когда клиент заплатит, отметьте сертификат оплаченным — тогда им можно будет пользоваться.", markPaid:"Отметить оплаченным", paidQ:"Подтвердить, что за {c} получено {a}?", paidDone:"Сертификат оплачен и действует", notMaster:"У этого аккаунта нет прав мастера", order:"Заказать", liveNote:"Сертификат начнёт действовать, когда мастер подтвердит оплату. Мы свяжемся с вами по email насчёт оплаты.", doneLive:"Заказ принят! Код сертификата: {code}. Сертификат начнёт действовать после подтверждения оплаты — напишем на {email}.", s_void:"Аннулирован", extend:"+3 мес.", extended:"Продлён до {d}", voidB:"Аннулировать", voidQ:"Аннулировать сертификат {c}? Им больше нельзя будет расплатиться.", voided:"Сертификат аннулирован", restore:"Восстановить", restored:"Сертификат восстановлен",
+    f_void:"Аннулированы", f_unpaid:"Не оплачены", payGo:"Переходим к оплате…", payErr:"Не удалось начать оплату. Попробуйте ещё раз.", payCancelled:"Оплата отменена", paidOk:"Оплачено! Код сертификата: {code}. Скачайте или распечатайте сертификат.", paidWait:"Платёж обрабатывается. Код сертификата: {code}. Он начнёт действовать через несколько минут.", cardNote:"Безопасная оплата картой, Apple Pay или Google Pay. Сертификат действует сразу после оплаты.", terms:"Неиспользованный сертификат, купленный онлайн, можно вернуть в течение 14 дней с покупки. Позже сумма не возвращается и не обменивается на наличные. Срок действия не продлевается. Если суммы сертификата не хватает на процедуру, разницу нужно доплатить на месте.", badLoginEmail:"Неверный email или пароль", s_unpaid:"Ждёт оплаты", unpaidNote:"Заказан онлайн, но ещё не оплачен. Когда клиент заплатит, отметьте сертификат оплаченным — тогда им можно будет пользоваться.", markPaid:"Отметить оплаченным", paidQ:"Подтвердить, что за {c} получено {a}?", paidDone:"Сертификат оплачен и действует", notMaster:"У этого аккаунта нет прав мастера", order:"Заказать", liveNote:"Сертификат начнёт действовать, когда мастер подтвердит оплату. Мы свяжемся с вами по email насчёт оплаты. Неоплаченный заказ отменяется через 7 дней.", doneLive:"Заказ принят! Код сертификата: {code}. Сертификат начнёт действовать после подтверждения оплаты — напишем на {email}.", s_void:"Аннулирован", extend:"+3 мес.", extended:"Продлён до {d}", voidB:"Аннулировать", voidQ:"Аннулировать сертификат {c}? Им больше нельзя будет расплатиться.", voided:"Сертификат аннулирован", restore:"Восстановить", restored:"Сертификат восстановлен",
     newT:"Новый сертификат", newD:"Сертификат, проданный в салоне (наличными или картой). Он появится в списке и получит код и QR.", vtype:"Тип", byAmount:"Сумма", byService:"Процедура",
     payM:"Оплата", payCash:"Наличными", payCard:"Картой в салоне", payOnline:"Онлайн", payGift:"Подарок / акция", create:"Создать сертификат", created:"Создан {c}", buyerOpt:"Email покупателя (необязательно)", srcSalon:"В салоне", srcOnline:"Онлайн", source:"Источник",
     perDay:"{n} шт. · {s}", vouchersN:"шт."
@@ -1033,6 +1068,10 @@ const store = {
     if (this.mode === 'server') return this.api('PATCH', `api/master/vouchers/${code}`, patch);
     return this.mutate(code, v => Object.assign(v, patch));
   },
+  async staff(action, args){ // kp_staff_list / add / remove, kp_change_password
+    if (this.mode !== 'supa') throw 'demoOnly';
+    return this.rpc(action, { p_token: this.token, ...args });
+  },
   async resend(code, kind){
     if (this.mode === 'supa') return this.rpc('kp_mail_resend', { p_token: this.token, p_code: code, p_kind: kind });
     return this.mutate(code, v => { if (v.mail) delete v.mail[kind]; });
@@ -1163,6 +1202,16 @@ function renderStatic(){
 /* ---- occasions, delivery, mobile bar, balance check, FAQ ---- */
 function renderOcc(){
   $('#occ').innerHTML = t('occ').map((o, i) => `<button type="button" data-occ="${i}" aria-pressed="${state.occ === i}">${o[0]} ${esc(o[1])}</button>`).join('');
+}
+function renderWorks(){
+  let d; try { d = JSON.parse($('#works-data').textContent); } catch { d = {}; }
+  const photos = d.photos || [], reviews = d.reviews || [];
+  $('#works').hidden = !photos.length && !reviews.length;
+  $('#worksGrid').innerHTML = photos.map(p => `<figure><img src="${esc(p.src)}" alt="${esc(p.alt || '')}" loading="lazy" decoding="async" width="600" height="750"></figure>`).join('');
+  $('#worksGrid').hidden = !photos.length;
+  $('#reviews').innerHTML = reviews.map(r => `<blockquote class="review"><div class="stars" aria-label="${+r.stars || 5}/5">${'★'.repeat(Math.max(1, Math.min(5, +r.stars || 5)))}</div>
+    <p>“${esc(r.text)}”</p><div class="by mono">${esc(r.name || '')}${r.source ? ' · ' + esc(r.source) : ''}</div></blockquote>`).join('');
+  $('#reviews').hidden = !reviews.length;
 }
 function renderFaq(){
   $('#faqList').innerHTML = t('faq').map(([q, a]) => `<details><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join('');
@@ -1513,6 +1562,48 @@ function mailSection(v){
   return `<div class="d-sec"><h3>${t('mailT')}</h3><div class="mailst">${rows.map(([k, e]) => `<div><span><span class="mono muted" style="font-size:10px">${t('m_' + k)}</span><br>${esc(e)} · <span class="muted">${esc(mailLine(v, k))}</span></span>
     ${canSend(k) ? `<button class="btn small" data-resend="${k}" data-e="${esc(e)}">${t(k === 'recipient' && !v.mail?.recipient ? 'sendNow' : 'resend')}</button>` : ''}</div>`).join('')}</div></div>`;
 }
+async function renderSettings(){
+  state.openCode = null; $('#drawerWrap').hidden = false;
+  let staff = [];
+  try { staff = await store.staff('kp_staff_list', {}); } catch {}
+  const errText = x => { const k = { bad_password:'pwBad', short_password:'pwShort', email_taken:'emailTaken', bad_email:'errEmail', bad_name:'badName', demoOnly:'demoOnly' }[x]; return k ? t(k) : String(x); };
+  $('#drawer').innerHTML = `
+    <div class="d-top"><span class="mono muted">${t('settings')}</span><button class="d-x" id="dClose" aria-label="${esc(t('close'))}">✕</button></div>
+    <h2 class="sec-title" style="margin:0 0 18px"><span class="big" style="font-size:44px">${t('settings')}</span></h2>
+    <div class="d-sec" style="border-top:0;padding-top:0"><h3>${t('pwT')}</h3>
+      <form id="pwForm">
+        <div class="field"><label class="mono" for="pwOld">${t('pwOld')}</label><input id="pwOld" type="password" autocomplete="current-password" required></div>
+        <div class="field"><label class="mono" for="pwNew">${t('pwNew')}</label><input id="pwNew" type="password" autocomplete="new-password" minlength="8" required></div>
+        <div class="field"><label class="mono" for="pwNew2">${t('pwNew2')}</label><input id="pwNew2" type="password" autocomplete="new-password" minlength="8" required></div>
+        <button class="btn pink" type="submit">${t('pwSave')}</button><p class="err" id="pwErr" hidden></p>
+      </form></div>
+    <div class="d-sec"><h3>${t('staffT')}</h3>
+      <ul class="hist">${staff.map(m => `<li><div><div>${esc(m.name)}${m.me ? ` <span class="muted">(${t('staffMe')})</span>` : ''}</div><div class="mono muted" style="font-size:10px">${esc(m.email)}</div></div>
+        ${m.me ? '' : `<button class="undo" data-rm="${esc(m.id)}" data-n="${esc(m.name)}">${t('staffRemoveB')}</button>`}</li>`).join('')}</ul>
+      <h3 style="margin-top:22px">${t('staffAddT')}</h3>
+      <form id="staffForm">
+        <div class="field"><label class="mono" for="sName">${t('staffName')}</label><input id="sName" maxlength="60" required></div>
+        <div class="field"><label class="mono" for="sEmail">${t('staffEmail')}</label><input id="sEmail" type="email" autocomplete="off" required></div>
+        <div class="field"><label class="mono" for="sPass">${t('staffPass')}</label><input id="sPass" type="text" autocomplete="off" minlength="8" required></div>
+        <button class="btn" type="submit">${t('staffAddB')}</button><p class="err" id="sErr" hidden></p>
+      </form></div>`;
+  $('#dClose').onclick = () => closeDrawer();
+  $('#pwForm').onsubmit = async e => {
+    e.preventDefault(); const er = $('#pwErr'); er.hidden = true;
+    if ($('#pwNew').value !== $('#pwNew2').value) { er.textContent = t('pwMismatch'); er.hidden = false; return; }
+    try { await store.staff('kp_change_password', { p_old: $('#pwOld').value, p_new: $('#pwNew').value }); e.target.reset(); toast(t('pwDone')); }
+    catch (x) { er.textContent = errText(x); er.hidden = false; }
+  };
+  $('#staffForm').onsubmit = async e => {
+    e.preventDefault(); const er = $('#sErr'); er.hidden = true;
+    try { await store.staff('kp_staff_add', { p_name: $('#sName').value.trim(), p_email: $('#sEmail').value.trim().toLowerCase(), p_password: $('#sPass').value }); toast(t('staffAdded')); renderSettings(); }
+    catch (x) { er.textContent = errText(x); er.hidden = false; }
+  };
+  $('#drawer').querySelectorAll('[data-rm]').forEach(b => b.onclick = async () => {
+    if (!(await ask(t('staffRemoveQ').replace('{n}', b.dataset.n), t('staffRemoveB')))) return;
+    try { await store.staff('kp_staff_remove', { p_id: b.dataset.rm }); toast(t('staffRemoved')); renderSettings(); } catch (x) { toast(errText(x)); }
+  });
+}
 function renderNewDrawer(){
   state.openCode = null; $('#drawerWrap').hidden = false;
   const svcs = allServices();
@@ -1638,7 +1729,7 @@ async function scanPhoto(file){
 }
 
 /* ================= events ================= */
-function renderAll(){ applyI18n(); renderOcc(); renderFaq(); renderTabs(); renderServices(); renderAmounts(); renderPreview(); renderStatic(); renderMbar(); if (isAdminRoute() && state.me) renderSortOpts(); if (isAdminRoute() && state.me !== undefined) renderAdmin(); if (state.openCode) refreshDrawer(); }
+function renderAll(){ applyI18n(); renderOcc(); renderFaq(); renderWorks(); renderTabs(); renderServices(); renderAmounts(); renderPreview(); renderStatic(); renderMbar(); if (isAdminRoute() && state.me) renderSortOpts(); if (isAdminRoute() && state.me !== undefined) renderAdmin(); if (state.openCode) refreshDrawer(); }
 
 document.addEventListener('click', e => {
   if (e.target.closest('#giftCta')) { e.preventDefault(); state.giftOpen = true; state.service = null; renderTabs(); renderPreview(); renderMbar(); $('#gift').scrollIntoView({ behavior:'smooth' }); return; }
@@ -1685,6 +1776,7 @@ $('#csvBtn').onclick = exportCsv;
 $('#aSort').onchange = e => { state.aSort = e.target.value; renderList(); };
 $('#scanClose').onclick = stopScan;
 $('#photoIn').onchange = e => { const f = e.target.files[0]; e.target.value = ''; if (f) scanPhoto(f); };
+$('#setBtn').onclick = () => renderSettings();
 $('#logoutBtn').onclick = async () => { await store.logout(); state.me = null; state.vouchers = []; closeDrawer(); renderAdmin(); };
 $('#loginForm').onsubmit = async e => {
   e.preventDefault();

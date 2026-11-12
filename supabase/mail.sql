@@ -96,13 +96,13 @@ begin
 end $$;
 
 -- Poke the mailer over HTTP (async, pg_net).
-create or replace function kuponai.mail_kick() returns void language plpgsql volatile security definer set search_path = '' as $$
+create or replace function kuponai.mail_kick(p_body jsonb default '{}'::jsonb) returns void language plpgsql volatile security definer set search_path = '' as $$
 declare k text;
 begin
   select decrypted_secret into k from vault.decrypted_secrets where name = 'mailer_key';
   if k is null then return; end if;
   perform net.http_post(url := 'https://hermojruniqfvxksunrj.supabase.co/functions/v1/mailer',
-    headers := jsonb_build_object('content-type', 'application/json', 'x-mailer-key', k), body := '{}'::jsonb, timeout_milliseconds := 20000);
+    headers := jsonb_build_object('content-type', 'application/json', 'x-mailer-key', k), body := p_body, timeout_milliseconds := 20000);
 end $$;
 
 create or replace function kuponai.mail_trigger() returns trigger language plpgsql security definer set search_path = '' as $$
@@ -120,7 +120,7 @@ end $$;
 select cron.unschedule(jobid) from cron.job where jobname = 'kuponai-mail';
 select cron.schedule('kuponai-mail', '*/15 * * * *', 'select kuponai.mail_cron()');
 
--- Remember the buyer's language for emails.
+-- Remember the buyer's language for emails; desk sales keep the service name as the title.
 create or replace function public.kp_create(p jsonb, p_token text default null) returns jsonb language plpgsql security definer set search_path = '' as $$
 declare m text := kuponai.me(p_token); amt numeric; months int; d jsonb; c text; dl jsonb := null;
 begin
@@ -140,7 +140,9 @@ begin
     exit when not exists (select 1 from kuponai.vouchers where code = c);
   end loop;
   d := jsonb_build_object(
-    'id', gen_random_uuid(), 'code', c, 'title', 'Dovanų kuponas', 'amount', amt, 'serviceId', null,
+    'id', gen_random_uuid(), 'code', c,
+    'title', case when m is not null and nullif(trim(p->>'title'), '') is not null then left(trim(p->>'title'), 120) else 'Dovanų kuponas' end,
+    'amount', amt, 'serviceId', case when m is not null then left(p->>'serviceId', 60) end,
     'recipient', kuponai.clean_text(p->'recipient', 80), 'from', kuponai.clean_text(p->'from', 80),
     'message', kuponai.clean_text(p->'message', 300),
     'design', case when p->>'design' in ('noir','blush','bone','mocha') then p->>'design' else 'noir' end,
@@ -158,7 +160,7 @@ begin
   return kuponai.for_master(d);
 end $$;
 
-revoke all on function kuponai.mail_due(jsonb, text), kuponai.email_ok(text), kuponai.mail_jobs(jsonb), kuponai.mail_kick(),
+revoke all on function kuponai.mail_due(jsonb, text), kuponai.email_ok(text), kuponai.mail_jobs(jsonb), kuponai.mail_kick(jsonb),
   kuponai.mail_trigger(), kuponai.mail_cron() from public, anon, authenticated;
 revoke all on function public.kp_mail_claim(int), public.kp_mail_done(text, text, boolean, text), public.kp_mail_resend(text, text, text) from public, anon, authenticated;
 grant execute on function public.kp_mail_claim(int), public.kp_mail_done(text, text, boolean, text) to service_role;
