@@ -1,0 +1,117 @@
+// Sends voucher emails. Called by the database (trigger + pg_cron, see supabase/mail.sql) with header x-mailer-key.
+// Deploy with JWT verification OFF (it checks MAILER_KEY itself).
+//
+// Secrets (Supabase → Edge Functions → Secrets):
+//   MAILER_KEY      same random value as vault secret "mailer_key"
+//   NOTIFY_EMAIL    where "new order" notes go (the salon)
+//   one provider:
+//     Gmail / any SMTP:  SMTP_USER, SMTP_PASS (Google app password), optional SMTP_HOST (smtp.gmail.com), SMTP_PORT (465)
+//     Brevo:             BREVO_API_KEY
+//     Resend:            RESEND_API_KEY
+//   MAIL_FROM       sender address (default SMTP_USER); shown as "Blakstės studija <MAIL_FROM>"
+//   optional: SITE_URL, SALON_CONTACT (phone/address line for the email footer), MAIL_PROVIDER (smtp|brevo|resend)
+import nodemailer from 'nodemailer';
+import { buildMail, voucherPdf, type Ctx, type Voucher } from './render.ts';
+import { fonts } from './fonts.ts';
+
+const env = (k: string, d = '') => Deno.env.get(k) || d;
+const ctx: Ctx = {
+  site: env('SITE_URL', 'https://blakstes-kuponai.vercel.app').replace(/\/$/, ''),
+  salon: 'Blakstės studija', master: 'Meistrė Viktorija',
+  booking: 'https://book.treatwell.lt/salonas/397163/meniu', instagram: 'https://www.instagram.com/grin_lashes/',
+  contact: env('SALON_CONTACT'),
+};
+
+function provider() {
+  const p = env('MAIL_PROVIDER');
+  if (p) return p;
+  if (env('SMTP_PASS')) return 'smtp';
+  if (env('BREVO_API_KEY')) return 'brevo';
+  if (env('RESEND_API_KEY')) return 'resend';
+  return '';
+}
+
+async function rpc(fn: string, args: Record<string, unknown>) {
+  const key = env('SUPABASE_SERVICE_ROLE_KEY');
+  const r = await fetch(`${env('SUPABASE_URL')}/rest/v1/rpc/${fn}`, {
+    method: 'POST', headers: { apikey: key, authorization: `Bearer ${key}`, 'content-type': 'application/json' }, body: JSON.stringify(args),
+  });
+  if (!r.ok) throw new Error(`${fn}: ${r.status} ${await r.text()}`);
+  const t = await r.text();
+  return t ? JSON.parse(t) : null;
+}
+
+type Out = { to: string; subject: string; html: string; text: string; pdf?: { name: string; data: Uint8Array } };
+const b64 = (u: Uint8Array) => { let s = ''; for (let i = 0; i < u.length; i += 0x8000) s += String.fromCharCode(...u.subarray(i, i + 0x8000)); return btoa(s); };
+
+let smtp: ReturnType<typeof nodemailer.createTransport> | null = null;
+async function send(m: Out) {
+  const fromAddr = env('MAIL_FROM', env('SMTP_USER'));
+  const fromName = ctx.salon, replyTo = env('NOTIFY_EMAIL') || fromAddr;
+  const p = provider();
+  if (p === 'smtp') {
+    smtp ??= nodemailer.createTransport({
+      host: env('SMTP_HOST', 'smtp.gmail.com'), port: Number(env('SMTP_PORT', '465')), secure: env('SMTP_PORT', '465') === '465',
+      auth: { user: env('SMTP_USER'), pass: env('SMTP_PASS') },
+    });
+    await smtp.sendMail({ from: { name: fromName, address: fromAddr }, to: m.to, replyTo, subject: m.subject, html: m.html, text: m.text,
+      attachments: m.pdf ? [{ filename: m.pdf.name, content: b64(m.pdf.data), encoding: 'base64', contentType: 'application/pdf' }] : [] });
+    return;
+  }
+  if (p === 'brevo') {
+    const r = await fetch('https://api.brevo.com/v3/smtp/email', {
+      method: 'POST', headers: { 'api-key': env('BREVO_API_KEY'), 'content-type': 'application/json', accept: 'application/json' },
+      body: JSON.stringify({ sender: { name: fromName, email: fromAddr }, to: [{ email: m.to }], replyTo: { email: replyTo }, subject: m.subject,
+        htmlContent: m.html, textContent: m.text, attachment: m.pdf ? [{ name: m.pdf.name, content: b64(m.pdf.data) }] : undefined }),
+    });
+    if (!r.ok) throw new Error(`brevo ${r.status} ${await r.text()}`);
+    return;
+  }
+  if (p === 'resend') {
+    const r = await fetch('https://api.resend.com/emails', {
+      method: 'POST', headers: { authorization: `Bearer ${env('RESEND_API_KEY')}`, 'content-type': 'application/json' },
+      body: JSON.stringify({ from: `${fromName} <${fromAddr}>`, to: [m.to], reply_to: replyTo, subject: m.subject, html: m.html, text: m.text,
+        attachments: m.pdf ? [{ filename: m.pdf.name, content: b64(m.pdf.data) }] : undefined }),
+    });
+    if (!r.ok) throw new Error(`resend ${r.status} ${await r.text()}`);
+    return;
+  }
+  throw new Error('no_provider');
+}
+
+async function run() {
+  const jobs: { kind: string; to: string | null; voucher: Voucher }[] = (await rpc('kp_mail_claim', { p_limit: 20 })) || [];
+  const res: { code: string; kind: string; ok: boolean; err?: string }[] = [];
+  for (const j of jobs) {
+    const v = j.voucher;
+    try {
+      const to = j.kind === 'staff' ? env('NOTIFY_EMAIL') : j.to;
+      if (!to) { await rpc('kp_mail_done', { p_code: v.code, p_kind: j.kind, p_ok: true, p_err: 'no_address' }); res.push({ code: v.code, kind: j.kind, ok: true, err: 'skipped' }); continue; }
+      const m = buildMail(j.kind, v, ctx);
+      const pdf = m.attach ? { name: `${v.code}.pdf`, data: await voucherPdf(v, fonts, ctx) } : undefined;
+      await send({ to, subject: m.subject, html: m.html, text: m.text, pdf });
+      await rpc('kp_mail_done', { p_code: v.code, p_kind: j.kind, p_ok: true });
+      res.push({ code: v.code, kind: j.kind, ok: true });
+    } catch (e) {
+      const err = String((e as Error)?.message || e).slice(0, 300);
+      console.error('mail', v.code, j.kind, err);
+      await rpc('kp_mail_done', { p_code: v.code, p_kind: j.kind, p_ok: false, p_err: err }).catch((x) => console.error(x));
+      res.push({ code: v.code, kind: j.kind, ok: false, err });
+    }
+  }
+  return res;
+}
+
+let busy: Promise<unknown> | null = null;
+Deno.serve(async (req) => {
+  const key = env('MAILER_KEY');
+  if (!key || req.headers.get('x-mailer-key') !== key) return new Response('forbidden', { status: 403 });
+  // Not configured yet: leave the jobs waiting so nothing is lost.
+  if (!provider()) return Response.json({ skipped: 'no_provider' });
+  // Preview a PDF without sending: POST {"preview": {...voucher}}
+  const body = await req.json().catch(() => ({}));
+  if (body?.preview) return new Response(await voucherPdf(body.preview, fonts, ctx), { headers: { 'content-type': 'application/pdf' } });
+  if (busy) await busy.catch(() => {});
+  const p = run(); busy = p;
+  try { return Response.json({ sent: await p }); } catch (e) { console.error(e); return Response.json({ error: String(e) }, { status: 500 }); } finally { if (busy === p) busy = null; }
+});
