@@ -220,7 +220,7 @@ export function buildMail(kind: string, v: Voucher, ctx: Ctx): Mail {
       ['Pristatymas', v.delivery?.mode === 'recipient' ? `gavėjui ${v.delivery.email || ''}${v.delivery.date ? ', ' + fmtDate(v.delivery.date, 'lt') : ''}` : 'pirkėjui'],
       ['Būsena', v.status === 'unpaid' ? 'laukia apmokėjimo' : 'apmokėtas']];
     paras = [rows.map(([k, val]) => `${esc(k)}: <b>${esc(val)}</b>`).join('<br>'),
-      v.status === 'unpaid' ? 'Kai klientas sumokės, atidarykite kuponą administravime ir paspauskite „Pažymėti apmokėtu“. Tada kuponas automatiškai išsiųs pirkėjui.' : ''].filter(Boolean);
+      v.status === 'unpaid' ? 'Kai klientas sumokės, atidarykite kuponą administravime ir paspauskite „Pažymėti apmokėtu“. Tada kuponas bus automatiškai išsiųstas pirkėjui.' : ''].filter(Boolean);
     cta = { href: `${ctx.site}/#admin/${v.code}`, label: 'Atidaryti administravime' };
     attach = false; footer = 'Šis laiškas išsiųstas automatiškai iš kuponų svetainės.';
     const h = layout(ctx, 'lt', heading, paras, null, cta, footer);

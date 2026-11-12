@@ -1,7 +1,7 @@
-# Rebuilds supabase/functions/mailer/fonts.ts (fonts for the voucher PDF).
+# Rebuilds public/fonts/pdf/*.ttf (fonts for the voucher PDF; the mailer fetches them at runtime).
 # Needs: pip install fonttools brotli; Liberation fonts (apt install fonts-liberation).
 # Run from the repo root: python3 scripts/pdf-fonts.py
-import base64, io
+import io
 from fontTools.ttLib import TTFont
 from fontTools.varLib import instancer
 from fontTools import merge, subset
@@ -36,9 +36,8 @@ fonts = {
     'mono': ttf(['SpaceMono-latin-e04b1d.woff2', 'SpaceMono-latin-ext-3c18ea.woff2']),
     'serifFallback': fallback(),
 }
-out = ["// Fonts for the voucher PDF (base64 TTF). Bodoni Moda, Anton, Space Mono: the site's own fonts (SIL OFL).",
-       '// Liberation Serif Italic (SIL OFL) is the fallback for Cyrillic text. Regenerate with scripts/pdf-fonts.py.',
-       'const b64 = (s: string) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0));', 'export const fonts = {']
-out += [f"  {k}: b64('{base64.b64encode(v).decode()}')," for k, v in fonts.items()]
-out.append('};')
-open('supabase/functions/mailer/fonts.ts', 'w').write('\n'.join(out) + '\n')
+import os
+os.makedirs('public/fonts/pdf', exist_ok=True)
+names = {'anton': 'anton.ttf', 'bodoni': 'bodoni.ttf', 'bodoniItalic': 'bodoni-italic.ttf', 'mono': 'spacemono.ttf', 'serifFallback': 'serif-fallback-italic.ttf'}
+for k, v in fonts.items():
+    open('public/fonts/pdf/' + names[k], 'wb').write(v)

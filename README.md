@@ -42,12 +42,11 @@ update kuponai.staff set pw_hash = extensions.crypt('НОВЫЙ', extensions.gen
 Пока не задан почтовый провайдер, функция ничего не отправляет и письма ждут.
 
 Настройка (один раз):
-1. Применить `supabase/mail.sql`.
-2. Секрет `mailer_key`: `select vault.create_secret('<случайная строка>', 'mailer_key');` и та же строка как секрет функции `MAILER_KEY`.
-3. Задеплоить функцию `mailer` с выключенной проверкой JWT.
-4. Секреты функции: `NOTIFY_EMAIL` и один провайдер: Gmail (`SMTP_USER`, `SMTP_PASS` = пароль приложения Google), Brevo (`BREVO_API_KEY`, `MAIL_FROM`) или Resend (`RESEND_API_KEY`, `MAIL_FROM`). Необязательно: `SALON_CONTACT` (телефон/адрес в подвале письма).
+1. Применить `supabase/mail.sql`, затем `supabase/extras.sql` (ключ `mailer_key` в Vault создаётся сам).
+2. Задеплоить функцию `mailer` с выключенной проверкой JWT.
+3. Секреты функции: `NOTIFY_EMAIL` и один провайдер: Gmail (`SMTP_USER`, `SMTP_PASS` = пароль приложения Google), Brevo (`BREVO_API_KEY`, `MAIL_FROM`) или Resend (`RESEND_API_KEY`, `MAIL_FROM`). Необязательно: `SALON_CONTACT` (телефон/адрес в подвале письма).
 
-Шрифты PDF лежат в `supabase/functions/mailer/fonts.ts`, пересобрать: `python3 scripts/pdf-fonts.py`.
+Шрифты PDF лежат в `public/fonts/pdf/` (функция скачивает их при запуске), пересобрать: `python3 scripts/pdf-fonts.py`.
 
 ## Автоотмена, бэкап, мастера (`supabase/extras.sql`, после `mail.sql`)
 

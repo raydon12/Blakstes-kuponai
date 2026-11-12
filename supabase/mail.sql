@@ -2,10 +2,21 @@
 -- and a reminder 30 days before the voucher expires. The Edge Function "mailer" sends them.
 -- State lives in doc->'mail'->{staff|buyer|recipient|reminder} = {state: sending|sent|failed, at, tries, err}.
 -- A trigger pokes the mailer when a voucher has something to send; pg_cron pokes it every 15 minutes for dated jobs.
--- One-time setup (not in this file, holds secrets):
---   select vault.create_secret('<random key>', 'mailer_key');  and the same value as Edge Function secret MAILER_KEY.
+-- The mailer accepts calls only with header x-mailer-key = vault secret "mailer_key" (created below, random).
 create extension if not exists pg_net;
 create extension if not exists pg_cron;
+
+do $$ begin
+  if not exists (select 1 from vault.secrets where name = 'mailer_key') then
+    perform vault.create_secret(encode(extensions.gen_random_bytes(32), 'hex'), 'mailer_key', 'Shared key between the database and the mailer Edge Function');
+  end if;
+end $$;
+-- The mailer (service role) reads the key to check incoming calls.
+create or replace function public.kp_mailer_key() returns text language sql stable security definer set search_path = '' as $$
+  select decrypted_secret from vault.decrypted_secrets where name = 'mailer_key'
+$$;
+revoke all on function public.kp_mailer_key() from public, anon, authenticated;
+grant execute on function public.kp_mailer_key() to service_role;
 
 create or replace function kuponai.mail_due(d jsonb, k text) returns boolean language sql stable set search_path = '' as $$
   select case
