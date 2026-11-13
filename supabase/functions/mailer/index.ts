@@ -73,18 +73,27 @@ async function keyOk(h: string | null) {
   return !!mailerKey && h.length === mailerKey.length && h === mailerKey;
 }
 
-let smtp: ReturnType<typeof nodemailer.createTransport> | null = null;
+// Cached per credentials, so a changed secret takes effect without waiting for a cold start.
+let smtp: { key: string; t: ReturnType<typeof nodemailer.createTransport> } | null = null;
 async function send(m: Out) {
-  const fromAddr = env('MAIL_FROM', env('SMTP_USER'));
+  const fromAddr = env('MAIL_FROM', env('SMTP_USER')).trim();
   const fromName = ctx.salon, replyTo = env('NOTIFY_EMAIL') || fromAddr;
   const p = provider();
   if (p === 'smtp') {
-    smtp ??= nodemailer.createTransport({
+    // Google shows app passwords in groups of four; spaces pasted with them are dropped.
+    const user = env('SMTP_USER').trim(), pass = env('SMTP_PASS').replace(/\s+/g, ''), key = `${user}:${pass}`;
+    if (smtp?.key !== key) smtp = { key, t: nodemailer.createTransport({
       host: env('SMTP_HOST', 'smtp.gmail.com'), port: Number(env('SMTP_PORT', '465')), secure: env('SMTP_PORT', '465') === '465',
-      auth: { user: env('SMTP_USER'), pass: env('SMTP_PASS') },
-    });
-    await smtp.sendMail({ from: { name: fromName, address: fromAddr }, to: m.to, replyTo, subject: m.subject, html: m.html, text: m.text,
-      attachments: (m.files || []).map((f) => ({ filename: f.name, content: b64(f.data), encoding: 'base64', contentType: f.type })) });
+      auth: { user, pass },
+    }) };
+    try {
+      await smtp.t.sendMail({ from: { name: fromName, address: fromAddr }, to: m.to, replyTo, subject: m.subject, html: m.html, text: m.text,
+        attachments: (m.files || []).map((f) => ({ filename: f.name, content: b64(f.data), encoding: 'base64', contentType: f.type })) });
+    } catch (e) {
+      // Says which login was tried and how long the password is (never the password), so a bad secret is easy to spot.
+      if (/535|Invalid login/i.test(String(e))) throw new Error(`${String((e as Error)?.message || e).split('\n')[0]} [user=${user}, password length ${pass.length}]`);
+      throw e;
+    }
     return;
   }
   if (p === 'brevo') {
