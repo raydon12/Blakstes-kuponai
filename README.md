@@ -54,9 +54,16 @@ update kuponai.staff set pw_hash = extensions.crypt('НОВЫЙ', extensions.gen
 - По понедельникам `mailer` отправляет на `BACKUP_EMAIL` (или `NOTIFY_EMAIL`) все купоны: CSV для Excel и полный JSON.
 - В админке кнопка «Nustatymai»: смена своего пароля (другие устройства разлогиниваются), список мастеров, добавить или удалить мастера. SQL для этого больше не нужен.
 
-## Фото работ и отзывы
+## Галерея и цены (правятся в админке)
 
-Блок «Darbai ir atsiliepimai» на главной берёт данные из `<script id="works-data">` в `public/index.html`. Фото кладите в `public/works/` (JPG/WebP ~1200 px). Пока списки пустые, блок скрыт.
+В админке кнопки «Kainos» и «Galerija».
+
+- **Kainos**: категории и услуги (название, цена, «nuo», порядок, удалить/добавить). Изменения видны на сайте после «Išsaugoti».
+- **Galerija**: загрузка фото (с телефона можно сразу несколько), порядок стрелками, удаление. Фото уменьшаются в браузере до 1600 px (JPEG) и хранятся в Supabase Storage, в публичном бакете `works`. Сохраняется сразу.
+
+Данные лежат в таблице `kuponai.site_content` (ключи `menu` и `works`), SQL: `supabase/content.sql` (запускать после `schema.sql`, можно повторно).
+Загрузить фото может только вошедший мастер: `kp_photo_ticket` выдаёт случайное имя файла на 1 час, политика Storage пропускает только его.
+Пока в базе нет своих данных, сайт показывает встроенные `<script id="menu-data">` и `<script id="works-data">` из `public/index.html`.
 
 ## Правила и конфиденциальность
 
@@ -70,7 +77,7 @@ update kuponai.staff set pw_hash = extensions.crypt('НОВЫЙ', extensions.gen
 
 ## Прайс
 
-Услуги задаются в `public/index.html` в блоке `<script id="menu-data">` (формат: `categories[].services[]` с полями `id, name, price, priceFrom, durationMin, description, bookingUrl`). Кнопка «Registruotis» ведёт на Treatwell.
+Правится в админке (см. «Галерея и цены»). Встроенный запасной вариант: `<script id="menu-data">` в `public/index.html` (`categories[].services[]`: `id, name, price, priceFrom, description`). Кнопка «Registruotis» ведёт на Treatwell.
 
 ## Локальный запуск без Supabase
 

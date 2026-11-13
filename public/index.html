@@ -421,6 +421,30 @@ dialog::backdrop{background:rgba(10,9,9,.7);backdrop-filter:blur(4px)}
 .seg{display:inline-flex;border:1px solid var(--line-dark);border-radius:999px;padding:3px;margin-bottom:16px}
 .seg button{border:0;background:none;border-radius:999px;padding:8px 14px;cursor:pointer;font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--mist)}
 .seg button[aria-pressed="true"]{background:var(--on-dark);color:var(--ink)}
+.g-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px;margin-top:16px}
+.g-grid figure{margin:0;position:relative;border-radius:10px;overflow:hidden;aspect-ratio:4/5;background:var(--ink-3)}
+.g-grid img{width:100%;height:100%;object-fit:cover;display:block}
+.g-grid .g-n{position:absolute;top:6px;left:6px;background:rgba(8,7,7,.7);color:var(--on-dark);border-radius:999px;font:10px var(--mono);padding:3px 7px}
+.g-acts{position:absolute;left:0;right:0;bottom:0;display:flex;justify-content:space-between;gap:4px;padding:6px;background:linear-gradient(transparent,rgba(8,7,7,.85))}
+.g-acts button,.pe-ic{border:1px solid var(--line-dark);background:rgba(8,7,7,.6);color:var(--on-dark);border-radius:999px;width:32px;height:32px;cursor:pointer;font-size:14px;line-height:1;flex:none}
+.g-acts button:hover,.pe-ic:hover{border-color:var(--on-dark)}
+.g-acts button:disabled,.pe-ic:disabled{opacity:.3;cursor:default}
+.g-acts .del:hover,.pe-ic.del:hover{border-color:var(--bad);color:var(--bad)}
+.up-btn{position:relative;overflow:hidden}
+.up-btn input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.pe-cat{border:1px solid var(--line-dark);border-radius:12px;padding:14px;margin-bottom:14px}
+.pe-row{display:flex;gap:6px;align-items:center}
+.pe-row input[type=text],.pe-row input[type=number],.pe-desc{flex:1;min-width:0;background:var(--ink-3);color:var(--on-dark);border:1px solid var(--line-dark);border-radius:8px;padding:9px 10px;font:15px var(--sans)}
+.pe-row input:focus,.pe-desc:focus{outline:none;border-color:var(--blush)}
+.pe-row input.pe-cn{font-family:var(--serif);font-size:18px}
+.pe-desc{width:100%;box-sizing:border-box;margin-top:8px;font-size:13px}
+.pe-svcs{margin:12px 0 8px;display:flex;flex-direction:column;gap:8px}
+.pe-svc input[type=number]{flex:0 0 76px;text-align:right}
+.pe-from{display:flex;align-items:center;gap:4px;font:10px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--mist);flex:none;cursor:pointer}
+.pe-eur{color:var(--mist);flex:none}
+.pe-bad{border-color:var(--bad)!important}
+.pe-foot{position:sticky;bottom:-40px;margin:18px -26px -40px;padding:14px 26px 22px;background:var(--ink-2);border-top:1px solid var(--line-dark);display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+@media (max-width:520px){.pe-svc{flex-wrap:wrap}.pe-svc input[type=text]{flex-basis:100%}.pe-svc input[type=number]{flex:1}}
 .drawer select{background:var(--ink-3);color:var(--on-dark);border:1px solid var(--line-dark);border-radius:8px;padding:10px;font-size:15px;width:100%}
 
 @media (max-width:960px){
@@ -692,6 +716,8 @@ dialog::backdrop{background:rgba(10,9,9,.7);backdrop-filter:blur(4px)}
         <input class="a-search" id="aSearch" type="search" data-i18n-ph="aSearch" placeholder="Ieškoti: kodas, vardas, el. paštas…">
         <button class="btn pink" id="scanOpen"><span data-i18n="scan">Skenuoti QR</span></button>
         <button class="btn" id="newBtn"><span data-i18n="newV">+ Naujas kuponas</span></button>
+        <button class="btn" id="pricesBtn"><span data-i18n="prB">Kainos</span></button>
+        <button class="btn" id="galBtn"><span data-i18n="galB">Galerija</span></button>
       </div>
       <div class="a-tools" style="justify-content:space-between">
         <div class="a-filters" id="aFilters"></div>
@@ -903,6 +929,22 @@ const I18N = {
 };
 const AMOUNTS = [40, 50, 75, 100, 150];
 I18N.lt.badCode = 'Kodas turi būti GIFT-XXXX-XXXX'; I18N.ru.badCode = 'Код должен быть вида GIFT-XXXX-XXXX';
+Object.assign(I18N.lt, { prB:'Kainos', galB:'Galerija', saved:'Išsaugota', saving:'Saugoma…',
+  galT:'Galerija', galNote:'Nuotraukos rodomos pagrindiniame puslapyje, bloke „Darbai“. Pakeitimai išsaugomi iš karto.', galUp:'+ Įkelti nuotraukas',
+  galUploading:'Įkeliama {i} iš {n}…', galEmpty:'Nuotraukų dar nėra. Kol galerija tuščia, blokas svetainėje nerodomas.', galDelQ:'Ištrinti šią nuotrauką iš galerijos?', galDel:'Ištrinti',
+  galLeft:'Į kairę', galRight:'Į dešinę', galAdded:'Pridėta nuotraukų: {n}', badImage:'Nepavyko atidaryti failo {f}. Tinka JPG, PNG, WebP.', upErr:'Nepavyko įkelti nuotraukos',
+  prT:'Kainos', prNote:'Kainoraštis pagrindiniame puslapyje. Pakeitimai matomi po „Išsaugoti“.', prCat:'Kategorija', prDesc:'Aprašymas (nebūtina)', prSvc:'Paslauga',
+  prFrom:'nuo', prAddSvc:'+ Paslauga', prAddCat:'+ Kategorija', prSave:'Išsaugoti', prDelCatQ:'Ištrinti kategoriją „{n}“ su visomis paslaugomis?',
+  prUnsaved:'Pakeitimai neišsaugoti. Uždaryti neišsaugojus?', prDiscard:'Uždaryti', prBad:'Užpildykite pavadinimus ir kainas (pažymėta raudonai)',
+  prUp:'Aukštyn', prDown:'Žemyn', prDel:'Ištrinti', prNewCat:'Nauja kategorija' });
+Object.assign(I18N.ru, { prB:'Цены', galB:'Галерея', saved:'Сохранено', saving:'Сохраняю…',
+  galT:'Галерея', galNote:'Фото показываются на главной странице, в блоке «Работы». Изменения сохраняются сразу.', galUp:'+ Загрузить фото',
+  galUploading:'Загружаю {i} из {n}…', galEmpty:'Фото пока нет. Пока галерея пустая, блок на сайте не показывается.', galDelQ:'Удалить это фото из галереи?', galDel:'Удалить',
+  galLeft:'Влево', galRight:'Вправо', galAdded:'Добавлено фото: {n}', badImage:'Не получилось открыть файл {f}. Подходят JPG, PNG, WebP.', upErr:'Не получилось загрузить фото',
+  prT:'Цены', prNote:'Прайс на главной странице. Изменения видны после «Сохранить».', prCat:'Категория', prDesc:'Описание (необязательно)', prSvc:'Услуга',
+  prFrom:'от', prAddSvc:'+ Услуга', prAddCat:'+ Категория', prSave:'Сохранить', prDelCatQ:'Удалить категорию «{n}» со всеми услугами?',
+  prUnsaved:'Изменения не сохранены. Закрыть без сохранения?', prDiscard:'Закрыть', prBad:'Заполните названия и цены (отмечено красным)',
+  prUp:'Выше', prDown:'Ниже', prDel:'Удалить', prNewCat:'Новая категория' });
 const DEFAULT_BOOKING = 'https://book.treatwell.lt/salonas/397163/meniu';
 const state = { lang: localGet('lang') || 'lt', mode: 'service', cat: null, q: '', service: null, amount: null, design: 'noir', menu: null,
   vouchers: [], aFilter: 'all', aQuery: '', aSort: 'new', openCode: null, me: undefined, occ: null, delivery: 'me' };
@@ -1089,6 +1131,23 @@ const store = {
     return this.mutate(code, v => { v.redemptions = (v.redemptions || []).filter(r => r.id !== rid); });
   },
   async after(){ if (this.mode !== 'db' && this.refresh) await this.refresh(); },
+  // Editable price list and gallery ({menu, works}); a missing key means "keep the built-in default".
+  async loadSite(){
+    if (this.mode !== 'supa') return null;
+    const d = await this.rpc('kp_site', {}); applySite(d); localSet('kpSite', JSON.stringify(d || {})); return d;
+  },
+  async saveSite(key, data){
+    if (this.mode !== 'supa') { applySite({ [key]: data }); return; }
+    const d = await this.rpc('kp_site_save', { p_token: this.token, p_key: key, p_data: data }); applySite(d); localSet('kpSite', JSON.stringify(d || {}));
+  },
+  async uploadPhoto(blob){
+    if (this.mode !== 'supa') return URL.createObjectURL(blob);
+    const name = await this.rpc('kp_photo_ticket', { p_token: this.token });
+    const r = await fetch(`${this.cfg.url}/storage/v1/object/works/${name}`, { method: 'POST',
+      headers: { apikey: this.cfg.key, authorization: `Bearer ${this.cfg.key}`, 'content-type': blob.type || 'image/jpeg', 'x-upsert': 'false', 'cache-control': 'max-age=31536000' }, body: blob });
+    if (!r.ok) throw 'upErr';
+    return `${this.cfg.url}/storage/v1/object/public/works/${name}`;
+  },
 };
 
 async function payOnline(code){
@@ -1214,8 +1273,17 @@ function renderStatic(){
 function renderOcc(){
   $('#occ').innerHTML = t('occ').map((o, i) => `<button type="button" data-occ="${i}" aria-pressed="${state.occ === i}">${o[0]} ${esc(o[1])}</button>`).join('');
 }
+function worksData(){
+  if (state.works) return state.works;
+  try { return JSON.parse($('#works-data').textContent); } catch { return { photos: [], reviews: [] }; }
+}
+function applySite(d){
+  if (!d || typeof d !== 'object') return;
+  if (d.menu && Array.isArray(d.menu.categories)) state.menu = { ...state.menu, categories: d.menu.categories };
+  if (d.works && Array.isArray(d.works.photos)) state.works = { reviews: [], ...d.works };
+}
 function renderWorks(){
-  let d; try { d = JSON.parse($('#works-data').textContent); } catch { d = {}; }
+  const d = worksData();
   const photos = d.photos || [], reviews = d.reviews || [];
   $('#works').hidden = !photos.length && !reviews.length;
   $('#worksGrid').innerHTML = photos.map(p => `<figure><img src="${esc(p.src)}" alt="${esc(p.alt || '')}" loading="lazy" decoding="async" width="600" height="750"></figure>`).join('');
@@ -1456,7 +1524,9 @@ function refreshDrawer(){
   const v = state.vouchers.find(x => x.code === state.openCode);
   if (v && !document.activeElement?.closest('#drawer form')) renderDrawer(v);
 }
-function closeDrawer(silent){
+async function closeDrawer(silent){
+  if (state.prDirty && !silent && !$('#drawerWrap').hidden) { if (!(await ask(t('prUnsaved'), t('prDiscard')))) return; }
+  state.prDirty = false; state.prDraft = null;
   state.openCode = null; $('#drawerWrap').hidden = true;
   if (!silent && isAdminRoute()) history.replaceState(null, '', '#admin');
 }
@@ -1617,6 +1687,127 @@ async function renderSettings(){
     if (!(await ask(t('staffRemoveQ').replace('{n}', b.dataset.n), t('staffRemoveB')))) return;
     try { await store.staff('kp_staff_remove', { p_id: b.dataset.rm }); toast(t('staffRemoved')); renderSettings(); } catch (x) { toast(errText(x)); }
   });
+}
+/* ---- admin: gallery ---- */
+function shrinkPhoto(file){
+  return new Promise((res, rej) => {
+    const url = URL.createObjectURL(file), img = new Image();
+    img.onload = () => {
+      const max = 1600, k = Math.min(1, max / Math.max(img.naturalWidth, img.naturalHeight));
+      const c = document.createElement('canvas'); c.width = Math.round(img.naturalWidth * k); c.height = Math.round(img.naturalHeight * k);
+      const x = c.getContext('2d'); x.fillStyle = '#fff'; x.fillRect(0, 0, c.width, c.height); x.drawImage(img, 0, 0, c.width, c.height);
+      URL.revokeObjectURL(url); c.toBlob(b => b ? res(b) : rej('badImage'), 'image/jpeg', 0.85);
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); rej('badImage'); };
+    img.src = url;
+  });
+}
+function renderGalleryDrawer(){
+  state.openCode = null; $('#drawerWrap').hidden = false;
+  const d = worksData(), photos = d.photos || [];
+  $('#drawer').innerHTML = `
+    <div class="d-top"><span class="mono muted">${t('galT')}</span><button class="d-x" id="dClose" aria-label="${esc(t('close'))}">✕</button></div>
+    <h2 class="sec-title" style="margin:0 0 6px"><span class="big" style="font-size:44px">${t('galT')}</span></h2>
+    <p class="muted" style="margin:0 0 18px;font-size:14px">${t('galNote')}</p>
+    <label class="btn pink up-btn">${t('galUp')}<input type="file" id="galIn" accept="image/*" multiple></label>
+    <p class="mono muted" id="galSt" style="font-size:11px;margin:12px 0 0" aria-live="polite"></p>
+    ${photos.length ? `<div class="g-grid">${photos.map((p, i) => `<figure><img src="${esc(p.src)}" alt="" loading="lazy"><span class="g-n">${i + 1}</span>
+      <div class="g-acts"><span style="display:flex;gap:4px"><button data-mv="-1" data-i="${i}" ${i ? '' : 'disabled'} aria-label="${esc(t('galLeft'))}">←</button><button data-mv="1" data-i="${i}" ${i < photos.length - 1 ? '' : 'disabled'} aria-label="${esc(t('galRight'))}">→</button></span>
+      <button class="del" data-del="${i}" aria-label="${esc(t('galDel'))}">✕</button></div></figure>`).join('')}</div>`
+      : `<p class="a-empty" style="margin-top:18px">${t('galEmpty')}</p>`}`;
+  $('#dClose').onclick = () => closeDrawer();
+  const save = async list => {
+    const st = $('#galSt'); st.textContent = t('saving');
+    try { await store.saveSite('works', { ...d, photos: list }); renderWorks(); renderGalleryDrawer(); toast(t('saved')); }
+    catch (x) { st.textContent = ''; toast(t(String(x)) === String(x) ? t('upErr') + ' (' + x + ')' : t(String(x))); }
+  };
+  $('#drawer').querySelectorAll('[data-mv]').forEach(b => b.onclick = () => {
+    const i = +b.dataset.i, j = i + +b.dataset.mv, l = photos.slice(); [l[i], l[j]] = [l[j], l[i]]; save(l);
+  });
+  $('#drawer').querySelectorAll('[data-del]').forEach(b => b.onclick = async () => {
+    if (!(await ask(t('galDelQ'), t('galDel')))) return;
+    save(photos.filter((_, i) => i !== +b.dataset.del));
+  });
+  $('#galIn').onchange = async e => {
+    const files = [...e.target.files]; e.target.value = ''; if (!files.length) return;
+    const st = $('#galSt'), added = [];
+    $('#galIn').disabled = true;
+    for (let i = 0; i < files.length; i++) {
+      st.textContent = t('galUploading').replace('{i}', i + 1).replace('{n}', files.length);
+      try { added.push({ src: await store.uploadPhoto(await shrinkPhoto(files[i])), alt: 'Blakstienų darbas – ' + (state.menu.salon?.name || 'Grin Lashes') }); }
+      catch (x) { toast(x === 'badImage' ? t('badImage').replace('{f}', files[i].name) : t('upErr')); }
+    }
+    $('#galIn').disabled = false;
+    if (added.length) { await save([...added, ...(worksData().photos || [])]); toast(t('galAdded').replace('{n}', added.length)); }
+    else st.textContent = '';
+  };
+}
+
+/* ---- admin: price list ---- */
+function renderPricesDrawer(){
+  state.openCode = null; $('#drawerWrap').hidden = false;
+  const cats = state.prDraft || (state.prDraft = JSON.parse(JSON.stringify(state.menu.categories || [])));
+  const ic = (attr, label, txt, dis, cls = '') => `<button type="button" class="pe-ic ${cls}" ${attr} ${dis ? 'disabled' : ''} aria-label="${esc(label)}" title="${esc(label)}">${txt}</button>`;
+  $('#drawer').innerHTML = `
+    <div class="d-top"><span class="mono muted">${t('prT')}</span><button class="d-x" id="dClose" aria-label="${esc(t('close'))}">✕</button></div>
+    <h2 class="sec-title" style="margin:0 0 6px"><span class="big" style="font-size:44px">${t('prT')}</span></h2>
+    <p class="muted" style="margin:0 0 18px;font-size:14px">${t('prNote')}</p>
+    <form id="peForm" novalidate>
+    ${cats.map((c, ci) => `<div class="pe-cat">
+      <div class="pe-row"><input type="text" class="pe-cn" data-c="${ci}" data-f="name" value="${esc(c.name)}" placeholder="${esc(t('prCat'))}" maxlength="80" aria-label="${esc(t('prCat'))}">
+        ${ic(`data-cmv="-1" data-c="${ci}"`, t('prUp'), '↑', !ci)}${ic(`data-cmv="1" data-c="${ci}"`, t('prDown'), '↓', ci === cats.length - 1)}${ic(`data-cdel="${ci}"`, t('prDel'), '✕', false, 'del')}</div>
+      <input type="text" class="pe-desc" data-c="${ci}" data-f="description" value="${esc(c.description || '')}" placeholder="${esc(t('prDesc'))}" maxlength="200">
+      <div class="pe-svcs">${(c.services || []).map((s, si) => `<div class="pe-row pe-svc">
+        <input type="text" data-c="${ci}" data-s="${si}" data-f="name" value="${esc(s.name)}" placeholder="${esc(t('prSvc'))}" maxlength="100" aria-label="${esc(t('prSvc'))}">
+        <label class="pe-from"><input type="checkbox" data-c="${ci}" data-s="${si}" data-f="priceFrom" ${s.priceFrom ? 'checked' : ''}>${t('prFrom')}</label>
+        <input type="number" data-c="${ci}" data-s="${si}" data-f="price" value="${s.price ?? ''}" min="0" max="10000" step="0.5" inputmode="decimal" aria-label="€"><span class="pe-eur">€</span>
+        ${ic(`data-smv="-1" data-c="${ci}" data-s="${si}"`, t('prUp'), '↑', !si)}${ic(`data-smv="1" data-c="${ci}" data-s="${si}"`, t('prDown'), '↓', si === c.services.length - 1)}${ic(`data-sdel="${si}" data-c="${ci}"`, t('prDel'), '✕', false, 'del')}
+      </div>`).join('')}</div>
+      <button type="button" class="btn small" data-sadd="${ci}">${t('prAddSvc')}</button>
+    </div>`).join('')}
+    <button type="button" class="btn small" id="peAddCat">${t('prAddCat')}</button>
+    <div class="pe-foot"><button class="btn pink" type="submit" id="peSave">${t('prSave')}</button><span class="err" id="peErr" hidden style="margin:0"></span></div>
+    </form>`;
+  const dirty = () => { state.prDirty = true; };
+  const rerender = () => { dirty(); const y = $('#drawer').scrollTop; renderPricesDrawer(); $('#drawer').scrollTop = y; };
+  const swap = (a, i, j) => { [a[i], a[j]] = [a[j], a[i]]; };
+  $('#dClose').onclick = () => closeDrawer();
+  $('#peForm').addEventListener('input', e => {
+    const el = e.target, f = el.dataset.f; if (!f) return;
+    const c = cats[+el.dataset.c], o = el.dataset.s != null ? c.services[+el.dataset.s] : c;
+    if (f === 'priceFrom') { if (el.checked) o.priceFrom = true; else delete o.priceFrom; }
+    else if (f === 'price') o.price = el.value === '' ? null : Math.round(+el.value * 100) / 100;
+    else if (f === 'description') { if (el.value.trim()) o.description = el.value; else delete o.description; }
+    else o[f] = el.value;
+    el.classList.remove('pe-bad'); dirty();
+  });
+  $('#drawer').querySelectorAll('[data-cmv]').forEach(b => b.onclick = () => { const i = +b.dataset.c; swap(cats, i, i + +b.dataset.cmv); rerender(); });
+  $('#drawer').querySelectorAll('[data-smv]').forEach(b => b.onclick = () => { const l = cats[+b.dataset.c].services, i = +b.dataset.s; swap(l, i, i + +b.dataset.smv); rerender(); });
+  $('#drawer').querySelectorAll('[data-sdel]').forEach(b => b.onclick = () => { cats[+b.dataset.c].services.splice(+b.dataset.sdel, 1); rerender(); });
+  $('#drawer').querySelectorAll('[data-cdel]').forEach(b => b.onclick = async () => {
+    const c = cats[+b.dataset.cdel];
+    if (c.services?.length && !(await ask(t('prDelCatQ').replace('{n}', c.name || '—'), t('prDel')))) return;
+    cats.splice(+b.dataset.cdel, 1); rerender();
+  });
+  $('#drawer').querySelectorAll('[data-sadd]').forEach(b => b.onclick = () => {
+    cats[+b.dataset.sadd].services.push({ id: 's' + uid().slice(0, 8), name: '', price: null }); rerender();
+    const ins = $('#drawer').querySelectorAll(`[data-c="${b.dataset.sadd}"][data-f="name"][data-s]`); ins[ins.length - 1]?.focus();
+  });
+  $('#peAddCat').onclick = () => { cats.push({ name: '', services: [{ id: 's' + uid().slice(0, 8), name: '', price: null }] }); rerender(); $('#drawer').querySelectorAll('.pe-cn')[cats.length - 1]?.focus(); };
+  $('#peForm').onsubmit = async e => {
+    e.preventDefault(); const er = $('#peErr'); er.hidden = true;
+    let bad = null;
+    $('#peForm').querySelectorAll('[data-f="name"],[data-f="price"]').forEach(el => {
+      const ok = el.dataset.f === 'name' ? el.value.trim() !== '' : el.value !== '' && +el.value >= 0 && +el.value <= 10000;
+      el.classList.toggle('pe-bad', !ok); if (!ok && !bad) bad = el;
+    });
+    if (bad) { er.textContent = t('prBad'); er.hidden = false; bad.focus(); return; }
+    const clean = cats.map(c => ({ name: c.name.trim(), ...(c.description?.trim() ? { description: c.description.trim() } : {}),
+      services: c.services.map(s => ({ ...s, name: s.name.trim(), price: +s.price })) }));
+    const btn = $('#peSave'); btn.disabled = true; btn.textContent = t('saving');
+    try { await store.saveSite('menu', { categories: clean }); state.prDirty = false; state.prDraft = null; renderServices(); toast(t('saved')); renderPricesDrawer(); }
+    catch (x) { er.textContent = String(x); er.hidden = false; btn.disabled = false; btn.textContent = t('prSave'); }
+  };
 }
 function renderNewDrawer(){
   state.openCode = null; $('#drawerWrap').hidden = false;
@@ -1786,6 +1977,8 @@ $('#drawerBg').onclick = () => closeDrawer();
 document.addEventListener('keydown', e => { if (e.key === 'Escape') { if (!$('#scanModal').hidden) stopScan(); else if (!$('#drawerWrap').hidden) closeDrawer(); } });
 $('#scanOpen').onclick = startScan;
 $('#newBtn').onclick = renderNewDrawer;
+$('#pricesBtn').onclick = () => { state.prDraft = null; renderPricesDrawer(); };
+$('#galBtn').onclick = renderGalleryDrawer;
 $('#csvBtn').onclick = exportCsv;
 $('#aSort').onchange = e => { state.aSort = e.target.value; renderList(); };
 $('#scanClose').onclick = stopScan;
@@ -1850,12 +2043,14 @@ $('#payForm').onsubmit = async e => {
 if (typeof qrcode !== 'function') document.querySelector('script[src*="qrcode"]')?.addEventListener('load', () => { renderStatic(); renderPreview(); });
 (async () => {
   await store.init();
+  if (store.mode === 'supa') { try { applySite(JSON.parse(localGet('kpSite') || 'null')); } catch {} }
   syncDelivery();
   renderAll();
   initMbarObserver();
   route();
   handlePayReturn();
   handleCodeLink();
+  store.loadSite().then(d => { if (d) { renderWorks(); renderServices(); } }).catch(() => {});
 })();
 </script>
 </body>
