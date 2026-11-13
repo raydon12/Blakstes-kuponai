@@ -8,7 +8,7 @@
 //     Gmail / any SMTP:  SMTP_USER, SMTP_PASS (Google app password), optional SMTP_HOST (smtp.gmail.com), SMTP_PORT (465)
 //     Brevo:             BREVO_API_KEY
 //     Resend:            RESEND_API_KEY
-//   MAIL_FROM       sender address (default SMTP_USER); shown as "Blakstės studija <MAIL_FROM>"
+//   MAIL_FROM       sender address (default SMTP_USER); shown as "Grin Lashes <MAIL_FROM>"
 //   optional: BACKUP_EMAIL (weekly backup, default NOTIFY_EMAIL), SITE_URL, SALON_CONTACT (phone/address line for the email footer), MAIL_PROVIDER (smtp|brevo|resend)
 import nodemailer from 'nodemailer';
 import { backupCsv, buildBackupMail, buildMail, voucherPdf, type Ctx, type Fonts, type Voucher } from './render.ts';
@@ -16,7 +16,7 @@ import { backupCsv, buildBackupMail, buildMail, voucherPdf, type Ctx, type Fonts
 const env = (k: string, d = '') => Deno.env.get(k) || d;
 const ctx: Ctx = {
   site: env('SITE_URL', 'https://blakstes-kuponai.vercel.app').replace(/\/$/, ''),
-  salon: 'Blakstės studija', master: 'Meistrė Viktorija',
+  salon: 'Grin Lashes', master: 'Meistrė Viktorija',
   booking: 'https://book.treatwell.lt/salonas/397163/meniu', instagram: 'https://www.instagram.com/grin_lashes/',
   contact: env('SALON_CONTACT'),
 };

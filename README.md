@@ -1,4 +1,4 @@
-# Blakstės studija — dovanų kuponai
+# Grin Lashes — dovanų kuponai
 
 Сайт подарочных сертификатов: продажа онлайн, QR на каждом купоне, админка мастера со сканером и списаниями.
 
