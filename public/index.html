@@ -835,7 +835,7 @@ const I18N = {
     noteLocal:"Peržiūros režimas: kuponai saugomi tik šioje naršyklėje.",
     deduct:"Nurašymas", deductAmt:"Suma", deductNote:"Procedūra / pastaba", deductBtn:"Nurašyti", allBal:"Visą likutį",
     confirm:"Nurašyti {a} nuo kupono {c}?", deducted:"Nurašyta {a}. Likutis {b}", insufficient:"Likutis per mažas",
-    details:"Duomenys", edit:"Redaguoti", save:"Išsaugoti", saved:"Išsaugota", recipient:"Kam", fromL:"Nuo ko", message:"Palinkėjimas", validUntil:"Galioja iki", buyer:"Pirkėjas", sold:"Parduota", nominal:"Nominalas",
+    details:"Duomenys", edit:"Redaguoti", save:"Išsaugoti", saved:"Išsaugota", recipient:"Kam", fromL:"Nuo ko", message:"Palinkėjimas", validUntil:"Galioja iki", buyer:"Pirkėjas", sold:"Parduota", nominal:"Nominalas", buyerEmailL:"Pirkėjo el. paštas", amtQ:"Pakeisti nominalą iš {a} į {b}? Likutis bus {c}.", amtBelowUsed:"Nominalas negali būti mažesnis už jau panaudotą sumą", amtBad:"Įveskite sumą nuo 0,01 iki 10 000 €",
     history:"Nurašymų istorija", noHistory:"Dar nieko nenurašyta", undo:"Atšaukti", undoQ:"Atšaukti šį nurašymą ({a})? Suma grįš į likutį.", undone:"Nurašymas atšauktas",
     scanHint:"Nukreipkite kamerą į kupono QR kodą", photo:"Nufotografuoti QR", camDenied:"Kamera čia nepasiekiama. Spauskite „Nufotografuoti QR“ arba įveskite kodą paieškoje.",
     noQr:"QR kodas nerastas nuotraukoje", notFound:"Kuponas {c} nerastas", by:"",
@@ -903,7 +903,7 @@ const I18N = {
     noteLocal:"Режим превью: сертификаты хранятся только в этом браузере.",
     deduct:"Списание", deductAmt:"Сумма", deductNote:"Процедура / комментарий", deductBtn:"Списать", allBal:"Весь остаток",
     confirm:"Списать {a} с сертификата {c}?", deducted:"Списано {a}. Остаток {b}", insufficient:"Недостаточно средств",
-    details:"Данные", edit:"Редактировать", save:"Сохранить", saved:"Сохранено", recipient:"Кому", fromL:"От кого", message:"Пожелание", validUntil:"Действует до", buyer:"Покупатель", sold:"Продан", nominal:"Номинал",
+    details:"Данные", edit:"Редактировать", save:"Сохранить", saved:"Сохранено", recipient:"Кому", fromL:"От кого", message:"Пожелание", validUntil:"Действует до", buyer:"Покупатель", sold:"Продан", nominal:"Номинал", buyerEmailL:"Email покупателя", amtQ:"Изменить номинал с {a} на {b}? Остаток будет {c}.", amtBelowUsed:"Номинал не может быть меньше уже использованной суммы", amtBad:"Введите сумму от 0,01 до 10 000 €",
     history:"История списаний", noHistory:"Списаний ещё не было", undo:"Отменить", undoQ:"Отменить это списание ({a})? Сумма вернётся на остаток.", undone:"Списание отменено",
     scanHint:"Наведите камеру на QR-код сертификата", photo:"Сфотографировать QR", camDenied:"Камера здесь недоступна. Нажмите «Сфотографировать QR» или введите код в поиске.",
     noQr:"На фото не найден QR-код", notFound:"Сертификат {c} не найден", by:"",
@@ -1032,7 +1032,7 @@ const store = {
     if (error) {
       const m = String(error.message || '');
       if (/not_master/i.test(m)) { this.token = ''; if (state.me) { state.me = null; renderAdmin(); } throw 'badLogin'; }
-      throw (m.match(/^(bad_amount|bad_email|bad_date|not_found|insufficient|unpaid|void|used|expired)$/) || [])[1] || m || 'error';
+      throw (m.match(/^(below_used|bad_amount|bad_email|bad_date|not_found|insufficient|unpaid|void|used|expired)$/) || [])[1] || m || 'error';
     }
     return data;
   },
@@ -1584,11 +1584,11 @@ function renderDrawer(v){
         <div class="field"><label class="mono" for="eMsg">${t('message')}</label><input id="eMsg" maxlength="300" value="${esc(v.message)}"></div>
         <div class="two" style="gap:16px">
           <div class="field"><label class="mono" for="eValid">${t('validUntil')}</label><input id="eValid" type="date" value="${esc(v.validUntil)}" required></div>
-          <div class="field"><label class="mono">${t('nominal')}</label><input value="${esc(money(v.amount))}" disabled></div>
+          <div class="field"><label class="mono" for="eAmt">${t('nominal')}, €</label><input id="eAmt" type="number" inputmode="decimal" step="0.01" min="${Math.max(0.01, Math.round((v.amount - v.balance) * 100) / 100)}" max="10000" value="${esc(v.amount)}" required></div>
         </div>
+        <div class="field"><label class="mono" for="eBuyer">${t('buyerEmailL')}</label><input id="eBuyer" type="email" inputmode="email" autocomplete="off" maxlength="120" value="${esc(v.buyerEmail || '')}"></div>
         <div class="facts" style="margin-bottom:16px">
           <div><span class="mono muted">${t('sold')}</span><span class="v">${esc(fmtDate(v.createdAt, true))}</span></div>
-          ${v.buyerEmail ? `<div><span class="mono muted">${t('buyer')}</span><span class="v">${esc(v.buyerEmail)}</span></div>` : ''}
           <div><span class="mono muted">${t('source')}</span><span class="v">${t(v.source === 'salon' ? 'srcSalon' : 'srcOnline')}${v.payMethod && v.payMethod !== 'online' ? ' · ' + t({cash:'payCash',card:'payCard',gift:'payGift'}[v.payMethod] || 'payOnline') : ''}${v.soldBy ? ' · ' + esc(v.soldBy) : ''}</span></div>
           ${v.delivery?.mode === 'recipient' ? `<div><span class="mono muted">${t('dRec')}</span><span class="v">${esc(v.delivery.email)} · ${esc(fmtDate(v.delivery.date))}</span></div>` : ''}
         </div>
@@ -1622,9 +1622,18 @@ function renderDrawer(v){
   $('#editForm').onsubmit = async e => {
     e.preventDefault();
     try {
-      const nv = await store.edit(v.code, { recipient: $('#eTo').value.trim(), from: $('#eFrom').value.trim(), message: $('#eMsg').value.trim(), validUntil: $('#eValid').value });
+      const patch = { recipient: $('#eTo').value.trim(), from: $('#eFrom').value.trim(), message: $('#eMsg').value.trim(), validUntil: $('#eValid').value,
+        buyerEmail: $('#eBuyer').value.trim() };
+      const amt = Math.round(parseFloat(String($('#eAmt').value).replace(',', '.')) * 100) / 100;
+      if (amt !== +v.amount) {
+        // Changing the face value moves the balance by the same amount; confirm with the numbers.
+        const used = Math.round((v.amount - v.balance) * 100) / 100;
+        if (!(await ask(t('amtQ').replace('{a}', money(v.amount)).replace('{b}', money(amt)).replace('{c}', money(amt - used)), t('save')))) return;
+        patch.amount = amt;
+      }
+      const nv = await store.edit(v.code, patch);
       document.activeElement?.blur(); await afterChange(nv); toast(t('saved'));
-    } catch (x) { toast(String(x)); }
+    } catch (x) { toast({ below_used: t('amtBelowUsed'), bad_amount: t('amtBad'), bad_email: t('errEmail') }[x] || String(x)); }
   };
   $('#drawer').querySelectorAll('[data-undo]').forEach(b => b.onclick = async () => {
     if (!(await ask(t('undoQ').replace('{a}', money(+b.dataset.a)), t('undo')))) return;

@@ -193,7 +193,7 @@ begin
 end $$;
 
 create or replace function public.kp_edit(p_token text, p_code text, p jsonb) returns jsonb language plpgsql security definer set search_path = '' as $$
-declare m text := kuponai.require_master(p_token); d jsonb; act text := 'edit';
+declare m text := kuponai.require_master(p_token); d jsonb; act text := 'edit'; old_amt jsonb;
 begin
   select doc into d from kuponai.vouchers where code = p_code for update;
   if d is null then raise exception 'not_found'; end if;
@@ -204,9 +204,22 @@ begin
     if p->>'validUntil' !~ '^\d{4}-\d{2}-\d{2}$' then raise exception 'bad_date'; end if;
     d := d || jsonb_build_object('validUntil', p->>'validUntil');
   end if;
+  -- Face value: masters may correct it, but never below what was already used.
+  if p ? 'amount' and jsonb_typeof(p->'amount') <> 'number' then raise exception 'bad_amount'; end if;
+  if p ? 'amount' and round((p->>'amount')::numeric, 2) <> (d->>'amount')::numeric then
+    if (p->>'amount')::numeric <= 0 or (p->>'amount')::numeric > 10000 then raise exception 'bad_amount'; end if;
+    if round((p->>'amount')::numeric, 2) < (d->>'amount')::numeric - kuponai.balance(d) then raise exception 'below_used'; end if;
+    old_amt := d->'amount';
+    d := d || jsonb_build_object('amount', round((p->>'amount')::numeric, 2));
+  end if;
+  if p ? 'buyerEmail' then
+    if coalesce(p->>'buyerEmail', '') <> '' and not kuponai.email_ok(p->>'buyerEmail') then raise exception 'bad_email'; end if;
+    d := d || jsonb_build_object('buyerEmail', lower(trim(coalesce(p->>'buyerEmail', ''))));
+  end if;
   if jsonb_typeof(p->'voided') = 'boolean' then d := d || jsonb_build_object('voided', p->'voided'); act := case when (p->>'voided')::boolean then 'void' else 'restore' end; end if;
   if (p->>'paid')::boolean is true then d := jsonb_set(d, '{payment,status}', '"paid"'); act := 'paid'; end if;
-  d := jsonb_set(d, '{log}', coalesce(d->'log','[]'::jsonb) || jsonb_build_object('at', now(), 'by', m, 'action', act));
+  d := jsonb_set(d, '{log}', coalesce(d->'log','[]'::jsonb) || (jsonb_build_object('at', now(), 'by', m, 'action', act)
+    || case when old_amt is not null then jsonb_build_object('amountFrom', old_amt, 'amountTo', d->'amount') else '{}'::jsonb end));
   update kuponai.vouchers set doc = d where code = p_code;
   return kuponai.for_master(d);
 end $$;
