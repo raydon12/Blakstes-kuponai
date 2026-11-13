@@ -16,6 +16,6 @@
     ] },
     { "source": "/fonts/(.*)", "headers": [ { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" } ] },
     { "source": "/vendor/(.*)", "headers": [ { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" } ] },
-    { "source": "/(.*)\\.(png|svg|webmanifest)", "headers": [ { "key": "Cache-Control", "value": "public, max-age=604800" } ] }
+    { "source": "/(.*)\\.(png|svg|webmanifest|webp|jpg)", "headers": [ { "key": "Cache-Control", "value": "public, max-age=604800" } ] }
   ]
 }
