@@ -302,7 +302,13 @@ dialog::backdrop{background:rgba(10,9,9,.7);backdrop-filter:blur(4px)}
 .a-list{border:1px solid var(--line-dark);border-radius:10px;overflow:hidden;background:var(--ink-2)}
 .a-row{display:grid;grid-template-columns:1.2fr 1.6fr 1fr 1.1fr 110px;gap:16px;align-items:center;padding:14px 20px;border-bottom:1px solid var(--line-dark);width:100%;background:none;border-left:0;border-right:0;border-top:0;text-align:left;cursor:pointer}
 .a-row:last-child{border-bottom:0}
+.sw{position:relative;overflow:hidden;border-bottom:1px solid var(--line-dark)}
+.sw:last-child{border-bottom:0}
+.sw .a-row{position:relative;z-index:1;background:var(--ink-2);border-bottom:0;transition:transform .25s cubic-bezier(.2,.8,.2,1);touch-action:pan-y}
+.sw-del{position:absolute;top:0;right:0;bottom:0;width:96px;border:0;background:#c9474f;color:#fff;font:600 11px/1.2 var(--mono,monospace);letter-spacing:.12em;text-transform:uppercase;cursor:pointer}
+.btn.del{border-color:var(--bad);color:var(--bad)}
 .a-row:hover{background:rgba(242,185,204,.06)}
+.sw .a-row:hover{background:linear-gradient(rgba(242,185,204,.06),rgba(242,185,204,.06)),var(--ink-2)}
 .a-row.th{cursor:default;background:var(--ink-3);padding-top:10px;padding-bottom:10px}
 .a-row.th:hover{background:var(--ink-3)}
 .a-code{font-family:var(--mono);font-size:13px;letter-spacing:.1em}
@@ -865,7 +871,7 @@ const I18N = {
     download:"Atsisiųsti", dlErr:"Nepavyko atsisiųsti", next:"Toliau", sendOn:"Bus išsiųsta {email} {date} (testiniame režime laiškai nesiunčiami).",
     chartT:"Pardavimai · 30 d.", feedT:"Paskutiniai nurašymai", noFeed:"Nurašymų dar nebuvo", newV:"+ Naujas kuponas", csv:"CSV",
     sortNew:"Naujausi", sortOld:"Seniausi", sortBal:"Didžiausias likutis", sortExp:"Greitai baigsis",
-    f_void:"Anuliuoti", f_unpaid:"Neapmokėti", payGo:"Nukreipiama į apmokėjimą…", payErr:"Nepavyko pradėti apmokėjimo. Bandykite dar kartą.", payCancelled:"Apmokėjimas atšauktas", paidOk:"Apmokėta! Jūsų kupono kodas: {code}. Atsisiųskite arba atsispausdinkite kuponą.", paidWait:"Mokėjimas apdorojamas. Kupono kodas: {code}. Jis įsigalios per kelias minutes.", cardNote:"Saugiai apmokėsite kortele, Apple Pay arba Google Pay. Po apmokėjimo kuponas iškart galios.", terms:"Nepanaudotą internetu pirktą kuponą galima grąžinti per 14 dienų nuo pirkimo. Vėliau kupono suma negrąžinama ir nekeičiama į grynuosius pinigus. Kupono galiojimas nepratęsiamas. Jei kupono sumos nepakanka procedūrai, skirtumą reikia sumokėti vietoje.", badLoginEmail:"Neteisingas el. paštas arba slaptažodis", s_unpaid:"Laukia apmokėjimo", unpaidNote:"Užsakyta internetu, bet dar neapmokėta. Kai klientas sumokės, pažymėkite kuponą apmokėtu — tada jį bus galima naudoti.", markPaid:"Pažymėti apmokėtu", paidQ:"Patvirtinti, kad už {c} gauta {a}?", paidDone:"Kuponas apmokėtas ir galioja", notMaster:"Ši paskyra neturi meistro teisių", order:"Užsakyti", liveNote:"Kuponas įsigalios, kai meistrė patvirtins apmokėjimą. Su jumis susisieksime el. paštu dėl atsiskaitymo. Neapmokėtas užsakymas po 7 dienų atšaukiamas.", doneLive:"Užsakymas priimtas! Kupono kodas: {code}. Kuponas įsigalios, kai meistrė patvirtins apmokėjimą — susisieksime adresu {email}.", s_void:"Anuliuotas", extend:"+3 mėn.", extended:"Pratęsta iki {d}", voidB:"Anuliuoti", voidQ:"Anuliuoti kuponą {c}? Juo nebebus galima atsiskaityti.", voided:"Kuponas anuliuotas", restore:"Atkurti", restored:"Kuponas atkurtas",
+    f_void:"Anuliuoti", f_unpaid:"Neapmokėti", payGo:"Nukreipiama į apmokėjimą…", payErr:"Nepavyko pradėti apmokėjimo. Bandykite dar kartą.", payCancelled:"Apmokėjimas atšauktas", paidOk:"Apmokėta! Jūsų kupono kodas: {code}. Atsisiųskite arba atsispausdinkite kuponą.", paidWait:"Mokėjimas apdorojamas. Kupono kodas: {code}. Jis įsigalios per kelias minutes.", cardNote:"Saugiai apmokėsite kortele, Apple Pay arba Google Pay. Po apmokėjimo kuponas iškart galios.", terms:"Nepanaudotą internetu pirktą kuponą galima grąžinti per 14 dienų nuo pirkimo. Vėliau kupono suma negrąžinama ir nekeičiama į grynuosius pinigus. Kupono galiojimas nepratęsiamas. Jei kupono sumos nepakanka procedūrai, skirtumą reikia sumokėti vietoje.", badLoginEmail:"Neteisingas el. paštas arba slaptažodis", s_unpaid:"Laukia apmokėjimo", unpaidNote:"Užsakyta internetu, bet dar neapmokėta. Kai klientas sumokės, pažymėkite kuponą apmokėtu — tada jį bus galima naudoti.", markPaid:"Pažymėti apmokėtu", paidQ:"Patvirtinti, kad už {c} gauta {a}?", paidDone:"Kuponas apmokėtas ir galioja", notMaster:"Ši paskyra neturi meistro teisių", order:"Užsakyti", liveNote:"Kuponas įsigalios, kai meistrė patvirtins apmokėjimą. Su jumis susisieksime el. paštu dėl atsiskaitymo. Neapmokėtas užsakymas po 7 dienų atšaukiamas.", doneLive:"Užsakymas priimtas! Kupono kodas: {code}. Kuponas įsigalios, kai meistrė patvirtins apmokėjimą — susisieksime adresu {email}.", s_void:"Anuliuotas", extend:"+3 mėn.", extended:"Pratęsta iki {d}", voidB:"Anuliuoti", delB:"Ištrinti", delQ:"Ištrinti kuponą {c} visam laikui? To atšaukti nebus galima.", deleted:"Kuponas {c} ištrintas", delNotVoid:"Ištrinti galima tik anuliuotą kuponą", voidQ:"Anuliuoti kuponą {c}? Juo nebebus galima atsiskaityti.", voided:"Kuponas anuliuotas", restore:"Atkurti", restored:"Kuponas atkurtas",
     newT:"Naujas kuponas", newD:"Kuponas, parduotas salone (grynais ar kortele). Jis atsiras sąraše ir gaus kodą bei QR.", vtype:"Tipas", byAmount:"Suma", byService:"Procedūra",
     payM:"Apmokėjimas", payCash:"Grynais", payCard:"Kortele salone", payOnline:"Internetu", payGift:"Dovana / akcija", create:"Sukurti kuponą", created:"Sukurtas {c}", buyerOpt:"Pirkėjo el. paštas (nebūtina)", srcSalon:"Salone", srcOnline:"Internetu", source:"Šaltinis",
     perDay:"{n} vnt. · {s}", vouchersN:"vnt."
@@ -933,7 +939,7 @@ const I18N = {
     download:"Скачать", dlErr:"Не удалось скачать", next:"Далее", sendOn:"Будет отправлен на {email} {date} (в тестовом режиме письма не отправляются).",
     chartT:"Продажи · 30 дней", feedT:"Последние списания", noFeed:"Списаний ещё не было", newV:"+ Новый сертификат", csv:"CSV",
     sortNew:"Сначала новые", sortOld:"Сначала старые", sortBal:"Больший остаток", sortExp:"Скоро истекают",
-    f_void:"Аннулированы", f_unpaid:"Не оплачены", payGo:"Переходим к оплате…", payErr:"Не удалось начать оплату. Попробуйте ещё раз.", payCancelled:"Оплата отменена", paidOk:"Оплачено! Код сертификата: {code}. Скачайте или распечатайте сертификат.", paidWait:"Платёж обрабатывается. Код сертификата: {code}. Он начнёт действовать через несколько минут.", cardNote:"Безопасная оплата картой, Apple Pay или Google Pay. Сертификат действует сразу после оплаты.", terms:"Неиспользованный сертификат, купленный онлайн, можно вернуть в течение 14 дней с покупки. Позже сумма не возвращается и не обменивается на наличные. Срок действия не продлевается. Если суммы сертификата не хватает на процедуру, разницу нужно доплатить на месте.", badLoginEmail:"Неверный email или пароль", s_unpaid:"Ждёт оплаты", unpaidNote:"Заказан онлайн, но ещё не оплачен. Когда клиент заплатит, отметьте сертификат оплаченным — тогда им можно будет пользоваться.", markPaid:"Отметить оплаченным", paidQ:"Подтвердить, что за {c} получено {a}?", paidDone:"Сертификат оплачен и действует", notMaster:"У этого аккаунта нет прав мастера", order:"Заказать", liveNote:"Сертификат начнёт действовать, когда мастер подтвердит оплату. Мы свяжемся с вами по email насчёт оплаты. Неоплаченный заказ отменяется через 7 дней.", doneLive:"Заказ принят! Код сертификата: {code}. Сертификат начнёт действовать после подтверждения оплаты — напишем на {email}.", s_void:"Аннулирован", extend:"+3 мес.", extended:"Продлён до {d}", voidB:"Аннулировать", voidQ:"Аннулировать сертификат {c}? Им больше нельзя будет расплатиться.", voided:"Сертификат аннулирован", restore:"Восстановить", restored:"Сертификат восстановлен",
+    f_void:"Аннулированы", f_unpaid:"Не оплачены", payGo:"Переходим к оплате…", payErr:"Не удалось начать оплату. Попробуйте ещё раз.", payCancelled:"Оплата отменена", paidOk:"Оплачено! Код сертификата: {code}. Скачайте или распечатайте сертификат.", paidWait:"Платёж обрабатывается. Код сертификата: {code}. Он начнёт действовать через несколько минут.", cardNote:"Безопасная оплата картой, Apple Pay или Google Pay. Сертификат действует сразу после оплаты.", terms:"Неиспользованный сертификат, купленный онлайн, можно вернуть в течение 14 дней с покупки. Позже сумма не возвращается и не обменивается на наличные. Срок действия не продлевается. Если суммы сертификата не хватает на процедуру, разницу нужно доплатить на месте.", badLoginEmail:"Неверный email или пароль", s_unpaid:"Ждёт оплаты", unpaidNote:"Заказан онлайн, но ещё не оплачен. Когда клиент заплатит, отметьте сертификат оплаченным — тогда им можно будет пользоваться.", markPaid:"Отметить оплаченным", paidQ:"Подтвердить, что за {c} получено {a}?", paidDone:"Сертификат оплачен и действует", notMaster:"У этого аккаунта нет прав мастера", order:"Заказать", liveNote:"Сертификат начнёт действовать, когда мастер подтвердит оплату. Мы свяжемся с вами по email насчёт оплаты. Неоплаченный заказ отменяется через 7 дней.", doneLive:"Заказ принят! Код сертификата: {code}. Сертификат начнёт действовать после подтверждения оплаты — напишем на {email}.", s_void:"Аннулирован", extend:"+3 мес.", extended:"Продлён до {d}", voidB:"Аннулировать", delB:"Удалить", delQ:"Удалить купон {c} навсегда? Отменить это будет нельзя.", deleted:"Купон {c} удалён", delNotVoid:"Удалить можно только аннулированный купон", voidQ:"Аннулировать сертификат {c}? Им больше нельзя будет расплатиться.", voided:"Сертификат аннулирован", restore:"Восстановить", restored:"Сертификат восстановлен",
     newT:"Новый сертификат", newD:"Сертификат, проданный в салоне (наличными или картой). Он появится в списке и получит код и QR.", vtype:"Тип", byAmount:"Сумма", byService:"Процедура",
     payM:"Оплата", payCash:"Наличными", payCard:"Картой в салоне", payOnline:"Онлайн", payGift:"Подарок / акция", create:"Создать сертификат", created:"Создан {c}", buyerOpt:"Email покупателя (необязательно)", srcSalon:"В салоне", srcOnline:"Онлайн", source:"Источник",
     perDay:"{n} шт. · {s}", vouchersN:"шт."
@@ -1041,7 +1047,7 @@ const store = {
     if (error) {
       const m = String(error.message || '');
       if (/not_master/i.test(m)) { this.token = ''; if (state.me) { state.me = null; renderAdmin(); } throw 'badLogin'; }
-      throw (m.match(/^(below_used|bad_amount|bad_email|bad_date|not_found|insufficient|unpaid|void|used|expired)$/) || [])[1] || m || 'error';
+      throw (m.match(/^(not_void|below_used|bad_amount|bad_email|bad_date|not_found|insufficient|unpaid|void|used|expired)$/) || [])[1] || m || 'error';
     }
     return data;
   },
@@ -1141,6 +1147,12 @@ const store = {
     if (this.mode === 'supa') return this.rpc('kp_undo', { p_token: this.token, p_code: code, p_rid: rid });
     if (this.mode === 'server') return this.api('DELETE', `api/master/vouchers/${code}/redemptions/${rid}`);
     return this.mutate(code, v => { v.redemptions = (v.redemptions || []).filter(r => r.id !== rid); });
+  },
+  async del(code){
+    if (this.mode === 'supa') return this.rpc('kp_delete', { p_token: this.token, p_code: code });
+    if (this.mode === 'server') return this.api('DELETE', `api/master/vouchers/${code}`);
+    if (this.mode === 'db') return this.ref(code).delete();
+    this.lset(this.lget().filter(x => x.code !== code));
   },
   async after(){ if (this.mode !== 'db' && this.refresh) await this.refresh(); },
   // Editable price list and gallery ({menu, works}); a missing key means "keep the built-in default".
@@ -1521,13 +1533,13 @@ function renderList(){
   const list = all.filter(v => (state.aFilter === 'all' || v.status === state.aFilter) &&
     (!q || [v.code, v.recipient, v.from, v.buyerEmail, v.title].some(x => String(x || '').toLowerCase().includes(q))));
   $('#aList').innerHTML = `<div class="a-row th mono muted"><span>${t('hCode')}</span><span class="c-title">${t('hTitle')}</span><span class="c-date">${t('hDate')}</span><span>${t('hBal')}</span><span>${t('hSt')}</span></div>` +
-    (list.length ? list.map(v => `<button class="a-row" data-open="${esc(v.code)}">
+    (list.length ? list.map(v => `${v.status === 'void' ? `<div class="sw"><button class="sw-del" data-del="${esc(v.code)}" tabindex="-1">${t('delB')}</button>` : ''}<button class="a-row" data-open="${esc(v.code)}">
       <span><span class="a-code">${esc(v.code)}</span>${v.recipient ? `<div class="a-sub">${esc(v.recipient)}</div>` : ''}</span>
       <span class="c-title">${esc(v.title)}</span>
       <span class="c-date a-sub">${esc(fmtDate(v.createdAt))}</span>
       <span class="a-bal"><b>${money(v.balance)}</b> <span class="a-sub">${t('of')} ${money(v.amount)}</span><div class="bar"><i style="width:${Math.max(0, v.balance / v.amount * 100)}%"></i></div></span>
       <span><span class="st st-${esc(v.status)}">${t('s_' + v.status)}</span></span>
-    </button>`).join('') : `<div class="a-empty">${t('none')}</div>`);
+    </button>${v.status === 'void' ? '</div>' : ''}`).join('') : `<div class="a-empty">${t('none')}</div>`);
 }
 
 async function openVoucher(code){
@@ -1566,6 +1578,7 @@ function renderDrawer(v){
       <button class="btn small" id="dPng">${t('download')} PNG</button>
       ${v.status !== 'void' ? `<button class="btn small" id="dExt">${t('extend')}</button>` : ''}
       <button class="btn small" id="dVoid">${v.voided ? t('restore') : t('voidB')}</button>
+      ${v.voided ? `<button class="btn small del" id="dDel">${t('delB')}</button>` : ''}
     </div>
 
     ${v.status === 'active' ? `<div class="d-sec"><h3>${t('deduct')}</h3>
@@ -1621,6 +1634,7 @@ function renderDrawer(v){
     const d = base.toISOString().slice(0,10);
     try { const nv = await store.edit(v.code, { validUntil: d }); await afterChange(nv); toast(t('extended').replace('{d}', fmtDate(d))); } catch (x) { toast(String(x)); }
   };
+  if ($('#dDel')) $('#dDel').onclick = () => deleteVoucher(v.code);
   $('#dVoid').onclick = async () => {
     if (!v.voided && !(await ask(t('voidQ').replace('{c}', v.code), t('voidB')))) return;
     try { const nv = await store.edit(v.code, { voided: !v.voided }); await afterChange(nv); toast(t(v.voided ? 'restored' : 'voided')); } catch (x) { toast(String(x)); }
@@ -1891,6 +1905,45 @@ function renderNewDrawer(){
   };
 }
 
+// Only cancelled vouchers can be deleted, and only after a confirmation; the weekly backup email keeps a copy.
+async function deleteVoucher(code){
+  if (!(await ask(t('delQ').replace('{c}', code), t('delB')))) { closeSwipes(); return; }
+  try {
+    await store.del(code);
+    state.vouchers = state.vouchers.filter(x => x.code !== code);
+    if (state.openCode === code) closeDrawer();
+    renderList(); toast(t('deleted').replace('{c}', code)); store.after();
+  } catch (x) { toast(x === 'not_void' ? t('delNotVoid') : String(x)); }
+}
+// Swipe left on a cancelled voucher in the list to reveal "Delete".
+const SW = 96;
+function closeSwipes(except){ document.querySelectorAll('.sw.open').forEach(w => { if (w !== except) { w.classList.remove('open'); w.querySelector('.a-row').style.transform = ''; } }); }
+(() => {
+  let row = null, x0 = 0, y0 = 0, dx = 0, base = 0, dir = '';
+  document.addEventListener('touchstart', e => {
+    const r = e.target.closest('.sw .a-row'); if (!r) { if (!e.target.closest('.sw-del')) closeSwipes(); return; }
+    row = r; x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; dx = 0; dir = '';
+    base = r.parentNode.classList.contains('open') ? -SW : 0; r.style.transition = 'none';
+  }, { passive: true });
+  document.addEventListener('touchmove', e => {
+    if (!row) return;
+    const mx = e.touches[0].clientX - x0, my = e.touches[0].clientY - y0;
+    if (!dir) { if (Math.abs(mx) < 8 && Math.abs(my) < 8) return; dir = Math.abs(mx) > Math.abs(my) ? 'x' : 'y'; }
+    if (dir !== 'x') return;
+    if (e.cancelable) e.preventDefault();
+    dx = Math.max(-SW * 1.4, Math.min(0, base + mx));
+    row.style.transform = `translateX(${dx}px)`;
+  }, { passive: false });
+  document.addEventListener('touchend', () => {
+    if (!row) return;
+    const r = row, w = r.parentNode; row = null; r.style.transition = '';
+    if (dir !== 'x') return;
+    const open = dx < -SW / 2;
+    closeSwipes(w); w.classList.toggle('open', open); r.style.transform = open ? `translateX(${-SW}px)` : '';
+    // A swipe must not also count as a tap on the row.
+    r.dataset.swiped = '1'; setTimeout(() => delete r.dataset.swiped, 350);
+  });
+})();
 async function afterChange(nv){
   const e = enrich(nv);
   const i = state.vouchers.findIndex(x => x.code === e.code);
@@ -1991,7 +2044,12 @@ document.addEventListener('click', e => {
     state.occ = i; renderOcc(); renderPreview(); return;
   }
   const f = e.target.closest('[data-filter]'); if (f) { state.aFilter = f.dataset.filter; renderAdmin(); return; }
-  const o = e.target.closest('[data-open]'); if (o) { openVoucher(o.dataset.open); return; }
+  const dl = e.target.closest('[data-del]'); if (dl) { deleteVoucher(dl.dataset.del); return; }
+  const o = e.target.closest('[data-open]'); if (o) {
+    if (o.dataset.swiped) return;
+    const w = o.closest('.sw'); if (w && w.classList.contains('open')) { closeSwipes(); return; }
+    openVoucher(o.dataset.open); return;
+  }
 });
 ['#fTo','#fFrom','#fMsg'].forEach(s => $(s).addEventListener('input', renderPreview));
 $('#dEmail').addEventListener('input', () => { $('#delivErr').hidden = true; });
