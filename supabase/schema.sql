@@ -1,4 +1,4 @@
--- Blakstės studija gift vouchers — full schema for its own Supabase project.
+-- Grin Lashes gift vouchers — full schema for its own Supabase project.
 -- Private schema "kuponai" (not exposed to the API). The site uses only the public kp_* functions.
 -- Masters log in with their own email + password (bcrypt) and get a 30-day session token.
 create extension if not exists pgcrypto with schema extensions;

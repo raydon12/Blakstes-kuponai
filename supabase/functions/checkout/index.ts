@@ -30,7 +30,7 @@ Deno.serve(async (req) => {
       'line_items[0][quantity]': '1',
       'line_items[0][price_data][currency]': 'eur',
       'line_items[0][price_data][unit_amount]': String(Math.round(v.amount * 100)),
-      'line_items[0][price_data][product_data][name]': `Dovanų kuponas ${v.amount} € — Blakstės studija`,
+      'line_items[0][price_data][product_data][name]': `Dovanų kuponas ${v.amount} € — Grin Lashes`,
       client_reference_id: v.code,
       'metadata[code]': v.code,
       'payment_intent_data[metadata][code]': v.code,
