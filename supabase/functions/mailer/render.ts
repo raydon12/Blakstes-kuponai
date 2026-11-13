@@ -10,7 +10,7 @@ export type Voucher = {
   payMethod?: string; soldBy?: string; redemptions?: { amount: number; at?: string; note?: string; by?: string }[];
 };
 export type Fonts = Record<'anton' | 'bodoni' | 'bodoniItalic' | 'mono' | 'serifFallback', Uint8Array>;
-export type Ctx = { site: string; salon: string; master: string; booking: string; instagram: string; contact: string };
+export type Ctx = { site: string; salon: string; master: string; address?: string; booking: string; instagram: string; contact: string };
 export type Mail = { subject: string; html: string; text: string; attach?: boolean };
 
 // Same palettes as the site: [from, to, text, amount].
@@ -44,8 +44,8 @@ export const checkUrl = (ctx: Ctx, code: string) => `${ctx.site}/?kodas=${encode
 export async function voucherPdf(v: Voucher, fonts: Fonts, ctx: Ctx): Promise<Uint8Array> {
   const lang = v.lang === 'ru' ? 'ru' : 'lt';
   const L = lang === 'ru'
-    ? { title: 'Подарочный сертификат', valid: 'Действует до', forWhom: 'Кому', code: 'Код', how: 'Покажите этот QR-код или назовите код мастеру. Сертификат можно использовать частями.', book: 'Запись' }
-    : { title: 'Dovanų kuponas', valid: 'Galioja iki', forWhom: 'Kam', code: 'Kodas', how: 'Parodykite šį QR kodą arba pasakykite kodą meistrei. Kuponą galima naudoti dalimis.', book: 'Registracija' };
+    ? { title: 'Подарочный сертификат', valid: 'Действует до', forWhom: 'Кому', code: 'Код', addr: 'Адрес', how: 'Покажите этот QR-код или назовите код мастеру. Сертификат можно использовать частями.', book: 'Запись' }
+    : { title: 'Dovanų kuponas', valid: 'Galioja iki', forWhom: 'Kam', code: 'Kodas', addr: 'Adresas', how: 'Parodykite šį QR kodą arba pasakykite kodą meistrei. Kuponą galima naudoti dalimis.', book: 'Registracija' };
   const doc = await PDFDocument.create();
   doc.registerFontkit(fontkit);
   doc.setTitle(`${L.title} ${v.code}`); doc.setAuthor(ctx.salon); doc.setCreator(ctx.salon); doc.setProducer(ctx.salon);
@@ -87,6 +87,10 @@ export async function voucherPdf(v: Voucher, fonts: Fonts, ctx: Ctx): Promise<Ui
 
   spaced(ctx.salon.toUpperCase(), X(90), Y(140), 44 * s, F.bodoni, ink, 8 * s);
   spaced(ctx.master.toUpperCase(), X(90), Y(178), 20 * s, F.mono, ink, 7 * s, 0.7);
+  if (ctx.address) {
+    const a = ctx.address, i = a.indexOf(', '), al = (i > 0 ? [a.slice(0, i), a.slice(i + 2)] : [a]).map((l) => l.toUpperCase());
+    al.forEach((l, k) => { const f = pick(F.mono, l), sz = 20 * s; spaced(l, X(1600 - 90) - spacedWidth(l, sz, f, 4 * s), Y(122 + k * 32), sz, f, ink, 4 * s, 0.7); });
+  }
 
   const amt = money(v.amount), amtSize = 190 * s;
   page.drawText(amt, { x: X(1600 - 90) - F.anton.widthOfTextAtSize(amt, amtSize), y: Y(500), size: amtSize, font: F.anton, color: accent });
@@ -129,7 +133,7 @@ export async function voucherPdf(v: Voucher, fonts: Fonts, ctx: Ctx): Promise<Ui
   const howF = pick(F.bodoni, L.how);
   for (const l of wrap(L.how, howF, 14, cw)) { page.drawText(l, { x: cx, y, size: 14, font: howF, color: dark }); y -= 20; }
   y -= 10;
-  const rows: [string, string][] = [[L.code, v.code], [L.valid, fmtDate(v.validUntil, lang)], [L.book, ctx.booking.replace(/^https?:\/\//, '')], ['', ctx.site.replace(/^https?:\/\//, '')]];
+  const rows: [string, string][] = [[L.code, v.code], [L.valid, fmtDate(v.validUntil, lang)], ...(ctx.address ? [[L.addr, ctx.address] as [string, string]] : []), [L.book, ctx.booking.replace(/^https?:\/\//, '')], ['', ctx.site.replace(/^https?:\/\//, '')]];
   for (const [k, val] of rows) {
     if (k) spaced(k.toUpperCase(), cx, y, 8, pick(F.mono, k), grey, 1.4);
     page.drawText(val, { x: cx + 130, y, size: 10, font: pick(F.mono, val), color: dark });
@@ -159,7 +163,7 @@ function layout(ctx: Ctx, lang: string, heading: string, paras: string[], card: 
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td align="center">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:#fff;border-radius:14px"><tr><td style="padding:30px 28px">
 <div style="font:400 22px/1.2 Georgia,'Times New Roman',serif;letter-spacing:4px;text-transform:uppercase;color:#151313">${esc(ctx.salon)}</div>
-<div style="font:11px/1.4 'Courier New',monospace;letter-spacing:3px;text-transform:uppercase;color:#8a817c;margin:4px 0 26px">${esc(ctx.master)}</div>
+<div style="font:11px/1.4 'Courier New',monospace;letter-spacing:3px;text-transform:uppercase;color:#8a817c;margin:4px 0 26px">${esc(ctx.master)}${ctx.address ? ' · ' + esc(ctx.address) : ''}</div>
 <h1 style="font:400 28px/1.2 Georgia,'Times New Roman',serif;color:#151313;margin:0 0 16px">${esc(heading)}</h1>
 ${p}${c}${b}
 <p style="margin:18px 0 0;font-size:13px;line-height:1.5;color:#8a817c">${foot}</p>

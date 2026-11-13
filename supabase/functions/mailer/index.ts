@@ -16,7 +16,7 @@ import { backupCsv, buildBackupMail, buildMail, voucherPdf, type Ctx, type Fonts
 const env = (k: string, d = '') => Deno.env.get(k) || d;
 const ctx: Ctx = {
   site: env('SITE_URL', 'https://blakstes-kuponai.vercel.app').replace(/\/$/, ''),
-  salon: 'Grin Lashes', master: 'Meistrė Viktorija',
+  salon: 'Grin Lashes', master: 'Meistrė Viktorija', address: 'Blakstės studija, Algirdo g. 9',
   booking: 'https://book.treatwell.lt/salonas/397163/meniu', instagram: 'https://www.instagram.com/grin_lashes/',
   contact: env('SALON_CONTACT'),
 };
