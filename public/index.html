@@ -3,28 +3,28 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Dovanų kuponai · Grin Lashes · Meistrė Viktorija</title>
-<meta name="description" content="Dovanų kuponai Grin Lashes: blakstienų priauginimas ir laminavimas pas meistrę Viktoriją. Kuponas nuo 40 € su QR kodu, galioja 12 mėn.">
-<link rel="canonical" href="https://blakstes-kuponai.vercel.app/">
+<title>Dovanų kuponai · {{brand.name}}</title>
+<meta name="description" content="{{site.description.lt}}">
+<link rel="canonical" href="{{site.url}}/">
 <meta name="theme-color" content="#111010">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="Grin Lashes">
-<meta property="og:title" content="Dovanų kuponai · Grin Lashes">
-<meta property="og:description" content="Dovanų kuponai Grin Lashes: blakstienų priauginimas ir laminavimas pas meistrę Viktoriją. Kuponas nuo 40 € su QR kodu, galioja 12 mėn.">
-<meta property="og:url" content="https://blakstes-kuponai.vercel.app/">
-<meta property="og:image" content="https://blakstes-kuponai.vercel.app/og.png">
+<meta property="og:site_name" content="{{brand.name}}">
+<meta property="og:title" content="Dovanų kuponai · {{brand.name}}">
+<meta property="og:description" content="{{site.description.lt}}">
+<meta property="og:url" content="{{site.url}}/">
+<meta property="og:image" content="{{site.url}}/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:locale" content="lt_LT">
 <meta property="og:locale:alternate" content="ru_RU">
 <meta name="twitter:card" content="summary_large_image">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BeautySalon", "name": "Grin Lashes", "url": "https://blakstes-kuponai.vercel.app/", "image": "https://blakstes-kuponai.vercel.app/og.png", "description": "Dovanų kuponai Grin Lashes: blakstienų priauginimas ir laminavimas pas meistrę Viktoriją. Kuponas nuo 40 € su QR kodu, galioja 12 mėn.", "sameAs": ["https://www.instagram.com/grin_lashes/", "https://book.treatwell.lt/salonas/397163/meniu"], "priceRange": "10–55 €", "address": {"@type": "PostalAddress", "streetAddress": "Algirdo g. 9", "addressCountry": "LT"}, "employee": {"@type": "Person", "name": "Viktorija", "jobTitle": "Blakstienų meistrė"}}</script>
+<script type="application/ld+json">{{ldJson|json}}</script>
 <link rel="preload" href="/fonts/Anton-latin-a6f395.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preconnect" href="https://hermojruniqfvxksunrj.supabase.co" crossorigin>
+<link rel="preconnect" href="{{supabase.url}}" crossorigin>
 <link rel="stylesheet" href="/fonts/fonts.css?v=1" media="print" onload="this.media='all'">
 <noscript><link rel="stylesheet" href="/fonts/fonts.css?v=1"></noscript>
 <style>
@@ -32,7 +32,7 @@
   --ink:#111010; --ink-2:#1b1919; --ink-3:#262322;
   --bone:#efeae4; --paper:#f8f5f1;
   --greige:#8b817b; --mist:#b9b0aa;
-  --blush:#f2b9cc; --blush-2:#e79bb6; --blush-ink:#2a1219;
+  --blush:{{colors.accent}}; --blush-2:{{colors.accent2}}; --blush-ink:{{colors.accentInk}}; --accent-rgb:{{colors.accentRgb}};
   --on-dark:#f3eee9; --on-light:#151313;
   --line-dark:rgba(243,238,233,.14); --line-light:rgba(21,19,19,.14);
   --ok:#9fd3ac; --warn:#f0c674; --bad:#f19a9a;
@@ -105,7 +105,7 @@ nav.menu a.hl{background:var(--blush);color:var(--blush-ink);border-color:var(--
 .hero .ctas{display:flex;gap:12px;flex-wrap:wrap}
 .hero-r{position:relative;background:radial-gradient(120% 80% at 70% 20%,#4a3d38 0%,transparent 55%),radial-gradient(90% 70% at 20% 90%,#3a2c2e 0%,transparent 60%),linear-gradient(160deg,#2b2524,#141212 70%);display:flex;align-items:center;justify-content:center;padding:60px 40px}
 .hero-r .ring{position:absolute;width:min(70%,460px);aspect-ratio:1;border:1px solid var(--line-dark);border-radius:50%;top:8%;right:-8%}
-.hero-r .ring.two{width:min(45%,300px);top:auto;bottom:6%;left:-6%;right:auto;border-color:rgba(242,185,204,.35)}
+.hero-r .ring.two{width:min(45%,300px);top:auto;bottom:6%;left:-6%;right:auto;border-color:rgba(var(--accent-rgb),.35)}
 .hero-r .voucher{width:min(100%,440px);z-index:2}
 .stamp{position:absolute;z-index:3;top:14%;left:10%;width:118px;height:118px;border-radius:50%;background:var(--blush);color:var(--blush-ink);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;transform:rotate(-12deg);box-shadow:0 18px 40px -12px rgba(0,0,0,.6)}
 .stamp b{font-family:var(--display);font-weight:400;font-size:34px;line-height:1}
@@ -158,8 +158,8 @@ section{padding:96px 0}
 .cat-name{display:flex;justify-content:space-between;align-items:baseline;padding:34px 0 10px;border-bottom:1px solid var(--line-light)}
 .cat-name h3{margin:0;font-family:var(--display);font-weight:400;font-size:30px;text-transform:uppercase;letter-spacing:.01em}
 .svc{display:grid;grid-template-columns:1fr auto auto;gap:10px 28px;align-items:center;padding:20px 0;border-bottom:1px solid var(--line-light);transition:background .2s}
-.svc:hover{background:linear-gradient(90deg,transparent,rgba(242,185,204,.16),transparent)}
-.svc.on{background:linear-gradient(90deg,rgba(242,185,204,.28),rgba(242,185,204,.08))}
+.svc:hover{background:linear-gradient(90deg,transparent,rgba(var(--accent-rgb),.16),transparent)}
+.svc.on{background:linear-gradient(90deg,rgba(var(--accent-rgb),.28),rgba(var(--accent-rgb),.08))}
 .svc h4{margin:0;font-family:var(--serif);font-weight:400;font-size:22px;line-height:1.2}
 .svc .desc{color:var(--greige);font-size:13px;margin-top:4px}
 .svc .meta{display:flex;align-items:baseline;gap:16px;justify-content:flex-end;white-space:nowrap}
@@ -210,7 +210,7 @@ section{scroll-margin-top:72px}
 .voucher::before{content:"";position:absolute;inset:0;z-index:-2;background:var(--v-bg)}
 .voucher::after{content:"";position:absolute;inset:12px;z-index:-1;border:1px solid var(--v-line,rgba(243,238,233,.22));border-radius:3px}
 .voucher.noir{--v-bg:radial-gradient(90% 120% at 85% 0%,#3a3230 0%,transparent 55%),linear-gradient(150deg,#1d1a19,#0b0a0a)}
-.voucher.blush{--v-bg:radial-gradient(80% 110% at 90% 10%,#fbe0ea 0%,transparent 60%),linear-gradient(150deg,#f2b9cc,#d98ba6);color:var(--blush-ink);--v-line:rgba(42,18,25,.25)}
+.voucher.blush{--v-bg:radial-gradient(80% 110% at 90% 10%,{{colors.accentLight}} 0%,transparent 60%),linear-gradient(150deg,{{colors.accent}},{{colors.accentDeep}});color:var(--blush-ink);--v-line:rgba({{colors.accentInkRgb}},.25)}
 .voucher.bone{--v-bg:radial-gradient(80% 110% at 90% 10%,#fff 0%,transparent 60%),linear-gradient(150deg,#efeae4,#d9cfc5);color:var(--on-light);--v-line:rgba(21,19,19,.2)}
 .voucher.mocha{--v-bg:radial-gradient(80% 110% at 85% 0%,#7a675f 0%,transparent 60%),linear-gradient(150deg,#5b4d47,#2e2522)}
 .v-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
@@ -302,7 +302,7 @@ dialog::backdrop{background:rgba(10,9,9,.7);backdrop-filter:blur(4px)}
 .a-list{border:1px solid var(--line-dark);border-radius:10px;overflow:hidden;background:var(--ink-2)}
 .a-row{display:grid;grid-template-columns:1.2fr 1.6fr 1fr 1.1fr 110px;gap:16px;align-items:center;padding:14px 20px;border-bottom:1px solid var(--line-dark);width:100%;background:none;border-left:0;border-right:0;border-top:0;text-align:left;cursor:pointer}
 .a-row:last-child{border-bottom:0}
-.a-row:hover{background:rgba(242,185,204,.06)}
+.a-row:hover{background:rgba(var(--accent-rgb),.06)}
 .a-row.th{cursor:default;background:var(--ink-3);padding-top:10px;padding-bottom:10px}
 .a-row.th:hover{background:var(--ink-3)}
 .a-code{font-family:var(--mono);font-size:13px;letter-spacing:.1em}
@@ -377,7 +377,7 @@ dialog::backdrop{background:rgba(10,9,9,.7);backdrop-filter:blur(4px)}
 .occ button[aria-pressed="true"]{border-color:var(--blush);color:var(--blush)}
 .deliv{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .deliv label{display:flex;gap:12px;align-items:flex-start;border:1px solid var(--line-dark);border-radius:10px;padding:14px;cursor:pointer;transition:border-color .2s}
-.deliv label:has(input:checked){border-color:var(--blush);background:rgba(242,185,204,.06)}
+.deliv label:has(input:checked){border-color:var(--blush);background:rgba(var(--accent-rgb),.06)}
 .deliv input{accent-color:var(--blush);margin-top:3px}
 .deliv b{display:block;font-weight:500}
 .deliv small{color:var(--mist);font-size:12.5px;line-height:1.4;display:block;margin-top:2px}
@@ -425,7 +425,7 @@ dialog::backdrop{background:rgba(10,9,9,.7);backdrop-filter:blur(4px)}
 .feed button{background:none;border:0;padding:0;cursor:pointer;font-family:var(--mono);font-size:12px;letter-spacing:.06em;color:var(--on-dark)}
 .feed button:hover{color:var(--blush)}
 .a-sort{border:1px solid var(--line-dark);background:var(--ink-2);border-radius:999px;padding:9px 14px;color:var(--on-dark);font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase}
-.st-void{color:var(--bad)} .st-unpaid{color:var(--blush)} .light .st-unpaid{color:#b0476d}
+.st-void{color:var(--bad)} .st-unpaid{color:var(--blush)} .light .st-unpaid{color:{{colors.accentDark}}}
 .d-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
 .seg{display:inline-flex;border:1px solid var(--line-dark);border-radius:999px;padding:3px;margin-bottom:16px}
 .seg button{border:0;background:none;border-radius:999px;padding:8px 14px;cursor:pointer;font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--mist)}
@@ -519,14 +519,14 @@ dialog::backdrop{background:rgba(10,9,9,.7);backdrop-filter:blur(4px)}
 <body>
 <header>
   <div class="wrap bar">
-    <a class="logo" href="#top" id="logoLink"><b id="brandName">Grin Lashes</b><small data-i18n="logoSub">MEISTRĖ VIKTORIJA</small></a>
+    <a class="logo" href="#top" id="logoLink"><b id="brandName">{{brand.name}}</b><small data-i18n="logoSub">{{brand.subtitle.lt}}</small></a>
     <nav class="menu" id="shopNav">
       <a href="#choose" data-i18n="navPrices">Kainos</a>
       <a href="#check" data-i18n="navCheck">Likutis</a>
       <a class="hl" id="headBook" target="_blank" rel="noopener" data-i18n="bookNow">Registruotis</a>
     </nav>
     <div class="head-r">
-      <a class="ig-link" href="https://www.instagram.com/grin_lashes/" target="_blank" rel="noopener" aria-label="Instagram" title="Instagram @grin_lashes"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.4" cy="6.6" r="1" fill="currentColor" stroke="none"/></svg></a>
+      <a class="ig-link" href="{{contacts.instagramUrl}}" target="_blank" rel="noopener" aria-label="Instagram" title="Instagram @{{contacts.instagram}}"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.4" cy="6.6" r="1" fill="currentColor" stroke="none"/></svg></a>
       <a class="admin-link" id="adminLink" href="#admin"><span data-i18n="admin">Admin</span></a>
       <div class="lang" role="group" aria-label="Language">
         <button data-lang="lt" aria-pressed="true">LT</button>
@@ -546,13 +546,13 @@ dialog::backdrop{background:rgba(10,9,9,.7);backdrop-filter:blur(4px)}
       <a class="btn pink" href="#gift" id="giftCta"><span data-i18n="heroCta">Išsirinkti kuponą</span><span class="arr">→</span></a>
       <a class="btn" id="heroBook" target="_blank" rel="noopener"><span data-i18n="bookNow">Registruotis</span><span class="arr">↗</span></a>
     </div>
-    <a class="addr" id="heroAddr" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&amp;query=Blakst%C4%97s%20studija%2C%20Algirdo%20g.%209"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg><span id="heroAddrT">Blakstės studija, Algirdo g. 9</span></a>
+    <a class="addr" id="heroAddr" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&amp;query={{contacts.address|url}}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg><span id="heroAddrT">Blakstės studija, Algirdo g. 9</span></a>
   </div>
   <div class="hero-r grain">
     <div class="ring"></div><div class="ring two"></div>
-    <div class="stamp"><span data-i18n="stampFrom">nuo</span><b>40 €</b><span data-i18n="stampGift">dovana</span></div>
+    <div class="stamp"><span data-i18n="stampFrom">nuo</span><b>{{vouchers.min}} €</b><span data-i18n="stampGift">dovana</span></div>
     <div class="voucher noir" id="heroCard"></div>
-    <div class="vert" data-i18n="vert">DOVANŲ KUPONAI · GALIOJA 12 MĖN.</div>
+    <div class="vert" data-i18n="vert">DOVANŲ KUPONAI · GALIOJA {{vouchers.validMonths}} MĖN.</div>
   </div>
 </div>
 
@@ -560,7 +560,7 @@ dialog::backdrop{background:rgba(10,9,9,.7);backdrop-filter:blur(4px)}
 <section class="light" id="works" hidden>
   <div class="wrap">
     <div class="sec-head"><div>
-      <div class="mono kicker" data-i18n="worksK">Meistrės Viktorijos darbai</div>
+      <div class="mono kicker" data-i18n="worksK">Mūsų darbai</div>
       <h2 class="sec-title"><span class="big" data-i18n="worksBig">Darbai</span><span class="it" data-i18n="worksIt">ir atsiliepimai</span></h2>
     </div></div>
     <div class="works" id="worksGrid"></div>
@@ -608,7 +608,7 @@ dialog::backdrop{background:rgba(10,9,9,.7);backdrop-filter:blur(4px)}
         <div class="field"><label class="mono" data-i18n="fDesign">Dizainas</label>
           <div class="designs" id="designs">
             <button data-design="noir" aria-pressed="true"><i style="background:linear-gradient(150deg,#2a2524,#0b0a0a)"></i><span>Noir</span></button>
-            <button data-design="blush" aria-pressed="false"><i style="background:linear-gradient(150deg,#f2b9cc,#d98ba6)"></i><span>Blush</span></button>
+            <button data-design="blush" aria-pressed="false"><i style="background:linear-gradient(150deg,{{colors.accent}},{{colors.accentDeep}})"></i><span>{{colors.designName}}</span></button>
             <button data-design="bone" aria-pressed="false"><i style="background:linear-gradient(150deg,#efeae4,#d9cfc5)"></i><span>Bone</span></button>
             <button data-design="mocha" aria-pressed="false"><i style="background:linear-gradient(150deg,#5b4d47,#2e2522)"></i><span>Mocha</span></button>
           </div>
@@ -628,7 +628,7 @@ dialog::backdrop{background:rgba(10,9,9,.7);backdrop-filter:blur(4px)}
           <div><div class="mono" style="color:var(--mist)" data-i18n="total">Viso</div><div class="total" id="total">—</div></div>
           <button class="btn pink" id="buyBtn" disabled><span data-i18n="buy">Pirkti kuponą</span><span class="arr">→</span></button>
         </div>
-        <div class="trust"><span data-i18n="tr1">Saugus mokėjimas</span><span data-i18n="tr2">Kuponas iškart</span><span data-i18n="tr3">Galioja 12 mėn.</span></div>
+        <div class="trust"><span data-i18n="tr1">Saugus mokėjimas</span><span data-i18n="tr2">Kuponas iškart</span><span data-i18n="tr3">Galioja {{vouchers.validMonths}} mėn.</span></div>
         <p class="note terms" data-i18n="terms">Nepanaudotą internetu pirktą kuponą galima grąžinti per 14 dienų nuo pirkimo. Vėliau kupono suma negrąžinama ir nekeičiama į grynuosius pinigus. Kupono galiojimas nepratęsiamas. Jei kupono sumos nepakanka procedūrai, skirtumą reikia sumokėti vietoje.</p>
       </div>
       <div class="stick">
@@ -646,9 +646,9 @@ dialog::backdrop{background:rgba(10,9,9,.7);backdrop-filter:blur(4px)}
       <h2 class="sec-title"><span class="big" data-i18n="howBig">Trys</span><span class="it" data-i18n="howIt">žingsniai</span></h2>
     </div></div>
     <div class="steps">
-      <div class="step"><b>01</b><h3 data-i18n="s1t">Išsirinkite sumą</h3><p data-i18n="s1d">Paspauskite „Išsirinkti kuponą“ ir pasirinkite sumą nuo 40 €.</p></div>
+      <div class="step"><b>01</b><h3 data-i18n="s1t">Išsirinkite sumą</h3><p data-i18n="s1d">Paspauskite „Išsirinkti kuponą“ ir pasirinkite sumą nuo {{vouchers.min}} €.</p></div>
       <div class="step"><b>02</b><h3 data-i18n="s2t">Pasirašykite</h3><p data-i18n="s2d">Įrašykite gavėjo vardą, palinkėjimą ir išsirinkite kupono dizainą.</p></div>
-      <div class="step"><b>03</b><h3 data-i18n="s3t">Dovanokite</h3><p data-i18n="s3d">Gausite kuponą su unikaliu kodu ir QR. Jį galima atsisiųsti, atsispausdinti arba išsiųsti gavėjui. Atvykus pas meistrę užtenka parodyti QR kodą.</p></div>
+      <div class="step"><b>03</b><h3 data-i18n="s3t">Dovanokite</h3><p data-i18n="s3d">Gausite kuponą su unikaliu kodu ir QR. Jį galima atsisiųsti, atsispausdinti arba išsiųsti gavėjui. Atvykus užtenka parodyti QR kodą.</p></div>
     </div>
   </div>
 </section>
@@ -687,9 +687,9 @@ dialog::backdrop{background:rgba(10,9,9,.7);backdrop-filter:blur(4px)}
     <div class="foot">
       <div><div class="brand" id="footBrand"></div><span id="footSalon" style="color:var(--mist);margin-top:14px"></span></div>
       <div><h3 data-i18n="fExplore">NARŠYTI</h3><a href="#choose" data-i18n="navPrices">Kainos</a><a href="#check" data-i18n="navCheck">Likutis</a><a href="#faq">FAQ</a></div>
-      <div><h3 data-i18n="fBook">REGISTRACIJA</h3><a id="footBook" target="_blank" rel="noopener">Treatwell ↗</a></div>
+      <div><h3 data-i18n="fBook">REGISTRACIJA</h3><a id="footBook" target="_blank" rel="noopener">{{booking.label}} ↗</a></div>
       <div><h3 data-i18n="fLegal">TAISYKLĖS</h3><a href="/taisykles.html" data-i18n="lRules">Pirkimo taisyklės</a><a href="/privatumas.html" data-i18n="lPrivacy">Privatumo politika</a></div>
-      <div><h3 data-i18n="fGift">KUPONAS</h3><span data-i18n="perk1">Galioja 12 mėn.</span><span data-i18n="perk2">Unikalus kodas ir QR</span><span data-i18n="perk3">Galima atsispausdinti</span></div>
+      <div><h3 data-i18n="fGift">KUPONAS</h3><span data-i18n="perk1">Galioja {{vouchers.validMonths}} mėn.</span><span data-i18n="perk2">Unikalus kodas ir QR</span><span data-i18n="perk3">Galima atsispausdinti</span></div>
     </div>
     <div class="fine mono"><span>© <span id="yr"></span></span><span data-i18n="mockFoot">Testinis režimas: mokėjimai neveikia</span><a href="#admin" data-i18n="adminArrow" style="color:var(--mist)">Administravimas →</a></div>
   </div>
@@ -762,7 +762,7 @@ dialog::backdrop{background:rgba(10,9,9,.7);backdrop-filter:blur(4px)}
   <form class="m-body" id="payForm" method="dialog">
     <h2 data-i18n="payTitle">Apmokėjimas</h2>
     <p class="note" id="payWhat" style="margin:10px 0 0"></p>
-    <div class="mono mock mock-only" data-i18n="mockNote">Testinis režimas — pinigai nenuskaitomi</div><p class="note live-only no-card" data-i18n="liveNote" style="margin:14px 0 0">Kuponas įsigalios, kai meistrė patvirtins apmokėjimą. Su jumis susisieksime el. paštu dėl atsiskaitymo. Neapmokėtas užsakymas po 7 dienų atšaukiamas.</p><p class="note card-only" data-i18n="cardNote" style="margin:14px 0 0">Saugiai apmokėsite kortele, Apple Pay arba Google Pay. Po apmokėjimo kuponas iškart galios.</p>
+    <div class="mono mock mock-only" data-i18n="mockNote">Testinis režimas — pinigai nenuskaitomi</div><p class="note live-only no-card" data-i18n="liveNote" style="margin:14px 0 0">Kuponas įsigalios, kai patvirtinsime apmokėjimą. Su jumis susisieksime el. paštu dėl atsiskaitymo. Neapmokėtas užsakymas po 7 dienų atšaukiamas.</p><p class="note card-only" data-i18n="cardNote" style="margin:14px 0 0">Saugiai apmokėsite kortele, Apple Pay arba Google Pay. Po apmokėjimo kuponas iškart galios.</p>
     <div class="field"><label class="mono" for="pEmail" data-i18n="pEmail">El. paštas</label><input id="pEmail" type="email" required autocomplete="email"></div>
     <div class="field mock-only"><label class="mono" for="pCard" data-i18n="pCard">Kortelės numeris</label><input id="pCard" inputmode="numeric" placeholder="4242 4242 4242 4242" required></div>
     <div class="two mock-only">
@@ -791,32 +791,34 @@ dialog::backdrop{background:rgba(10,9,9,.7);backdrop-filter:blur(4px)}
 
 <!-- Photos of work and client reviews. Photos go to public/works/ (JPG/WebP, about 1200 px). Empty lists hide the section.
      {"photos":[{"src":"/works/1.webp","alt":"Klasikinis priauginimas"}],
-      "reviews":[{"name":"Ieva","text":"…","stars":5,"source":"Treatwell"}]} -->
-<script id="works-data" type="application/json">{"photos":[{"src":"/works/1.webp","alt":"Blakstienų darbas Nr. 1 – Grin Lashes"},{"src":"/works/2.webp","alt":"Blakstienų darbas Nr. 2 – Grin Lashes"},{"src":"/works/3.webp","alt":"Blakstienų darbas Nr. 3 – Grin Lashes"},{"src":"/works/4.webp","alt":"Blakstienų darbas Nr. 4 – Grin Lashes"},{"src":"/works/5.webp","alt":"Blakstienų darbas Nr. 5 – Grin Lashes"},{"src":"/works/6.webp","alt":"Blakstienų darbas Nr. 6 – Grin Lashes"},{"src":"/works/7.webp","alt":"Blakstienų darbas Nr. 7 – Grin Lashes"},{"src":"/works/8.webp","alt":"Blakstienų darbas Nr. 8 – Grin Lashes"},{"src":"/works/9.webp","alt":"Blakstienų darbas Nr. 9 – Grin Lashes"},{"src":"/works/10.webp","alt":"Blakstienų darbas Nr. 10 – Grin Lashes"},{"src":"/works/11.webp","alt":"Blakstienų darbas Nr. 11 – Grin Lashes"}],"reviews":[]}</script>
+      "reviews":[{"name":"Ieva","text":"…","stars":5,"source":"{{booking.label|js}}"}]} -->
+<script id="works-data" type="application/json">{"photos":[],"reviews":[]}</script>
 <!-- Service list for the static preview. The server version reads data/menu.json via /api/menu. -->
-<script id="menu-data" type="application/json">{"salon": {"name": "Grin Lashes", "address": "Blakstės studija, Algirdo g. 9", "bookingUrl": "https://book.treatwell.lt/salonas/397163/meniu"}, "categories": [{"name": "Blakstienų laminavimas", "services": [{"id": "s1", "name": "Blakstienų laminavimas su dažymu", "price": 30, "bookingUrl": "https://book.treatwell.lt/salonas/397163/meniu", "nameRu": "Ламинирование ресниц с окрашиванием"}], "nameRu": "Ламинирование ресниц"}, {"name": "Nude / Classic", "services": [{"id": "s2", "name": "Korekcija (po 4 savaičių)", "price": 35, "bookingUrl": "https://book.treatwell.lt/salonas/397163/meniu", "nameRu": "Коррекция (через 4 недели)"}, {"id": "s3", "name": "Pilnas priauginimas", "price": 40, "bookingUrl": "https://book.treatwell.lt/salonas/397163/meniu", "nameRu": "Полное наращивание"}, {"id": "s4", "name": "Korekcija po kito meistro", "price": 38, "bookingUrl": "https://book.treatwell.lt/salonas/397163/meniu", "nameRu": "Коррекция после другого мастера"}, {"id": "s5", "name": "Priauginimas + nuėmimas", "price": 45, "bookingUrl": "https://book.treatwell.lt/salonas/397163/meniu", "nameRu": "Наращивание + снятие"}]}, {"name": "Wet Lashes", "services": [{"id": "s6", "name": "Korekcija", "price": 40, "bookingUrl": "https://book.treatwell.lt/salonas/397163/meniu", "nameRu": "Коррекция"}, {"id": "s7", "name": "Pilnas priauginimas", "price": 45, "bookingUrl": "https://book.treatwell.lt/salonas/397163/meniu", "nameRu": "Полное наращивание"}]}, {"name": "M / L linkis", "services": [{"id": "s8", "name": "Pilnas priauginimas", "price": 45, "bookingUrl": "https://book.treatwell.lt/salonas/397163/meniu", "nameRu": "Полное наращивание"}, {"id": "s9", "name": "Korekcija", "price": 40, "bookingUrl": "https://book.treatwell.lt/salonas/397163/meniu", "nameRu": "Коррекция"}], "nameRu": "Изгиб M / L"}, {"name": "Wispy / Kim K / Anime", "services": [{"id": "s10", "name": "Pilnas priauginimas", "price": 55, "bookingUrl": "https://book.treatwell.lt/salonas/397163/meniu", "nameRu": "Полное наращивание"}, {"id": "s11", "name": "Korekcija", "price": 45, "bookingUrl": "https://book.treatwell.lt/salonas/397163/meniu", "nameRu": "Коррекция"}]}, {"name": "Express priauginimas", "services": [{"id": "s12", "name": "Priauginimas", "price": 35, "bookingUrl": "https://book.treatwell.lt/salonas/397163/meniu", "nameRu": "Наращивание"}], "nameRu": "Экспресс-наращивание"}, {"name": "Speedy Lashes", "services": [{"id": "s13", "name": "Pilnas priauginimas", "price": 45, "bookingUrl": "https://book.treatwell.lt/salonas/397163/meniu", "nameRu": "Полное наращивание"}, {"id": "s14", "name": "Korekcija", "price": 40, "bookingUrl": "https://book.treatwell.lt/salonas/397163/meniu", "nameRu": "Коррекция"}], "description": "Priauginimas paruoštais kuokšteliais", "descriptionRu": "Наращивание готовыми пучками"}, {"name": "Blakstienų nuėmimas", "services": [{"id": "s15", "name": "Nuėmimas", "price": 10, "bookingUrl": "https://book.treatwell.lt/salonas/397163/meniu", "nameRu": "Снятие"}, {"id": "s16", "name": "Nuėmimas po kito meistro", "price": 15, "bookingUrl": "https://book.treatwell.lt/salonas/397163/meniu", "nameRu": "Снятие после другого мастера"}], "nameRu": "Снятие ресниц"}]}</script>
+<script id="menu-data" type="application/json">{{menuData|json}}</script>
 
 <!-- Live database (Supabase). The key below is the public "publishable" key; all rules live in the database functions. -->
-<script id="supa-config" type="application/json">{"url":"https://hermojruniqfvxksunrj.supabase.co","key":"sb_publishable_dUxM0CR3woUXiq0or0yGZQ_tel1mICB"}</script>
+<script id="supa-config" type="application/json">{{supaConfig|json}}</script>
+<!-- Salon settings from salon.config.json (filled in by scripts/build.js). -->
+<script id="salon-config" type="application/json">{{runtime|json}}</script>
 <script defer src="vendor/qrcode.min.js?v=1"></script>
 <script>
 const I18N = {
   lt: {
-    logoSub:"MEISTRĖ VIKTORIJA", navPrices:"Kainos", navGift:"Kuponas", navHow:"Kaip tai veikia", bookNow:"Registruotis", admin:"Admin", adminArrow:"Administravimas →",
+    logoSub:"{{brand.subtitle.lt|js}}", navPrices:"Kainos", navGift:"Kuponas", navHow:"Kaip tai veikia", bookNow:"Registruotis", admin:"Admin", adminArrow:"Administravimas →",
     eyebrow:"Dovanų kuponai", heroBig:"Dovanok", heroIt:"grožį", heroText:"Užsiregistruokite į procedūrą arba padovanokite elegantišką kuponą.",
-    heroCta:"Išsirinkti kuponą", stampFrom:"nuo", stampGift:"dovana", vert:"DOVANŲ KUPONAI · GALIOJA 12 MĖN.",
+    heroCta:"Išsirinkti kuponą", stampFrom:"nuo", stampGift:"dovana", vert:"DOVANŲ KUPONAI · GALIOJA {{vouchers.validMonths}} MĖN.",
     marquee:["Plaukai","Antakiai","Blakstienos","Nagai","Veidas","Masažas"],
-    k1:"01 — Kainos", chooseBig:"Kainos", chooseIt:"& dovanos", chooseText:"Padovanokite konkrečią procedūrą arba laisvą sumą. Užsiregistruoti galima tiesiai per Treatwell.",
+    k1:"01 — Kainos", chooseBig:"Kainos", chooseIt:"& dovanos", chooseText:"Padovanokite konkrečią procedūrą arba laisvą sumą. Užsiregistruoti galima tiesiai per {{booking.label|js}}.",
     tabService:"Procedūra", tabAmount:"Suma", all:"Visos", search:"Ieškoti procedūros…",
-    amountNote:"Suma gali būti panaudota bet kuriai salono paslaugai.", custom:"Kita suma", minAmt:"Mažiausia suma — 40\u00a0€",
+    amountNote:"Suma gali būti panaudota bet kuriai salono paslaugai.", custom:"Kita suma", minAmt:"Mažiausia suma — {{vouchers.min}}\u00a0€",
     giftK:"Dovanų kuponas", giftBig:"Kupono suma", k2:"Asmeninis kuponas", persBig:"Jūsų", persIt:"žodžiai", cap:"Peržiūra atsinaujina iškart",
     fTo:"Kam", fFrom:"Nuo ko", fMsg:"Palinkėjimas", fDesign:"Dizainas", total:"Viso", buy:"Pirkti kuponą", choose:"Išsirinkite dovaną",
     voucher:"Dovanų kuponas", forWhom:"Kam", min:"min.", from:"nuo", gift:"Dovanoti", gifted:"Pasirinkta ✓",
-    emptyT:"Kainoraštis greitai atsiras", emptyD:"Kol kas galite padovanoti kuponą pasirinkta suma arba užsiregistruoti per Treatwell.",
-    bookAll:"Registruotis per Treatwell", toAmount:"Kuponas sumai",
+    emptyT:"Kainoraštis greitai atsiras", emptyD:"Kol kas galite padovanoti kuponą pasirinkta suma arba užsiregistruoti per {{booking.label|js}}.",
+    bookAll:"Registruotis per {{booking.label|js}}", toAmount:"Kuponas sumai",
     k3:"02 — Kaip tai veikia", howBig:"Trys", howIt:"žingsniai",
-    s1t:"Išsirinkite sumą", s1d:"Paspauskite „Išsirinkti kuponą“ ir pasirinkite sumą nuo 40\u00a0€.", s2t:"Pasirašykite", s2d:"Įrašykite gavėjo vardą, palinkėjimą ir išsirinkite kupono dizainą.", s3t:"Dovanokite", s3d:"Gausite kuponą su unikaliu kodu ir QR. Jį galima atsisiųsti, atsispausdinti arba išsiųsti gavėjui. Atvykus pas meistrę užtenka parodyti QR kodą.",
-    fExplore:"NARŠYTI", fBook:"REGISTRACIJA", fGift:"KUPONAS", perk1:"Galioja 12 mėn.", perk2:"Unikalus kodas ir QR", perk3:"Galima atsispausdinti",
+    s1t:"Išsirinkite sumą", s1d:"Paspauskite „Išsirinkti kuponą“ ir pasirinkite sumą nuo {{vouchers.min}}\u00a0€.", s2t:"Pasirašykite", s2d:"Įrašykite gavėjo vardą, palinkėjimą ir išsirinkite kupono dizainą.", s3t:"Dovanokite", s3d:"Gausite kuponą su unikaliu kodu ir QR. Jį galima atsisiųsti, atsispausdinti arba išsiųsti gavėjui. Atvykus užtenka parodyti QR kodą.",
+    fExplore:"NARŠYTI", fBook:"REGISTRACIJA", fGift:"KUPONAS", perk1:"Galioja {{vouchers.validMonths}} mėn.", perk2:"Unikalus kodas ir QR", perk3:"Galima atsispausdinti",
     mockFoot:"Testinis režimas: mokėjimai neveikia",
     payTitle:"Apmokėjimas", mockNote:"Testinis režimas — pinigai nenuskaitomi", pEmail:"El. paštas", pCard:"Kortelės numeris", cancel:"Atšaukti", pay:"Mokėti",
     doneTitle:"Ačiū!", doneText:"Kupono kodas: {code}. Testinis režimas: laiškas į {email} nesiunčiamas.",
@@ -829,7 +831,7 @@ const I18N = {
     staffT:"Meistrai", staffAddT:"Pridėti meistrą", staffName:"Vardas", staffEmail:"El. paštas (prisijungimui)", staffPass:"Laikinas slaptažodis (min. 8)", staffAddB:"Pridėti",
     staffAdded:"Meistras pridėtas. Perduokite jam el. paštą ir slaptažodį.", staffRemoveQ:"Pašalinti meistrą {n}? Jis nebegalės prisijungti.", staffRemoveB:"Pašalinti", staffRemoved:"Meistras pašalintas",
     staffMe:"jūs", emailTaken:"Toks el. paštas jau naudojamas", badName:"Įrašykite vardą", demoOnly:"Veikia tik tikroje svetainėje",
-    worksK:"Meistrės Viktorijos darbai", worksBig:"Darbai", worksIt:"ir atsiliepimai", worksItPh:"iš arti", stPeriod:"Laikotarpis", p30:"30 d.", pMonth:"Šis mėnuo", pYear:"Šie metai", pAll:"Viskas",
+    worksK:"Mūsų darbai", worksBig:"Darbai", worksIt:"ir atsiliepimai", worksItPh:"iš arti", stPeriod:"Laikotarpis", p30:"30 d.", pMonth:"Šis mėnuo", pYear:"Šie metai", pAll:"Viskas",
     stRedeemed:"Panaudota suma", stUnpaid:"Laukia apmokėjimo", stExpiring:"Baigiasi per 30 d.", stExpired:"Nebegalioja nepanaudota", stAvg:"Vidutinis kuponas",
     stSplit:"internetu {a} · salone {b}", stFull:"{n} panaudoti iki galo", stNowAll:"dabar, visi kuponai", stRedN:"nurašymų: {n}",
     mailT:"El. laiškai", m_buyer:"Pirkėjui", m_recipient:"Gavėjui", m_reminder:"Priminimas apie galiojimą", m_staff:"Pranešimas salonui",
@@ -850,14 +852,14 @@ const I18N = {
     noQr:"QR kodas nerastas nuotraukoje", notFound:"Kuponas {c} nerastas", by:"",
     navCheck:"Likutis", delivery:"Pristatymas", dMe:"Gausiu aš", dMeD:"Kuponas iškart ateis į jūsų el. paštą — galėsite atsispausdinti ar persiųsti.",
     dRec:"Siųsti gavėjui", dRecD:"Išsiųsime gavėjui jūsų pasirinktą dieną, pvz., gimtadienio rytą.", dEmail:"Gavėjo el. paštas", dDate:"Siuntimo diena",
-    errRecEmail:"Įveskite gavėjo el. paštą", tr1:"Saugus mokėjimas", tr2:"Kuponas iškart", tr3:"Galioja 12 mėn.",
+    errRecEmail:"Įveskite gavėjo el. paštą", tr1:"Saugus mokėjimas", tr2:"Kuponas iškart", tr3:"Galioja {{vouchers.validMonths}} mėn.",
     occ:[["🎂","Gimtadienis","Su gimtadieniu! Skirk sau laiko ir pasilepink."],["🎄","Kalėdos","Gražių švenčių! Tegul naujieji metai būna gražūs."],["💝","Meilė","Tau — su meile. Tu nusipelnei pačio geriausio."],["🌷","Mamai","Ačiū, mama, už viską. Šis laikas — tik tau."],["🙏","Ačiū","Ačiū, kad esi. Skirk šią akimirką sau."],["✨","Šiaip sau","Šiaip sau, nes esi nuostabi."]],
     k4:"03 — Likutis", chkBig:"Kupono", chkIt:"likutis", chkText:"Įveskite kodą iš kupono ir pamatysite, kiek liko ir iki kada jis galioja.", chkBtn:"Tikrinti",
     chkNone:"Kuponas su tokiu kodu nerastas", chkLeft:"liko", chkUntil:"Galioja iki", chkBook:"Registruotis",
     k5:"04 — Klausimai", faqIt:"dažni klausimai",
-    faq:[["Kiek laiko galioja kuponas?","12 mėnesių nuo įsigijimo dienos. Galiojimo data nurodyta kupone ir matoma skiltyje „Likutis“."],
-         ["Ar galima kuponą panaudoti dalimis?","Taip. Po procedūros meistrė nurašo jos kainą, o likutis lieka kupone kitam apsilankymui."],
-         ["Kaip užsiregistruoti su kuponu?","Užsiregistruokite įprastai per Treatwell, o atvykę parodykite kupono QR kodą arba pasakykite kodą."],
+    faq:[["Kiek laiko galioja kuponas?","{{vouchers.validMonths}} mėn. nuo įsigijimo dienos. Galiojimo data nurodyta kupone ir matoma skiltyje „Likutis“."],
+         ["Ar galima kuponą panaudoti dalimis?","Taip. Po procedūros nurašome jos kainą, o likutis lieka kupone kitam apsilankymui."],
+         ["Kaip užsiregistruoti su kuponu?","Užsiregistruokite įprastai per {{booking.label|js}}, o atvykę parodykite kupono QR kodą arba pasakykite kodą."],
          ["Kaip kuponą gaus gavėjas?","Galite jį gauti patys ir atsispausdinti ar persiųsti, arba pasirinkti, kad išsiųstume gavėjui konkrečią dieną."],
          ["Ar galima pratęsti galiojimą?","Ne. Kupono galiojimas nepratęsiamas, todėl panaudokite jį iki nurodytos datos."],
          ["O jei kupono sumos nepakanka procedūrai?","Skirtumą sumokėkite vietoje, salone."],
@@ -865,27 +867,27 @@ const I18N = {
     download:"Atsisiųsti", dlErr:"Nepavyko atsisiųsti", next:"Toliau", sendOn:"Bus išsiųsta {email} {date} (testiniame režime laiškai nesiunčiami).",
     chartT:"Pardavimai · 30 d.", feedT:"Paskutiniai nurašymai", noFeed:"Nurašymų dar nebuvo", newV:"+ Naujas kuponas", csv:"CSV",
     sortNew:"Naujausi", sortOld:"Seniausi", sortBal:"Didžiausias likutis", sortExp:"Greitai baigsis",
-    f_void:"Anuliuoti", f_unpaid:"Neapmokėti", payGo:"Nukreipiama į apmokėjimą…", payErr:"Nepavyko pradėti apmokėjimo. Bandykite dar kartą.", payCancelled:"Apmokėjimas atšauktas", paidOk:"Apmokėta! Jūsų kupono kodas: {code}. Atsisiųskite arba atsispausdinkite kuponą.", paidWait:"Mokėjimas apdorojamas. Kupono kodas: {code}. Jis įsigalios per kelias minutes.", cardNote:"Saugiai apmokėsite kortele, Apple Pay arba Google Pay. Po apmokėjimo kuponas iškart galios.", terms:"Nepanaudotą internetu pirktą kuponą galima grąžinti per 14 dienų nuo pirkimo. Vėliau kupono suma negrąžinama ir nekeičiama į grynuosius pinigus. Kupono galiojimas nepratęsiamas. Jei kupono sumos nepakanka procedūrai, skirtumą reikia sumokėti vietoje.", badLoginEmail:"Neteisingas el. paštas arba slaptažodis", s_unpaid:"Laukia apmokėjimo", unpaidNote:"Užsakyta internetu, bet dar neapmokėta. Kai klientas sumokės, pažymėkite kuponą apmokėtu — tada jį bus galima naudoti.", markPaid:"Pažymėti apmokėtu", paidQ:"Patvirtinti, kad už {c} gauta {a}?", paidDone:"Kuponas apmokėtas ir galioja", notMaster:"Ši paskyra neturi meistro teisių", order:"Užsakyti", liveNote:"Kuponas įsigalios, kai meistrė patvirtins apmokėjimą. Su jumis susisieksime el. paštu dėl atsiskaitymo. Neapmokėtas užsakymas po 7 dienų atšaukiamas.", doneLive:"Užsakymas priimtas! Kupono kodas: {code}. Kuponas įsigalios, kai meistrė patvirtins apmokėjimą — susisieksime adresu {email}.", s_void:"Anuliuotas", extend:"+3 mėn.", extended:"Pratęsta iki {d}", voidB:"Anuliuoti", voidQ:"Anuliuoti kuponą {c}? Juo nebebus galima atsiskaityti.", voided:"Kuponas anuliuotas", restore:"Atkurti", restored:"Kuponas atkurtas",
+    f_void:"Anuliuoti", f_unpaid:"Neapmokėti", payGo:"Nukreipiama į apmokėjimą…", payErr:"Nepavyko pradėti apmokėjimo. Bandykite dar kartą.", payCancelled:"Apmokėjimas atšauktas", paidOk:"Apmokėta! Jūsų kupono kodas: {code}. Atsisiųskite arba atsispausdinkite kuponą.", paidWait:"Mokėjimas apdorojamas. Kupono kodas: {code}. Jis įsigalios per kelias minutes.", cardNote:"Saugiai apmokėsite kortele, Apple Pay arba Google Pay. Po apmokėjimo kuponas iškart galios.", terms:"Nepanaudotą internetu pirktą kuponą galima grąžinti per 14 dienų nuo pirkimo. Vėliau kupono suma negrąžinama ir nekeičiama į grynuosius pinigus. Kupono galiojimas nepratęsiamas. Jei kupono sumos nepakanka procedūrai, skirtumą reikia sumokėti vietoje.", badLoginEmail:"Neteisingas el. paštas arba slaptažodis", s_unpaid:"Laukia apmokėjimo", unpaidNote:"Užsakyta internetu, bet dar neapmokėta. Kai klientas sumokės, pažymėkite kuponą apmokėtu — tada jį bus galima naudoti.", markPaid:"Pažymėti apmokėtu", paidQ:"Patvirtinti, kad už {c} gauta {a}?", paidDone:"Kuponas apmokėtas ir galioja", notMaster:"Ši paskyra neturi meistro teisių", order:"Užsakyti", liveNote:"Kuponas įsigalios, kai patvirtinsime apmokėjimą. Su jumis susisieksime el. paštu dėl atsiskaitymo. Neapmokėtas užsakymas po 7 dienų atšaukiamas.", doneLive:"Užsakymas priimtas! Kupono kodas: {code}. Kuponas įsigalios, kai patvirtinsime apmokėjimą — susisieksime adresu {email}.", s_void:"Anuliuotas", extend:"+3 mėn.", extended:"Pratęsta iki {d}", voidB:"Anuliuoti", voidQ:"Anuliuoti kuponą {c}? Juo nebebus galima atsiskaityti.", voided:"Kuponas anuliuotas", restore:"Atkurti", restored:"Kuponas atkurtas",
     newT:"Naujas kuponas", newD:"Kuponas, parduotas salone (grynais ar kortele). Jis atsiras sąraše ir gaus kodą bei QR.", vtype:"Tipas", byAmount:"Suma", byService:"Procedūra",
     payM:"Apmokėjimas", payCash:"Grynais", payCard:"Kortele salone", payOnline:"Internetu", payGift:"Dovana / akcija", create:"Sukurti kuponą", created:"Sukurtas {c}", buyerOpt:"Pirkėjo el. paštas (nebūtina)", srcSalon:"Salone", srcOnline:"Internetu", source:"Šaltinis",
     perDay:"{n} vnt. · {s}", vouchersN:"vnt."
   },
   ru: {
-    logoSub:"МАСТЕР ВИКТОРИЯ", navPrices:"Цены", navGift:"Сертификат", navHow:"Как это работает", bookNow:"Записаться", admin:"Админ", adminArrow:"Админ-панель →",
+    logoSub:"{{brand.subtitle.ru|js}}", navPrices:"Цены", navGift:"Сертификат", navHow:"Как это работает", bookNow:"Записаться", admin:"Админ", adminArrow:"Админ-панель →",
     eyebrow:"Подарочные сертификаты", heroBig:"Подари", heroIt:"красоту", heroText:"Запишитесь на процедуру или подарите элегантный сертификат.",
-    heroCta:"Выбрать сертификат", stampFrom:"от", stampGift:"подарок", vert:"ПОДАРОЧНЫЕ СЕРТИФИКАТЫ · 12 МЕСЯЦЕВ",
+    heroCta:"Выбрать сертификат", stampFrom:"от", stampGift:"подарок", vert:"ПОДАРОЧНЫЕ СЕРТИФИКАТЫ · {{vouchers.validMonths}} МЕС.",
     marquee:["Волосы","Брови","Ресницы","Ногти","Лицо","Массаж"],
-    k1:"01 — Цены", chooseBig:"Цены", chooseIt:"& подарки", chooseText:"Подарите конкретную процедуру или свободную сумму. Записаться можно сразу через Treatwell.",
+    k1:"01 — Цены", chooseBig:"Цены", chooseIt:"& подарки", chooseText:"Подарите конкретную процедуру или свободную сумму. Записаться можно сразу через {{booking.label|js}}.",
     tabService:"Процедура", tabAmount:"Сумма", all:"Все", search:"Найти процедуру…",
-    amountNote:"Сумму можно потратить на любую услугу салона.", custom:"Другая сумма", minAmt:"Минимальная сумма — 40\u00a0€",
+    amountNote:"Сумму можно потратить на любую услугу салона.", custom:"Другая сумма", minAmt:"Минимальная сумма — {{vouchers.min}}\u00a0€",
     giftK:"Подарочный сертификат", giftBig:"Сумма", k2:"Персональный сертификат", persBig:"Ваши", persIt:"слова", cap:"Превью обновляется сразу",
     fTo:"Кому", fFrom:"От кого", fMsg:"Пожелание", fDesign:"Дизайн", total:"Итого", buy:"Купить сертификат", choose:"Выберите подарок",
     voucher:"Подарочный сертификат", forWhom:"Кому", min:"мин.", from:"от", gift:"Подарить", gifted:"Выбрано ✓",
-    emptyT:"Прайс скоро появится", emptyD:"Пока можно подарить сертификат на сумму или записаться через Treatwell.",
-    bookAll:"Записаться через Treatwell", toAmount:"Сертификат на сумму",
+    emptyT:"Прайс скоро появится", emptyD:"Пока можно подарить сертификат на сумму или записаться через {{booking.label|js}}.",
+    bookAll:"Записаться через {{booking.label|js}}", toAmount:"Сертификат на сумму",
     k3:"02 — Как это работает", howBig:"Три", howIt:"шага",
-    s1t:"Выберите сумму", s1d:"Нажмите «Выбрать сертификат» и укажите сумму от 40\u00a0€.", s2t:"Подпишите", s2d:"Впишите имя получателя, пожелание и выберите дизайн сертификата.", s3t:"Дарите", s3d:"Вы получите сертификат с уникальным кодом и QR. Его можно скачать, распечатать или отправить получателю. У мастера достаточно показать QR-код.",
-    fExplore:"РАЗДЕЛЫ", fBook:"ЗАПИСЬ", fGift:"СЕРТИФИКАТ", perk1:"Действует 12 мес.", perk2:"Уникальный код и QR", perk3:"Можно распечатать",
+    s1t:"Выберите сумму", s1d:"Нажмите «Выбрать сертификат» и укажите сумму от {{vouchers.min}}\u00a0€.", s2t:"Подпишите", s2d:"Впишите имя получателя, пожелание и выберите дизайн сертификата.", s3t:"Дарите", s3d:"Вы получите сертификат с уникальным кодом и QR. Его можно скачать, распечатать или отправить получателю. В салоне достаточно показать QR-код.",
+    fExplore:"РАЗДЕЛЫ", fBook:"ЗАПИСЬ", fGift:"СЕРТИФИКАТ", perk1:"Действует {{vouchers.validMonths}} мес.", perk2:"Уникальный код и QR", perk3:"Можно распечатать",
     mockFoot:"Тестовый режим: оплата не подключена",
     payTitle:"Оплата", mockNote:"Тестовый режим — деньги не списываются", pEmail:"Email", pCard:"Номер карты", cancel:"Отмена", pay:"Оплатить",
     doneTitle:"Спасибо!", doneText:"Код сертификата: {code}. Тестовый режим: письмо на {email} не отправляется.",
@@ -897,7 +899,7 @@ const I18N = {
     staffT:"Мастера", staffAddT:"Добавить мастера", staffName:"Имя", staffEmail:"Email (для входа)", staffPass:"Временный пароль (мин. 8)", staffAddB:"Добавить",
     staffAdded:"Мастер добавлен. Передайте ему email и пароль.", staffRemoveQ:"Удалить мастера {n}? Он больше не сможет войти.", staffRemoveB:"Удалить", staffRemoved:"Мастер удалён",
     staffMe:"вы", emailTaken:"Такой email уже используется", badName:"Введите имя", demoOnly:"Работает только на настоящем сайте",
-    worksK:"Работы мастера Виктории", worksBig:"Работы", worksIt:"и отзывы", worksItPh:"крупным планом", stPeriod:"Период", p30:"30 дней", pMonth:"Этот месяц", pYear:"Этот год", pAll:"Всё время",
+    worksK:"Наши работы", worksBig:"Работы", worksIt:"и отзывы", worksItPh:"крупным планом", stPeriod:"Период", p30:"30 дней", pMonth:"Этот месяц", pYear:"Этот год", pAll:"Всё время",
     stRedeemed:"Использовано на сумму", stUnpaid:"Ждут оплаты", stExpiring:"Истекают за 30 дней", stExpired:"Истекли неиспользованными", stAvg:"Средний сертификат",
     stSplit:"онлайн {a} · в салоне {b}", stFull:"{n} использованы полностью", stNowAll:"сейчас, все сертификаты", stRedN:"списаний: {n}",
     mailT:"Письма", m_buyer:"Покупателю", m_recipient:"Получателю", m_reminder:"Напоминание о сроке", m_staff:"Уведомление салону",
@@ -918,14 +920,14 @@ const I18N = {
     noQr:"На фото не найден QR-код", notFound:"Сертификат {c} не найден", by:"",
     navCheck:"Остаток", delivery:"Доставка", dMe:"Получу сам(а)", dMeD:"Сертификат сразу придёт вам на email — можно распечатать или переслать.",
     dRec:"Отправить получателю", dRecD:"Отправим получателю в выбранный день, например утром в день рождения.", dEmail:"Email получателя", dDate:"Дата отправки",
-    errRecEmail:"Введите email получателя", tr1:"Безопасная оплата", tr2:"Сертификат сразу", tr3:"Действует 12 мес.",
+    errRecEmail:"Введите email получателя", tr1:"Безопасная оплата", tr2:"Сертификат сразу", tr3:"Действует {{vouchers.validMonths}} мес.",
     occ:[["🎂","День рождения","С днём рождения! Удели время себе и побалуй себя."],["🎄","Рождество","Счастливых праздников! Пусть новый год будет прекрасным."],["💝","Любовь","Тебе — с любовью. Ты заслуживаешь самого лучшего."],["🌷","Маме","Спасибо, мама, за всё. Это время — только для тебя."],["🙏","Спасибо","Спасибо, что ты есть. Подари себе этот момент."],["✨","Просто так","Просто так, потому что ты прекрасна."]],
     k4:"03 — Остаток", chkBig:"Остаток", chkIt:"сертификата", chkText:"Введите код с сертификата — покажем, сколько осталось и до какого числа он действует.", chkBtn:"Проверить",
     chkNone:"Сертификат с таким кодом не найден", chkLeft:"осталось", chkUntil:"Действует до", chkBook:"Записаться",
     k5:"04 — Вопросы", faqIt:"частые вопросы",
-    faq:[["Сколько действует сертификат?","12 месяцев со дня покупки. Дата указана на сертификате и видна в разделе «Остаток»."],
-         ["Можно ли использовать сертификат частями?","Да. После процедуры мастер списывает её стоимость, а остаток сохраняется для следующего визита."],
-         ["Как записаться по сертификату?","Запишитесь как обычно через Treatwell, а в салоне покажите QR-код сертификата или назовите код."],
+    faq:[["Сколько действует сертификат?","{{vouchers.validMonths}} мес. со дня покупки. Дата указана на сертификате и видна в разделе «Остаток»."],
+         ["Можно ли использовать сертификат частями?","Да. После процедуры мы списываем её стоимость, а остаток сохраняется для следующего визита."],
+         ["Как записаться по сертификату?","Запишитесь как обычно через {{booking.label|js}}, а в салоне покажите QR-код сертификата или назовите код."],
          ["Как сертификат получит получатель?","Можно получить его самому и распечатать или переслать, или выбрать отправку получателю в конкретный день."],
          ["Можно ли продлить срок?","Нет. Срок действия сертификата не продлевается, поэтому используйте его до указанной даты."],
          ["А если суммы сертификата не хватает на услугу?","Разницу нужно доплатить на месте, в салоне."],
@@ -933,13 +935,15 @@ const I18N = {
     download:"Скачать", dlErr:"Не удалось скачать", next:"Далее", sendOn:"Будет отправлен на {email} {date} (в тестовом режиме письма не отправляются).",
     chartT:"Продажи · 30 дней", feedT:"Последние списания", noFeed:"Списаний ещё не было", newV:"+ Новый сертификат", csv:"CSV",
     sortNew:"Сначала новые", sortOld:"Сначала старые", sortBal:"Больший остаток", sortExp:"Скоро истекают",
-    f_void:"Аннулированы", f_unpaid:"Не оплачены", payGo:"Переходим к оплате…", payErr:"Не удалось начать оплату. Попробуйте ещё раз.", payCancelled:"Оплата отменена", paidOk:"Оплачено! Код сертификата: {code}. Скачайте или распечатайте сертификат.", paidWait:"Платёж обрабатывается. Код сертификата: {code}. Он начнёт действовать через несколько минут.", cardNote:"Безопасная оплата картой, Apple Pay или Google Pay. Сертификат действует сразу после оплаты.", terms:"Неиспользованный сертификат, купленный онлайн, можно вернуть в течение 14 дней с покупки. Позже сумма не возвращается и не обменивается на наличные. Срок действия не продлевается. Если суммы сертификата не хватает на процедуру, разницу нужно доплатить на месте.", badLoginEmail:"Неверный email или пароль", s_unpaid:"Ждёт оплаты", unpaidNote:"Заказан онлайн, но ещё не оплачен. Когда клиент заплатит, отметьте сертификат оплаченным — тогда им можно будет пользоваться.", markPaid:"Отметить оплаченным", paidQ:"Подтвердить, что за {c} получено {a}?", paidDone:"Сертификат оплачен и действует", notMaster:"У этого аккаунта нет прав мастера", order:"Заказать", liveNote:"Сертификат начнёт действовать, когда мастер подтвердит оплату. Мы свяжемся с вами по email насчёт оплаты. Неоплаченный заказ отменяется через 7 дней.", doneLive:"Заказ принят! Код сертификата: {code}. Сертификат начнёт действовать после подтверждения оплаты — напишем на {email}.", s_void:"Аннулирован", extend:"+3 мес.", extended:"Продлён до {d}", voidB:"Аннулировать", voidQ:"Аннулировать сертификат {c}? Им больше нельзя будет расплатиться.", voided:"Сертификат аннулирован", restore:"Восстановить", restored:"Сертификат восстановлен",
+    f_void:"Аннулированы", f_unpaid:"Не оплачены", payGo:"Переходим к оплате…", payErr:"Не удалось начать оплату. Попробуйте ещё раз.", payCancelled:"Оплата отменена", paidOk:"Оплачено! Код сертификата: {code}. Скачайте или распечатайте сертификат.", paidWait:"Платёж обрабатывается. Код сертификата: {code}. Он начнёт действовать через несколько минут.", cardNote:"Безопасная оплата картой, Apple Pay или Google Pay. Сертификат действует сразу после оплаты.", terms:"Неиспользованный сертификат, купленный онлайн, можно вернуть в течение 14 дней с покупки. Позже сумма не возвращается и не обменивается на наличные. Срок действия не продлевается. Если суммы сертификата не хватает на процедуру, разницу нужно доплатить на месте.", badLoginEmail:"Неверный email или пароль", s_unpaid:"Ждёт оплаты", unpaidNote:"Заказан онлайн, но ещё не оплачен. Когда клиент заплатит, отметьте сертификат оплаченным — тогда им можно будет пользоваться.", markPaid:"Отметить оплаченным", paidQ:"Подтвердить, что за {c} получено {a}?", paidDone:"Сертификат оплачен и действует", notMaster:"У этого аккаунта нет прав мастера", order:"Заказать", liveNote:"Сертификат начнёт действовать, когда мы подтвердим оплату. Мы свяжемся с вами по email насчёт оплаты. Неоплаченный заказ отменяется через 7 дней.", doneLive:"Заказ принят! Код сертификата: {code}. Сертификат начнёт действовать после подтверждения оплаты — напишем на {email}.", s_void:"Аннулирован", extend:"+3 мес.", extended:"Продлён до {d}", voidB:"Аннулировать", voidQ:"Аннулировать сертификат {c}? Им больше нельзя будет расплатиться.", voided:"Сертификат аннулирован", restore:"Восстановить", restored:"Сертификат восстановлен",
     newT:"Новый сертификат", newD:"Сертификат, проданный в салоне (наличными или картой). Он появится в списке и получит код и QR.", vtype:"Тип", byAmount:"Сумма", byService:"Процедура",
     payM:"Оплата", payCash:"Наличными", payCard:"Картой в салоне", payOnline:"Онлайн", payGift:"Подарок / акция", create:"Создать сертификат", created:"Создан {c}", buyerOpt:"Email покупателя (необязательно)", srcSalon:"В салоне", srcOnline:"Онлайн", source:"Источник",
     perDay:"{n} шт. · {s}", vouchersN:"шт."
   }
 };
-const AMOUNTS = [40, 50, 75, 100, 150];
+const SALON = JSON.parse(document.getElementById('salon-config').textContent);
+const VC = SALON.vouchers; // min, max, amounts, validMonths
+const AMOUNTS = VC.amounts;
 I18N.lt.badCode = 'Kodas turi būti GIFT-XXXX-XXXX'; I18N.ru.badCode = 'Код должен быть вида GIFT-XXXX-XXXX';
 Object.assign(I18N.lt, { prB:'Kainos', galB:'Galerija', saved:'Išsaugota', saving:'Saugoma…',
   galT:'Galerija', galNote:'Nuotraukos rodomos pagrindiniame puslapyje, bloke „Darbai“. Pakeitimai išsaugomi iš karto.', galUp:'+ Įkelti nuotraukas',
@@ -957,7 +961,9 @@ Object.assign(I18N.ru, { prB:'Цены', galB:'Галерея', saved:'Сохр�
   prFrom:'от', prAddSvc:'+ Услуга', prAddCat:'+ Категория', prSave:'Сохранить', prDelCatQ:'Удалить категорию «{n}» со всеми услугами?',
   prUnsaved:'Изменения не сохранены. Закрыть без сохранения?', prDiscard:'Закрыть', prBad:'Заполните названия и цены (отмечено красным)',
   prRu:'Название по-русски', prDescRu:'Описание по-русски (необязательно)', prUp:'Выше', prDown:'Ниже', prDel:'Удалить', prNewCat:'Новая категория' });
-const DEFAULT_BOOKING = 'https://book.treatwell.lt/salonas/397163/meniu';
+const DEFAULT_BOOKING = SALON.booking.url;
+// Per-salon text overrides from salon.config.json → texts.lt / texts.ru
+for (const l of ['lt','ru']) Object.assign(I18N[l], (SALON.texts || {})[l] || {});
 const state = { lang: localGet('lang') || 'lt', mode: 'service', cat: null, q: '', service: null, amount: null, design: 'noir', menu: null,
   vouchers: [], aFilter: 'all', aQuery: '', aSort: 'new', openCode: null, me: undefined, occ: null, delivery: 'me' };
 const $ = s => document.querySelector(s);
@@ -1052,7 +1058,7 @@ const store = {
       const r = await fetch('api/orders', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) });
       const j = await r.json(); if (!r.ok) throw j.error || 'error'; return j;
     }
-    const months = Number(body.validMonths) || 12;
+    const months = Number(body.validMonths) || VC.validMonths;
     const until = new Date(); until.setMonth(until.getMonth() + months);
     const v = { code: newCode(), title: body.title, amount: body.amountValue, serviceId: body.serviceId || null, recipient: body.recipient || '', from: body.from || '',
       message: body.message || '', design: body.design || 'noir', buyerEmail: body.buyerEmail || '', createdAt: new Date().toISOString(),
@@ -1230,9 +1236,9 @@ function renderServices(){
 }
 function renderAmounts(){
   $('#amounts').innerHTML = AMOUNTS.map(a => `<button class="amt" data-amount="${a}" aria-pressed="false"><b>${a} €</b><span>${t('voucher')}</span></button>`).join('') +
-    `<label class="amt custom"><span>${t('custom')}</span><input id="customAmt" type="number" min="40" max="1000" step="5" placeholder="nuo 40" value="${state.amount && !state.service && !AMOUNTS.includes(state.amount) ? state.amount : ''}"><small class="amt-err" id="amtErr" hidden>${t('minAmt')}</small></label>`;
-  $('#customAmt').placeholder = state.lang === 'ru' ? 'от 40' : 'nuo 40';
-  $('#customAmt').oninput = e => { const v = Math.round(+e.target.value); state.service = null; state.amount = v >= 40 && v <= 1000 ? v : null; $('#amtErr').hidden = !(e.target.value && v < 40); renderServices(); renderPreview(); renderMbar(); };
+    `<label class="amt custom"><span>${t('custom')}</span><input id="customAmt" type="number" min="${VC.min}" max="${VC.max}" step="5" placeholder="nuo ${VC.min}" value="${state.amount && !state.service && !AMOUNTS.includes(state.amount) ? state.amount : ''}"><small class="amt-err" id="amtErr" hidden>${t('minAmt')}</small></label>`;
+  $('#customAmt').placeholder = state.lang === 'ru' ? 'от ' + VC.min : 'nuo ' + VC.min;
+  $('#customAmt').oninput = e => { const v = Math.round(+e.target.value); state.service = null; state.amount = v >= VC.min && v <= VC.max ? v : null; $('#amtErr').hidden = !(e.target.value && v < VC.min); renderServices(); renderPreview(); renderMbar(); };
 }
 function qrPayload(code){
   // Real server: the QR opens the admin panel straight on this voucher. Preview: the QR holds the code itself.
@@ -1243,7 +1249,7 @@ function qrSvg(text){
   const q = qrcode(0, 'M'); q.addData(text); q.make();
   return q.createSvgTag({ cellSize: 4, margin: 0, scalable: true });
 }
-const RU_NAMES = {"Blakstienų laminavimas": "Ламинирование ресниц", "M / L linkis": "Изгиб M / L", "Express priauginimas": "Экспресс-наращивание", "Blakstienų nuėmimas": "Снятие ресниц", "Priauginimas paruoštais kuokšteliais": "Наращивание готовыми пучками", "Blakstienų laminavimas su dažymu": "Ламинирование ресниц с окрашиванием", "Korekcija (po 4 savaičių)": "Коррекция (через 4 недели)", "Pilnas priauginimas": "Полное наращивание", "Korekcija po kito meistro": "Коррекция после другого мастера", "Priauginimas + nuėmimas": "Наращивание + снятие", "Korekcija": "Коррекция", "Priauginimas": "Наращивание", "Nuėmimas": "Снятие", "Nuėmimas po kito meistro": "Снятие после другого мастера", "Antakių laminavimas": "Ламинирование бровей", "Antakių laminavimas su dažymu": "Ламинирование бровей с окрашиванием"};
+const RU_NAMES = {}; // optional LT → RU service names; usually nameRu is set in the price editor
 // Russian name of a category/service: own nameRu, else a known translation, else the Lithuanian name.
 function ruOf(o, f = 'name'){ const v = o?.[f + 'Ru']; return v && String(v).trim() ? v : RU_NAMES[String(o?.[f] || '').trim()] || ''; }
 function loc(o, f = 'name'){ return state.lang === 'ru' ? ruOf(o, f) || o?.[f] || '' : o?.[f] || ''; }
@@ -1252,7 +1258,7 @@ function addrLines(){ const a = salonAddr(); const i = a.indexOf(', '); return !
 function mapsUrl(){ return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(salonAddr()); }
 function cardHTML(o){
   const who = [o.to ? t('forWhom') + ': ' + esc(o.to) : '', esc(o.from || '')].filter(Boolean).join(' · ');
-  return `<div class="v-top"><div class="v-logo">${esc(state.menu.salon?.name || 'Grin Lashes')}<small>${t('logoSub')}</small></div>${addrLines().length ? `<div class="v-addr">${addrLines().map(esc).join('<br>')}</div>` : ''}</div>
+  return `<div class="v-top"><div class="v-logo">${esc(state.menu.salon?.name || '{{brand.name|js}}')}<small>${t('logoSub')}</small></div>${addrLines().length ? `<div class="v-addr">${addrLines().map(esc).join('<br>')}</div>` : ''}</div>
     <div class="v-mid"><div class="v-title">${esc(o.title)}</div><div class="v-amount">${money(o.amount)}</div></div>
     <div class="v-bot"><div style="min-width:0"><div class="v-msg">${o.message ? '“' + esc(o.message) + '”' : ''}</div>${who ? `<div class="v-who">${who}</div>` : ''}</div>
     <div class="v-qr">${o.code ? `<div class="qr">${qrSvg(o.qr || qrPayload(o.code))}</div>` : '<div class="qr ph"></div>'}<div class="v-code">${esc(o.code || 'GIFT-XXXX-XXXX')}</div></div></div>`;
@@ -1275,8 +1281,9 @@ function renderPreview(){
   renderMbar();
 }
 function renderStatic(){
-  $('#heroCard').innerHTML = cardHTML({ title: t('voucher'), amount: 50, message: t('heroMsg'), code:'GIFT-DEMO-2026', qr:'GIFT-DEMO-2026' });
-  const m = state.menu, name = m.salon?.name || 'Grin Lashes';
+  document.querySelectorAll('.ig-link').forEach(a => a.hidden = !SALON.instagram);
+  $('#heroCard').innerHTML = cardHTML({ title: t('voucher'), amount: VC.heroAmount || VC.amounts[1] || VC.min, message: t('heroMsg'), code:'GIFT-DEMO-2026', qr:'GIFT-DEMO-2026' });
+  const m = state.menu, name = m.salon?.name || '{{brand.name|js}}';
   $('#brandName').textContent = name;
   $('#footBrand').textContent = name;
   $('#footSalon').textContent = m.salon?.address || '';
@@ -1355,7 +1362,7 @@ async function checkBalance(raw){
 }
 
 /* ---- voucher as an image (download) ---- */
-const DESIGNS = { noir:['#2a2524','#0b0a0a','#f3eee9','#f2b9cc'], blush:['#f6c9d8','#d98ba6','#2a1219','#2a1219'], bone:['#f6f2ed','#d9cfc5','#151313','#151313'], mocha:['#6e5e57','#2e2522','#f3eee9','#f3eee9'] };
+const DESIGNS = { noir:['#2a2524','#0b0a0a','#f3eee9','{{colors.accent}}'], blush:['{{colors.accent}}','{{colors.accentDeep}}','{{colors.accentInk}}','{{colors.accentInk}}'], bone:['#f6f2ed','#d9cfc5','#151313','#151313'], mocha:['#6e5e57','#2e2522','#f3eee9','#f3eee9'] };
 async function voucherBlob(v){
   try { await document.fonts.ready; } catch {}
   const W = 1600, H = 988, c = document.createElement('canvas'); c.width = W; c.height = H;
@@ -1365,7 +1372,7 @@ async function voucherBlob(v){
   x.strokeStyle = D[2]; x.globalAlpha = .25; x.lineWidth = 2; x.beginPath(); x.roundRect(36, 36, W - 72, H - 72, 10); x.stroke(); x.globalAlpha = 1;
   const sp = px => { if ('letterSpacing' in x) x.letterSpacing = px; };
   x.fillStyle = D[2]; x.textBaseline = 'alphabetic';
-  sp('8px'); x.font = '400 44px "Bodoni Moda", Georgia, serif'; x.fillText(String(state.menu.salon?.name || 'Grin Lashes').toUpperCase(), 90, 140);
+  sp('8px'); x.font = '400 44px "Bodoni Moda", Georgia, serif'; x.fillText(String(state.menu.salon?.name || '{{brand.name|js}}').toUpperCase(), 90, 140);
   sp('7px'); x.font = '400 20px "Space Mono", monospace'; x.globalAlpha = .7; x.fillText(t('logoSub').toUpperCase(), 90, 178);
   sp('4px'); x.textAlign = 'right'; addrLines().forEach((l, i) => x.fillText(l.toUpperCase(), W - 90, 122 + i * 32)); x.textAlign = 'left'; x.globalAlpha = 1;
   sp('0px'); x.textAlign = 'right'; x.fillStyle = D[3]; x.font = '400 190px Anton, Impact, sans-serif'; x.fillText(money(v.amount), W - 90, 500);
@@ -1762,7 +1769,7 @@ function renderGalleryDrawer(){
     $('#galIn').disabled = true;
     for (let i = 0; i < files.length; i++) {
       st.textContent = t('galUploading').replace('{i}', i + 1).replace('{n}', files.length);
-      try { added.push({ src: await store.uploadPhoto(await shrinkPhoto(files[i])), alt: 'Blakstienų darbas – ' + (state.menu.salon?.name || 'Grin Lashes') }); }
+      try { added.push({ src: await store.uploadPhoto(await shrinkPhoto(files[i])), alt: 'Darbas – ' + (state.menu.salon?.name || '{{brand.name|js}}') }); }
       catch (x) { toast(x === 'badImage' ? t('badImage').replace('{f}', files[i].name) : t('upErr')); }
     }
     $('#galIn').disabled = false;
@@ -1864,7 +1871,7 @@ function renderNewDrawer(){
       <div class="field"><label class="mono" for="nEmail">${t('buyerOpt')}</label><input id="nEmail" type="email"></div>
       <div class="two" style="gap:16px">
         <div class="field"><label class="mono" for="nPay">${t('payM')}</label><select id="nPay"><option value="cash">${t('payCash')}</option><option value="card">${t('payCard')}</option><option value="gift">${t('payGift')}</option></select></div>
-        <div class="field"><label class="mono" for="nValid">${t('validUntil')}</label><select id="nValid">${[3,6,12,24].map(m => `<option value="${m}" ${m === 12 ? 'selected' : ''}>${m} ${state.lang === 'ru' ? 'мес.' : 'mėn.'}</option>`).join('')}</select></div>
+        <div class="field"><label class="mono" for="nValid">${t('validUntil')}</label><select id="nValid">${[...new Set([3,6,12,24,VC.validMonths])].sort((a,b)=>a-b).map(m => `<option value="${m}" ${m === VC.validMonths ? 'selected' : ''}>${m} ${state.lang === 'ru' ? 'мес.' : 'mėn.'}</option>`).join('')}</select></div>
       </div>
       <div class="field"><label class="mono">${t('fDesign')}</label><div class="seg" id="nDesign">${['noir','blush','bone','mocha'].map(d => `<button type="button" data-nd="${d}" aria-pressed="${(nd.design || 'noir') === d}">${d}</button>`).join('')}</div></div>
       <button class="btn pink" type="submit" id="nBtn">${t('create')}</button>
@@ -2073,7 +2080,7 @@ $('#payForm').onsubmit = async e => {
 };
 
 // qrcode.min.js is deferred: redraw the cards with real QR codes once it has loaded.
-if (typeof qrcode !== 'function') document.querySelector('script[src*="qrcode"]')?.addEventListener('load', () => { renderStatic(); renderPreview(); });
+if (typeof qrcode !== 'function') document.querySelector('script[src*="qrcode"]')?.addEventListener('load', () => { if (state.menu) { renderStatic(); renderPreview(); } });
 (async () => {
   await store.init();
   if (store.mode === 'supa') { try { applySite(JSON.parse(localGet('kpSite') || 'null')); } catch {} }

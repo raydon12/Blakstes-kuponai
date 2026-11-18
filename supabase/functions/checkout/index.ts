@@ -24,13 +24,13 @@ Deno.serve(async (req) => {
     const v = await rpc('kp_pay_info', { p_code: String(code || '') });
     if (!v) return json({ error: 'not_found' }, 404);
     if (v.source !== 'online' || v.status !== 'unpaid') return json({ error: 'not_payable' }, 409);
-    const site = (Deno.env.get('SITE_URL') || 'https://blakstes-kuponai.vercel.app').replace(/\/$/, '');
+    const site = (Deno.env.get('SITE_URL') || '{{site.url|js}}').replace(/\/$/, '');
     const f = new URLSearchParams({
       mode: 'payment',
       'line_items[0][quantity]': '1',
       'line_items[0][price_data][currency]': 'eur',
       'line_items[0][price_data][unit_amount]': String(Math.round(v.amount * 100)),
-      'line_items[0][price_data][product_data][name]': `Dovanų kuponas ${v.amount} € — Grin Lashes`,
+      'line_items[0][price_data][product_data][name]': `Dovanų kuponas ${v.amount} € — {{brand.name|js}}`,
       client_reference_id: v.code,
       'metadata[code]': v.code,
       'payment_intent_data[metadata][code]': v.code,

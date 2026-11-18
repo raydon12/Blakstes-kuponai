@@ -1,4 +1,4 @@
--- Grin Lashes gift vouchers — full schema for its own Supabase project.
+-- {{brand.name}} gift vouchers — full schema for its own Supabase project.
 -- Private schema "kuponai" (not exposed to the API). The site uses only the public kp_* functions.
 -- Masters log in with their own email + password (bcrypt) and get a 30-day session token.
 create extension if not exists pgcrypto with schema extensions;
@@ -29,7 +29,7 @@ create or replace function kuponai.status(d jsonb) returns text language sql sta
     when coalesce((d->>'voided')::boolean, false) then 'void'
     when d->'payment'->>'status' = 'pending' then 'unpaid'
     when kuponai.balance(d) <= 0 then 'used'
-    when (d->>'validUntil')::date < (now() at time zone 'Europe/Vilnius')::date then 'expired'
+    when (d->>'validUntil')::date < (now() at time zone '{{timezone|sql}}')::date then 'expired'
     else 'active' end
 $$;
 
@@ -117,10 +117,10 @@ create or replace function public.kp_create(p jsonb, p_token text default null) 
 declare m text := kuponai.me(p_token); amt numeric; months int; d jsonb; c text; dl jsonb := null;
 begin
   amt := round((p->>'amount')::numeric, case when m is null then 0 else 2 end);
-  if m is null and not (amt between 40 and 1000) then raise exception 'bad_amount'; end if;
+  if m is null and not (amt between {{vouchers.min}} and {{vouchers.max}}) then raise exception 'bad_amount'; end if;
   if m is not null and not (amt between 1 and 5000) then raise exception 'bad_amount'; end if;
   if m is null and coalesce(p->>'buyerEmail','') !~ '^[^@\s]+@[^@\s]+$' then raise exception 'bad_email'; end if;
-  months := case when m is null then 12 else least(36, greatest(1, coalesce((p->>'validMonths')::int, 12))) end;
+  months := case when m is null then {{vouchers.validMonths}} else least(36, greatest(1, coalesce((p->>'validMonths')::int, {{vouchers.validMonths}}))) end;
   if m is null and p->'delivery'->>'mode' = 'recipient' then
     dl := jsonb_build_object('mode','recipient',
       'email', case when p->'delivery'->>'email' ~ '^[^@\s]+@[^@\s]+$' then left(p->'delivery'->>'email',120) end,
@@ -142,7 +142,7 @@ begin
     'payMethod', case when m is null then 'online' when p->>'payMethod' in ('cash','card','gift') then p->>'payMethod' else 'cash' end,
     'soldBy', m, 'delivery', dl,
     'createdAt', to_jsonb(now()),
-    'validUntil', to_char((now() at time zone 'Europe/Vilnius')::date + make_interval(months => months), 'YYYY-MM-DD'),
+    'validUntil', to_char((now() at time zone '{{timezone|sql}}')::date + make_interval(months => months), 'YYYY-MM-DD'),
     'redemptions', '[]'::jsonb, 'log', '[]'::jsonb);
   insert into kuponai.vouchers(code, doc) values (c, d);
   if m is null then return public.kp_lookup(c); end if;

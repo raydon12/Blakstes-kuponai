@@ -1,8 +1,14 @@
 {
-  "name": "blakstes-kuponai",
+  "name": "kuponai-template",
   "version": "1.0.0",
   "private": true,
-  "description": "Gift voucher shop for Grin Lashes: static site on Vercel, data in Supabase",
-  "scripts": { "start": "node server.js" },
-  "engines": { "node": ">=18" }
+  "description": "Gift voucher shop template for salons: static site on Vercel, data in Supabase. Configure in salon.config.json.",
+  "scripts": {
+    "build": "node scripts/build.js",
+    "icons": "python3 scripts/make-icons.py",
+    "preview": "node scripts/build.js && python3 -m http.server 8080 -d dist"
+  },
+  "engines": {
+    "node": ">=18"
+  }
 }

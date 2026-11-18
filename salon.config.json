@@ -1,0 +1,96 @@
+{
+  "_help": "Единственный файл, который нужно менять под нового клиента. Подробности: README.md → «Новый клиент». Поля, начинающиеся с _, сборщик игнорирует.",
+
+  "brand": {
+    "name": "Studija Pavyzdys",
+    "subtitle": { "lt": "GROŽIO STUDIJA", "ru": "СТУДИЯ КРАСОТЫ" },
+    "schemaType": "BeautySalon"
+  },
+
+  "site": {
+    "url": "https://studija-kuponai.vercel.app",
+    "description": {
+      "lt": "Dovanų kuponai Studija Pavyzdys. Kuponas nuo 40 € su QR kodu, galioja 12 mėn.",
+      "ru": "Подарочные сертификаты Studija Pavyzdys. От 40 € с QR-кодом, действует 12 месяцев."
+    }
+  },
+
+  "contacts": {
+    "address": "Studija Pavyzdys, Gedimino pr. 1, Vilnius",
+    "instagram": "",
+    "_instagram": "только имя аккаунта без @, пусто — иконка скрыта"
+  },
+
+  "booking": {
+    "url": "https://www.treatwell.lt/",
+    "label": "Treatwell"
+  },
+
+  "vouchers": {
+    "min": 40,
+    "max": 1000,
+    "amounts": [40, 50, 75, 100, 150],
+    "validMonths": 12,
+    "heroAmount": 50
+  },
+
+  "colors": {
+    "_help": "accent — главный цвет (кнопки, штамп, бегущая строка), accent2 — чуть темнее (наведение), accentInk — текст на accent, designName — название цветного дизайна купона",
+    "accent": "#f2b9cc",
+    "accent2": "#e79bb6",
+    "accentInk": "#2a1219",
+    "designName": "Blush"
+  },
+
+  "texts": {
+    "_help": "Любой текст сайта можно переопределить по ключу из I18N в public/index.html. Пустые {} — оставить стандартные.",
+    "lt": {
+      "marquee": ["Plaukai", "Antakiai", "Blakstienos", "Nagai", "Veidas", "Masažas"],
+      "heroIt": "grožį",
+      "worksK": "Mūsų darbai"
+    },
+    "ru": {
+      "marquee": ["Волосы", "Брови", "Ресницы", "Ногти", "Лицо", "Массаж"],
+      "heroIt": "красоту",
+      "worksK": "Наши работы"
+    }
+  },
+
+  "menu": {
+    "_help": "Стартовый прайс. Потом салон сам правит его в админке (кнопка «Kainos»).",
+    "categories": [
+      {
+        "name": "Procedūros", "nameRu": "Процедуры",
+        "services": [
+          { "id": "s1", "name": "Procedūra 1", "nameRu": "Процедура 1", "price": 50, "priceFrom": false, "description": "" },
+          { "id": "s2", "name": "Procedūra 2", "nameRu": "Процедура 2", "price": 70, "priceFrom": true, "description": "" }
+        ]
+      }
+    ]
+  },
+
+  "seller": {
+    "_help": "Реквизиты для правил и политики конфиденциальности. Пустое поле на сайте показывается жёлтой заглушкой.",
+    "name": "",
+    "code": "",
+    "vat": "",
+    "address": "",
+    "email": "",
+    "phone": "",
+    "provider": "Paslaugas teikia Studija Pavyzdys.",
+    "mailService": "Google (Gmail)"
+  },
+
+  "supabase": {
+    "_help": "Пусто — сайт работает в демо-режиме (купоны только в браузере). key — publishable-ключ (sb_publishable_…).",
+    "url": "",
+    "key": ""
+  },
+
+  "notifications": {
+    "_help": "Как письма подписаны. Секреты (пароли почты) сюда НЕ писать — они задаются в Supabase.",
+    "contact": ""
+  },
+
+  "timezone": "Europe/Vilnius"
+}

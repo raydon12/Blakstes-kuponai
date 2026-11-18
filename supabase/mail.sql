@@ -34,7 +34,7 @@ $$;
 -- Jobs a voucher is waiting for: [{kind, to}]. Recipient mail goes out from 9:00 Vilnius time on the chosen day.
 create or replace function kuponai.mail_jobs(d jsonb) returns jsonb language plpgsql stable set search_path = '' as $$
 declare j jsonb := '[]'::jsonb; st text := kuponai.status(d); paid boolean := d->'payment'->>'status' = 'paid';
-  live boolean := not coalesce((d->>'voided')::boolean, false); vil timestamp := now() at time zone 'Europe/Vilnius';
+  live boolean := not coalesce((d->>'voided')::boolean, false); vil timestamp := now() at time zone '{{timezone|sql}}';
   dd date := case when d->'delivery'->>'date' ~ '^\d{4}-\d{2}-\d{2}$' then (d->'delivery'->>'date')::date end;
   rec boolean := d->'delivery'->>'mode' = 'recipient' and kuponai.email_ok(d->'delivery'->>'email');
   owner text;
@@ -99,7 +99,7 @@ begin
   d := jsonb_set(d, '{mail}', coalesce(d->'mail', '{}'::jsonb) - p_kind);
   if p_kind = 'recipient' and d->'delivery'->>'mode' = 'recipient' then
     d := jsonb_set(d, '{delivery}', d->'delivery' || jsonb_build_object('sent', false,
-      'date', least(coalesce(d->'delivery'->>'date', '9999-12-31'), to_char(now() at time zone 'Europe/Vilnius' - interval '1 day', 'YYYY-MM-DD'))));
+      'date', least(coalesce(d->'delivery'->>'date', '9999-12-31'), to_char(now() at time zone '{{timezone|sql}}' - interval '1 day', 'YYYY-MM-DD'))));
   end if;
   d := jsonb_set(d, '{log}', coalesce(d->'log', '[]'::jsonb) || jsonb_build_object('at', now(), 'by', m, 'action', 'resend_' || p_kind));
   update kuponai.vouchers set doc = d where code = p_code;
@@ -112,7 +112,7 @@ declare k text;
 begin
   select decrypted_secret into k from vault.decrypted_secrets where name = 'mailer_key';
   if k is null then return; end if;
-  perform net.http_post(url := 'https://hermojruniqfvxksunrj.supabase.co/functions/v1/mailer',
+  perform net.http_post(url := '{{supabase.url|sql}}/functions/v1/mailer',
     headers := jsonb_build_object('content-type', 'application/json', 'x-mailer-key', k), body := p_body, timeout_milliseconds := 20000);
 end $$;
 
@@ -136,10 +136,10 @@ create or replace function public.kp_create(p jsonb, p_token text default null) 
 declare m text := kuponai.me(p_token); amt numeric; months int; d jsonb; c text; dl jsonb := null;
 begin
   amt := round((p->>'amount')::numeric, case when m is null then 0 else 2 end);
-  if m is null and not (amt between 40 and 1000) then raise exception 'bad_amount'; end if;
+  if m is null and not (amt between {{vouchers.min}} and {{vouchers.max}}) then raise exception 'bad_amount'; end if;
   if m is not null and not (amt between 1 and 5000) then raise exception 'bad_amount'; end if;
   if m is null and coalesce(p->>'buyerEmail','') !~ '^[^@\s]+@[^@\s]+$' then raise exception 'bad_email'; end if;
-  months := case when m is null then 12 else least(36, greatest(1, coalesce((p->>'validMonths')::int, 12))) end;
+  months := case when m is null then {{vouchers.validMonths}} else least(36, greatest(1, coalesce((p->>'validMonths')::int, {{vouchers.validMonths}}))) end;
   if m is null and p->'delivery'->>'mode' = 'recipient' then
     dl := jsonb_build_object('mode','recipient',
       'email', case when p->'delivery'->>'email' ~ '^[^@\s]+@[^@\s]+$' then left(p->'delivery'->>'email',120) end,
@@ -164,7 +164,7 @@ begin
     'payMethod', case when m is null then 'online' when p->>'payMethod' in ('cash','card','gift') then p->>'payMethod' else 'cash' end,
     'soldBy', m, 'delivery', dl,
     'createdAt', to_jsonb(now()),
-    'validUntil', to_char((now() at time zone 'Europe/Vilnius')::date + make_interval(months => months), 'YYYY-MM-DD'),
+    'validUntil', to_char((now() at time zone '{{timezone|sql}}')::date + make_interval(months => months), 'YYYY-MM-DD'),
     'redemptions', '[]'::jsonb, 'log', '[]'::jsonb);
   insert into kuponai.vouchers(code, doc) values (c, d);
   if m is null then return public.kp_lookup(c); end if;

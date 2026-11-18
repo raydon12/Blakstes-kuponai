@@ -1,6 +1,6 @@
 node_modules/
-data/orders.json
-data/masters.json
+dist/
+build/
 *.tmp
 .DS_Store
 .vercel

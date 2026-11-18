@@ -15,7 +15,7 @@ export type Mail = { subject: string; html: string; text: string; attach?: boole
 
 // Same palettes as the site: [from, to, text, amount].
 const DESIGNS: Record<string, string[]> = {
-  noir: ['#2a2524', '#0b0a0a', '#f3eee9', '#f2b9cc'], blush: ['#f6c9d8', '#d98ba6', '#2a1219', '#2a1219'],
+  noir: ['#2a2524', '#0b0a0a', '#f3eee9', '{{colors.accent}}'], blush: ['{{colors.accent}}', '{{colors.accentDeep}}', '{{colors.accentInk}}', '{{colors.accentInk}}'],
   bone: ['#f6f2ed', '#d9cfc5', '#151313', '#151313'], mocha: ['#6e5e57', '#2e2522', '#f3eee9', '#f3eee9'],
 };
 const hex = (h: string) => rgb(parseInt(h.slice(1, 3), 16) / 255, parseInt(h.slice(3, 5), 16) / 255, parseInt(h.slice(5, 7), 16) / 255);
@@ -44,8 +44,8 @@ export const checkUrl = (ctx: Ctx, code: string) => `${ctx.site}/?kodas=${encode
 export async function voucherPdf(v: Voucher, fonts: Fonts, ctx: Ctx): Promise<Uint8Array> {
   const lang = v.lang === 'ru' ? 'ru' : 'lt';
   const L = lang === 'ru'
-    ? { title: 'Подарочный сертификат', valid: 'Действует до', forWhom: 'Кому', code: 'Код', addr: 'Адрес', how: 'Покажите этот QR-код или назовите код мастеру. Сертификат можно использовать частями.', book: 'Запись' }
-    : { title: 'Dovanų kuponas', valid: 'Galioja iki', forWhom: 'Kam', code: 'Kodas', addr: 'Adresas', how: 'Parodykite šį QR kodą arba pasakykite kodą meistrei. Kuponą galima naudoti dalimis.', book: 'Registracija' };
+    ? { title: 'Подарочный сертификат', valid: 'Действует до', forWhom: 'Кому', code: 'Код', addr: 'Адрес', how: 'Покажите этот QR-код или назовите код в салоне. Сертификат можно использовать частями.', book: 'Запись' }
+    : { title: 'Dovanų kuponas', valid: 'Galioja iki', forWhom: 'Kam', code: 'Kodas', addr: 'Adresas', how: 'Parodykite šį QR kodą arba pasakykite kodą salone. Kuponą galima naudoti dalimis.', book: 'Registracija' };
   const doc = await PDFDocument.create();
   doc.registerFontkit(fontkit);
   doc.setTitle(`${L.title} ${v.code}`); doc.setAuthor(ctx.salon); doc.setCreator(ctx.salon); doc.setProducer(ctx.salon);
@@ -154,10 +154,10 @@ function layout(ctx: Ctx, lang: string, heading: string, paras: string[], card: 
   const p = paras.map((x) => `<p style="margin:0 0 14px;font-size:16px;line-height:1.55;color:#2a2524">${x}</p>`).join('');
   const c = card ? `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:6px 0 22px;background:#151313;border-radius:12px"><tr><td style="padding:22px 24px;color:#f3eee9">
       <div style="font:12px/1.4 'Courier New',monospace;letter-spacing:3px;text-transform:uppercase;opacity:.7">${esc(ctx.salon)}</div>
-      <div style="font:400 44px/1.1 Georgia,'Times New Roman',serif;color:#f2b9cc;margin:10px 0 8px">${esc(card.amount)}</div>
+      <div style="font:400 44px/1.1 Georgia,'Times New Roman',serif;color:{{colors.accent}};margin:10px 0 8px">${esc(card.amount)}</div>
       <div style="font:15px/1.5 'Courier New',monospace;letter-spacing:2px">${esc(card.code)}</div>
       <div style="font:12px/1.5 'Courier New',monospace;opacity:.7;margin-top:4px">${esc(card.valid)}</div></td></tr></table>` : '';
-  const b = cta ? `<p style="margin:4px 0 22px"><a href="${esc(cta.href)}" style="display:inline-block;background:#f2b9cc;color:#151313;text-decoration:none;font:600 15px/1 Arial,sans-serif;padding:14px 22px;border-radius:999px">${esc(cta.label)}</a></p>` : '';
+  const b = cta ? `<p style="margin:4px 0 22px"><a href="${esc(cta.href)}" style="display:inline-block;background:{{colors.accent}};color:{{colors.accentInk}};text-decoration:none;font:600 15px/1 Arial,sans-serif;padding:14px 22px;border-radius:999px">${esc(cta.label)}</a></p>` : '';
   return `<!doctype html><html lang="${lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>${esc(heading)}</title></head>
 <body style="margin:0;background:#f6f2ed;padding:24px 12px;font-family:Arial,Helvetica,sans-serif">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td align="center">
@@ -168,7 +168,7 @@ function layout(ctx: Ctx, lang: string, heading: string, paras: string[], card: 
 ${p}${c}${b}
 <p style="margin:18px 0 0;font-size:13px;line-height:1.5;color:#8a817c">${foot}</p>
 </td></tr></table>
-<p style="font-size:12px;color:#8a817c;margin:14px 0 0"><a href="${esc(ctx.site)}" style="color:#8a817c">${esc(ctx.site.replace(/^https?:\/\//, ''))}</a> · <a href="${esc(ctx.instagram)}" style="color:#8a817c">Instagram</a></p>
+<p style="font-size:12px;color:#8a817c;margin:14px 0 0"><a href="${esc(ctx.site)}" style="color:#8a817c">${esc(ctx.site.replace(/^https?:\/\//, ''))}</a>${ctx.instagram ? ` · <a href="${esc(ctx.instagram)}" style="color:#8a817c">Instagram</a>` : ''}</p>
 </td></tr></table></body></html>`;
 }
 const strip = (html: string) => html.replace(/<head>[\s\S]*?<\/head>/, '').replace(/<br>/g, '\n').replace(/<a [^>]*href="([^"]+)"[^>]*>([^<]*)<\/a>/g, '$2: $1')
@@ -183,8 +183,8 @@ export function buildMail(kind: string, v: Voucher, ctx: Ctx): Mail {
   const check = { href: checkUrl(ctx, v.code), label: ru ? 'Проверить остаток' : 'Patikrinti likutį' };
   const book = { href: ctx.booking, label: ru ? 'Записаться на процедуру' : 'Registruotis procedūrai' };
   const foot = (ru
-    ? 'Сертификат во вложении (PDF) — его можно распечатать или показать с телефона. Покажите QR-код или назовите код мастеру. Сертификат можно использовать частями. Вопросы: ответьте на это письмо'
-    : 'Kuponas prisegtas (PDF) — galite jį atsispausdinti arba parodyti telefone. Parodykite QR kodą arba pasakykite kodą meistrei. Kuponą galima naudoti dalimis. Klausimai: atsakykite į šį laišką') + (ctx.contact ? ` · ${esc(ctx.contact)}` : '') + '.';
+    ? 'Сертификат во вложении (PDF) — его можно распечатать или показать с телефона. Покажите QR-код или назовите код в салоне. Сертификат можно использовать частями. Вопросы: ответьте на это письмо'
+    : 'Kuponas prisegtas (PDF) — galite jį atsispausdinti arba parodyti telefone. Parodykite QR kodą arba pasakykite kodą salone. Kuponą galima naudoti dalimis. Klausimai: atsakykite į šį laišką') + (ctx.contact ? ` · ${esc(ctx.contact)}` : '') + '.';
   let subject = '', heading = '', paras: string[] = [], cta: { href: string; label: string } | null = book, attach = true, footer = foot;
 
   if (kind === 'buyer') {
