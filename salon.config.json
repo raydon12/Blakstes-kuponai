@@ -1,74 +1,257 @@
 {
   "_help": "Единственный файл, который нужно менять под нового клиента. Подробности: README.md → «Новый клиент». Поля, начинающиеся с _, сборщик игнорирует.",
-
   "brand": {
-    "name": "Studija Pavyzdys",
-    "subtitle": { "lt": "GROŽIO STUDIJA", "ru": "СТУДИЯ КРАСОТЫ" },
-    "schemaType": "BeautySalon"
+    "name": "Barber Pavyzdys",
+    "subtitle": {
+      "lt": "BARBERSHOP",
+      "ru": "BARBERSHOP"
+    },
+    "schemaType": "BarberShop"
   },
-
   "site": {
-    "url": "https://studija-kuponai.vercel.app",
+    "url": "https://barber-kuponai.vercel.app",
     "description": {
-      "lt": "Dovanų kuponai Studija Pavyzdys. Kuponas nuo 40 € su QR kodu, galioja 12 mėn.",
-      "ru": "Подарочные сертификаты Studija Pavyzdys. От 40 € с QR-кодом, действует 12 месяцев."
+      "lt": "Dovanų kuponai Barber Pavyzdys: kirpimas, barzda, skutimas. Kuponas nuo 20 € su QR kodu, galioja 12 mėn.",
+      "ru": "Подарочные сертификаты Barber Pavyzdys: стрижка, борода, бритьё. От 20 € с QR-кодом, действует 12 месяцев."
     }
   },
-
   "contacts": {
-    "address": "Studija Pavyzdys, Gedimino pr. 1, Vilnius",
+    "address": "Barber Pavyzdys, Gedimino pr. 1, Vilnius",
     "instagram": "",
     "_instagram": "только имя аккаунта без @, пусто — иконка скрыта"
   },
-
   "booking": {
-    "url": "https://www.treatwell.lt/",
-    "label": "Treatwell"
+    "url": "https://booksy.com/lt-lt/",
+    "label": "Booksy"
   },
-
   "vouchers": {
-    "min": 40,
-    "max": 1000,
-    "amounts": [40, 50, 75, 100, 150],
+    "min": 20,
+    "max": 500,
+    "amounts": [
+      20,
+      30,
+      50,
+      75,
+      100
+    ],
     "validMonths": 12,
-    "heroAmount": 50
+    "heroAmount": 30
   },
-
   "colors": {
     "_help": "accent — главный цвет (кнопки, штамп, бегущая строка), accent2 — чуть темнее (наведение), accentInk — текст на accent, designName — название цветного дизайна купона",
-    "accent": "#f2b9cc",
-    "accent2": "#e79bb6",
-    "accentInk": "#2a1219",
-    "designName": "Blush"
+    "accent": "#c9a36a",
+    "accent2": "#b58d52",
+    "accentInk": "#1d1407",
+    "designName": "Brass"
   },
-
   "texts": {
     "_help": "Любой текст сайта можно переопределить по ключу из I18N в public/index.html. Пустые {} — оставить стандартные.",
     "lt": {
-      "marquee": ["Plaukai", "Antakiai", "Blakstienos", "Nagai", "Veidas", "Masažas"],
-      "heroIt": "grožį",
-      "worksK": "Mūsų darbai"
+      "heroBig": "Dovanok",
+      "heroIt": "stilių",
+      "heroText": "Užsiregistruokite pas barberį arba padovanokite kuponą kirpimui ir barzdai.",
+      "heroMsg": "Šviežias kirpimas — tau",
+      "marquee": [
+        "Kirpimas",
+        "Fade",
+        "Barzda",
+        "Skutimas",
+        "Karštas rankšluostis",
+        "Stilius"
+      ],
+      "chooseText": "Padovanokite konkrečią paslaugą arba laisvą sumą. Užsiregistruoti galima tiesiai per Booksy.",
+      "amountNote": "Suma gali būti panaudota bet kuriai barberio paslaugai.",
+      "tabService": "Paslauga",
+      "search": "Ieškoti paslaugos…",
+      "byService": "Paslauga",
+      "deductNote": "Paslauga / pastaba",
+      "worksK": "Mūsų darbai",
+      "staffT": "Barberiai",
+      "staffAddT": "Pridėti barberį",
+      "staffAdded": "Barberis pridėtas. Perduokite jam el. paštą ir slaptažodį.",
+      "staffRemoveQ": "Pašalinti barberį {n}? Jis nebegalės prisijungti.",
+      "staffRemoved": "Barberis pašalintas",
+      "notMaster": "Ši paskyra neturi barberio teisių",
+      "occ": [
+        [
+          "🎂",
+          "Gimtadienis",
+          "Su gimtadieniu! Šviežias kirpimas — ir pirmyn švęsti."
+        ],
+        [
+          "🎄",
+          "Kalėdos",
+          "Gražių švenčių! Pasitik naujus metus su nauju stiliumi."
+        ],
+        [
+          "👔",
+          "Tėčiui",
+          "Ačiū, tėti, už viską. Šis laikas — tik tau."
+        ],
+        [
+          "💍",
+          "Jaunikiui",
+          "Didžiajai dienai — tobulas kirpimas ir barzda."
+        ],
+        [
+          "🙏",
+          "Ačiū",
+          "Ačiū, kad esi. Skirk valandą sau."
+        ],
+        [
+          "✨",
+          "Šiaip sau",
+          "Šiaip sau, nes tu to vertas."
+        ]
+      ]
     },
     "ru": {
-      "marquee": ["Волосы", "Брови", "Ресницы", "Ногти", "Лицо", "Массаж"],
-      "heroIt": "красоту",
-      "worksK": "Наши работы"
+      "heroBig": "Подари",
+      "heroIt": "стиль",
+      "heroText": "Запишитесь к барберу или подарите сертификат на стрижку и бороду.",
+      "heroMsg": "Свежая стрижка — тебе",
+      "marquee": [
+        "Стрижка",
+        "Fade",
+        "Борода",
+        "Бритьё",
+        "Горячее полотенце",
+        "Стиль"
+      ],
+      "chooseText": "Подарите конкретную услугу или свободную сумму. Записаться можно сразу через Booksy.",
+      "amountNote": "Сумму можно потратить на любую услугу барбершопа.",
+      "tabService": "Услуга",
+      "search": "Найти услугу…",
+      "byService": "Услуга",
+      "deductNote": "Услуга / комментарий",
+      "worksK": "Наши работы",
+      "staffT": "Барберы",
+      "staffAddT": "Добавить барбера",
+      "staffAdded": "Барбер добавлен. Передайте ему email и пароль.",
+      "staffRemoveQ": "Удалить барбера {n}? Он больше не сможет войти.",
+      "staffRemoved": "Барбер удалён",
+      "notMaster": "У этого аккаунта нет прав барбера",
+      "occ": [
+        [
+          "🎂",
+          "День рождения",
+          "С днём рождения! Свежая стрижка — и вперёд праздновать."
+        ],
+        [
+          "🎄",
+          "Рождество",
+          "Счастливых праздников! Встречай новый год в новом стиле."
+        ],
+        [
+          "👔",
+          "Папе",
+          "Спасибо, папа, за всё. Это время — только для тебя."
+        ],
+        [
+          "💍",
+          "Жениху",
+          "К главному дню — идеальная стрижка и борода."
+        ],
+        [
+          "🙏",
+          "Спасибо",
+          "Спасибо, что ты есть. Удели час себе."
+        ],
+        [
+          "✨",
+          "Просто так",
+          "Просто так, потому что ты этого достоин."
+        ]
+      ]
     }
   },
-
   "menu": {
     "_help": "Стартовый прайс. Потом салон сам правит его в админке (кнопка «Kainos»).",
     "categories": [
       {
-        "name": "Procedūros", "nameRu": "Процедуры",
+        "name": "Kirpimai",
+        "nameRu": "Стрижки",
         "services": [
-          { "id": "s1", "name": "Procedūra 1", "nameRu": "Процедура 1", "price": 50, "priceFrom": false, "description": "" },
-          { "id": "s2", "name": "Procedūra 2", "nameRu": "Процедура 2", "price": 70, "priceFrom": true, "description": "" }
+          {
+            "id": "k1",
+            "name": "Vyriškas kirpimas",
+            "nameRu": "Мужская стрижка",
+            "price": 25,
+            "priceFrom": false,
+            "description": ""
+          },
+          {
+            "id": "k2",
+            "name": "Fade kirpimas",
+            "nameRu": "Fade-стрижка",
+            "price": 28,
+            "priceFrom": false,
+            "description": ""
+          },
+          {
+            "id": "k3",
+            "name": "Kirpimas mašinėle",
+            "nameRu": "Стрижка машинкой",
+            "price": 18,
+            "priceFrom": false,
+            "description": ""
+          },
+          {
+            "id": "k4",
+            "name": "Vaikų kirpimas (iki 12 m.)",
+            "nameRu": "Детская стрижка (до 12 лет)",
+            "price": 18,
+            "priceFrom": false,
+            "description": ""
+          }
+        ]
+      },
+      {
+        "name": "Barzda",
+        "nameRu": "Борода",
+        "services": [
+          {
+            "id": "b1",
+            "name": "Barzdos modeliavimas",
+            "nameRu": "Моделирование бороды",
+            "price": 18,
+            "priceFrom": false,
+            "description": ""
+          },
+          {
+            "id": "b2",
+            "name": "Skutimas su karštu rankšluosčiu",
+            "nameRu": "Бритьё с горячим полотенцем",
+            "price": 25,
+            "priceFrom": false,
+            "description": "Klasikinis skutimas skustuvu"
+          }
+        ]
+      },
+      {
+        "name": "Kompleksai",
+        "nameRu": "Комплексы",
+        "services": [
+          {
+            "id": "c1",
+            "name": "Kirpimas + barzda",
+            "nameRu": "Стрижка + борода",
+            "price": 40,
+            "priceFrom": false,
+            "description": ""
+          },
+          {
+            "id": "c2",
+            "name": "Tėtis + sūnus",
+            "nameRu": "Папа + сын",
+            "price": 40,
+            "priceFrom": false,
+            "description": ""
+          }
         ]
       }
     ]
   },
-
   "seller": {
     "_help": "Реквизиты для правил и политики конфиденциальности. Пустое поле на сайте показывается жёлтой заглушкой.",
     "name": "",
@@ -77,20 +260,17 @@
     "address": "",
     "email": "",
     "phone": "",
-    "provider": "Paslaugas teikia Studija Pavyzdys.",
+    "provider": "Paslaugas teikia Barber Pavyzdys.",
     "mailService": "Google (Gmail)"
   },
-
   "supabase": {
     "_help": "Пусто — сайт работает в демо-режиме (купоны только в браузере). key — publishable-ключ (sb_publishable_…).",
     "url": "",
     "key": ""
   },
-
   "notifications": {
     "_help": "Как письма подписаны. Секреты (пароли почты) сюда НЕ писать — они задаются в Supabase.",
     "contact": ""
   },
-
   "timezone": "Europe/Vilnius"
 }
