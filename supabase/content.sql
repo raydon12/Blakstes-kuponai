@@ -1,4 +1,4 @@
--- Editable site content: price list and work gallery, edited by masters in the admin panel.
+-- Editable site content: price list, work gallery and the team of barbers with portfolios, edited in the admin panel.
 -- Run after schema.sql. Safe to run again.
 -- Photos are stored in the public Storage bucket "works". The browser uploads with the publishable key, but only to a
 -- file name a logged-in master got from kp_photo_ticket (random, valid for 1 hour).
@@ -18,17 +18,17 @@ create table if not exists kuponai.upload_tickets (
 );
 alter table kuponai.upload_tickets enable row level security;
 
--- Public: everything the home page needs ({menu, works}; a missing key means "use the built-in default").
+-- Public: everything the home page needs ({menu, works, team}; a missing key means "use the built-in default").
 create or replace function public.kp_site() returns jsonb language sql stable security definer set search_path = '' as $$
-  select coalesce(jsonb_object_agg(key, data), '{}'::jsonb) from kuponai.site_content where key in ('menu', 'works')
+  select coalesce(jsonb_object_agg(key, data), '{}'::jsonb) from kuponai.site_content where key in ('menu', 'works', 'team')
 $$;
 
--- Masters: replace the price list ('menu') or the gallery ('works').
+-- Masters: replace the price list ('menu'), the gallery ('works') or the team ('team').
 create or replace function public.kp_site_save(p_token text, p_key text, p_data jsonb) returns jsonb language plpgsql volatile security definer set search_path = '' as $$
 declare n text := kuponai.require_master(p_token);
 begin
-  if p_key not in ('menu', 'works') then raise exception 'bad_key'; end if;
-  if p_data is null or jsonb_typeof(p_data) <> 'object' or length(p_data::text) > 200000 then raise exception 'bad_data'; end if;
+  if p_key not in ('menu', 'works', 'team') then raise exception 'bad_key'; end if;
+  if p_data is null or jsonb_typeof(p_data) <> 'object' or length(p_data::text) > 400000 then raise exception 'bad_data'; end if;
   if p_key = 'menu' then
     if jsonb_typeof(p_data->'categories') is distinct from 'array' then raise exception 'bad_data'; end if;
     if exists (select 1 from jsonb_array_elements(p_data->'categories') c
@@ -38,6 +38,21 @@ begin
                where jsonb_typeof(s) <> 'object' or length(trim(coalesce(s->>'name', ''))) = 0 or length(coalesce(s->>'id', '')) = 0
                   or jsonb_typeof(s->'price') is distinct from 'number' or (s->>'price')::numeric < 0 or (s->>'price')::numeric > 10000) then
       raise exception 'bad_service'; end if;
+  elsif p_key = 'team' then
+    -- {barbers: [{id, name, role, roleRu, bio, bioRu, instagram, booking, photo, photos: [{src}]}]}
+    if jsonb_typeof(p_data->'barbers') is distinct from 'array' or jsonb_array_length(p_data->'barbers') > 40 then raise exception 'bad_data'; end if;
+    if exists (select 1 from jsonb_array_elements(p_data->'barbers') b
+               where jsonb_typeof(b) <> 'object' or length(coalesce(b->>'id', '')) = 0
+                  or length(trim(coalesce(b->>'name', ''))) = 0 or length(b->>'name') > 80
+                  or length(coalesce(b->>'bio', '') || coalesce(b->>'bioRu', '')) > 1000
+                  or coalesce(b->>'instagram', '') !~ '^[A-Za-z0-9._]{0,40}$'
+                  or (coalesce(b->>'booking', '') <> '' and b->>'booking' !~ '^https://\S+$')
+                  or (coalesce(b->>'photo', '') <> '' and b->>'photo' !~ '^(/works/[A-Za-z0-9._-]+|https://[a-z0-9]+\.supabase\.co/storage/v1/object/public/works/[A-Za-z0-9/._-]+)$')
+                  or jsonb_typeof(coalesce(b->'photos', '[]'::jsonb)) <> 'array' or jsonb_array_length(coalesce(b->'photos', '[]'::jsonb)) > 60) then
+      raise exception 'bad_barber'; end if;
+    if exists (select 1 from jsonb_array_elements(p_data->'barbers') b, jsonb_array_elements(coalesce(b->'photos', '[]'::jsonb)) ph
+               where jsonb_typeof(ph) <> 'object' or coalesce(ph->>'src', '') !~ '^(/works/[A-Za-z0-9._-]+|https://[a-z0-9]+\.supabase\.co/storage/v1/object/public/works/[A-Za-z0-9/._-]+)$') then
+      raise exception 'bad_photo'; end if;
   else
     if jsonb_typeof(p_data->'photos') is distinct from 'array' then raise exception 'bad_data'; end if;
     if exists (select 1 from jsonb_array_elements(p_data->'photos') ph

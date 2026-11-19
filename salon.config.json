@@ -272,5 +272,46 @@
     "_help": "Как письма подписаны. Секреты (пароли почты) сюда НЕ писать — они задаются в Supabase.",
     "contact": ""
   },
-  "timezone": "Europe/Vilnius"
+  "timezone": "Europe/Vilnius",
+  "team": {
+    "_help": "Барберы на главной до первой правки в админке (кнопка «Komanda»). Фото и портфолио загружаются там же. photo/photos можно оставить пустыми.",
+    "barbers": [
+      {
+        "id": "b1",
+        "name": "Tomas",
+        "role": "Vyr. barberis · fade",
+        "roleRu": "Старший барбер · fade",
+        "bio": "10 metų patirtis. Fade, klasikiniai kirpimai ir barzdos formos.",
+        "bioRu": "10 лет опыта. Fade, классические стрижки и форма бороды.",
+        "instagram": "",
+        "booking": "",
+        "photo": "",
+        "photos": []
+      },
+      {
+        "id": "b2",
+        "name": "Mantas",
+        "role": "Barberis · barzda ir skutimas",
+        "roleRu": "Барбер · борода и бритьё",
+        "bio": "Skutimas su karštu rankšluosčiu ir tikslios barzdos linijos.",
+        "bioRu": "Бритьё с горячим полотенцем и чёткие линии бороды.",
+        "instagram": "",
+        "booking": "",
+        "photo": "",
+        "photos": []
+      },
+      {
+        "id": "b3",
+        "name": "Lukas",
+        "role": "Barberis",
+        "roleRu": "Барбер",
+        "bio": "Modernūs kirpimai, teksturuoti stiliai, vaikų kirpimai.",
+        "bioRu": "Современные стрижки, текстурные укладки, детские стрижки.",
+        "instagram": "",
+        "booking": "",
+        "photo": "",
+        "photos": []
+      }
+    ]
+  }
 }

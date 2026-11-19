@@ -64,6 +64,7 @@ const data = strip({
   supabase: { url: cfg.supabase?.url || '', key: cfg.supabase?.key || '', host: (cfg.supabase?.url || '').replace(/^https:\/\//, '') },
   // JSON blocks the page reads at runtime
   menuData: { salon: { name: cfg.brand.name, address: cfg.contacts?.address || '', bookingUrl: cfg.booking.url }, categories: cfg.menu?.categories || [] },
+  teamData: { barbers: (cfg.team?.barbers || []).map(b => ({ photos: [], ...b })) },
   supaConfig: cfg.supabase?.url ? { url: cfg.supabase.url, key: cfg.supabase.key } : {},
   runtime: { vouchers: V, texts: cfg.texts || {}, booking: cfg.booking, instagram: ig, designName: C.designName || 'Color' },
   ldJson: {
