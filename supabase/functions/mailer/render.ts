@@ -30,20 +30,24 @@ export const money = (n: number) => {
 };
 const MONTHS = {
   lt: ['sausio', 'vasario', 'kovo', 'balandžio', 'gegužės', 'birželio', 'liepos', 'rugpjūčio', 'rugsėjo', 'spalio', 'lapkričio', 'gruodžio'],
+  en: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
   ru: ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'],
 };
 export const fmtDate = (iso: string | undefined, lang: string) => {
   if (!iso) return '';
   const [y, m, d] = iso.slice(0, 10).split('-').map(Number);
-  return lang === 'ru' ? `${d} ${MONTHS.ru[m - 1]} ${y} г.` : `${y} m. ${MONTHS.lt[m - 1]} ${d} d.`;
+  return lang === 'ru' ? `${d} ${MONTHS.ru[m - 1]} ${y} г.` : lang === 'en' ? `${d} ${MONTHS.en[m - 1]} ${y}` : `${y} m. ${MONTHS.lt[m - 1]} ${d} d.`;
 };
+const langOf = (l?: string) => (l === 'ru' || l === 'en' ? l : 'lt');
 export const qrUrl = (ctx: Ctx, code: string) => `${ctx.site}/#admin/${code}`;
 export const checkUrl = (ctx: Ctx, code: string) => `${ctx.site}/?kodas=${encodeURIComponent(code)}#check`;
 
 /* ---------------- PDF ---------------- */
 export async function voucherPdf(v: Voucher, fonts: Fonts, ctx: Ctx): Promise<Uint8Array> {
-  const lang = v.lang === 'ru' ? 'ru' : 'lt';
-  const L = lang === 'ru'
+  const lang = langOf(v.lang);
+  const L = lang === 'en'
+    ? { title: 'Gift voucher', valid: 'Valid until', forWhom: 'To', code: 'Code', addr: 'Address', how: 'Show this QR code or tell the code to the master. The voucher can be used in parts.', book: 'Booking' }
+    : lang === 'ru'
     ? { title: 'Подарочный сертификат', valid: 'Действует до', forWhom: 'Кому', code: 'Код', addr: 'Адрес', how: 'Покажите этот QR-код или назовите код мастеру. Сертификат можно использовать частями.', book: 'Запись' }
     : { title: 'Dovanų kuponas', valid: 'Galioja iki', forWhom: 'Kam', code: 'Kodas', addr: 'Adresas', how: 'Parodykite šį QR kodą arba pasakykite kodą meistrei. Kuponą galima naudoti dalimis.', book: 'Registracija' };
   const doc = await PDFDocument.create();
@@ -176,47 +180,49 @@ const strip = (html: string) => html.replace(/<head>[\s\S]*?<\/head>/, '').repla
   .split('\n').map((l) => l.trim()).filter(Boolean).join('\n\n');
 
 export function buildMail(kind: string, v: Voucher, ctx: Ctx): Mail {
-  const lang = kind === 'staff' ? 'lt' : v.lang === 'ru' ? 'ru' : 'lt';
-  const ru = lang === 'ru';
-  const amount = money(v.amount), valid = (ru ? 'Действует до ' : 'Galioja iki ') + fmtDate(v.validUntil, lang);
+  const lang = kind === 'staff' ? 'lt' : langOf(v.lang);
+  const tr = (lt: string, ru: string, en: string) => (lang === 'ru' ? ru : lang === 'en' ? en : lt);
+  const amount = money(v.amount), valid = tr('Galioja iki ', 'Действует до ', 'Valid until ') + fmtDate(v.validUntil, lang);
   const card = { amount, code: v.code, valid };
-  const check = { href: checkUrl(ctx, v.code), label: ru ? 'Проверить остаток' : 'Patikrinti likutį' };
-  const book = { href: ctx.booking, label: ru ? 'Записаться на процедуру' : 'Registruotis procedūrai' };
-  const foot = (ru
-    ? 'Сертификат во вложении (PDF) — его можно распечатать или показать с телефона. Покажите QR-код или назовите код мастеру. Сертификат можно использовать частями. Вопросы: ответьте на это письмо'
-    : 'Kuponas prisegtas (PDF) — galite jį atsispausdinti arba parodyti telefone. Parodykite QR kodą arba pasakykite kodą meistrei. Kuponą galima naudoti dalimis. Klausimai: atsakykite į šį laišką') + (ctx.contact ? ` · ${esc(ctx.contact)}` : '') + '.';
+  const check = { href: checkUrl(ctx, v.code), label: tr('Patikrinti likutį', 'Проверить остаток', 'Check balance') };
+  const book = { href: ctx.booking, label: tr('Registruotis procedūrai', 'Записаться на процедуру', 'Book a treatment') };
+  const foot = tr('Kuponas prisegtas (PDF) — galite jį atsispausdinti arba parodyti telefone. Parodykite QR kodą arba pasakykite kodą meistrei. Kuponą galima naudoti dalimis. Klausimai: atsakykite į šį laišką',
+    'Сертификат во вложении (PDF) — его можно распечатать или показать с телефона. Покажите QR-код или назовите код мастеру. Сертификат можно использовать частями. Вопросы: ответьте на это письмо',
+    'The voucher is attached (PDF) — print it or show it on your phone. Show the QR code or tell the code to the master. The voucher can be used in parts. Questions? Just reply to this email') + (ctx.contact ? ` · ${esc(ctx.contact)}` : '') + '.';
   let subject = '', heading = '', paras: string[] = [], cta: { href: string; label: string } | null = book, attach = true, footer = foot;
 
   if (kind === 'buyer') {
     const toRec = v.delivery?.mode === 'recipient' && v.delivery.email;
-    subject = ru ? `Ваш подарочный сертификат ${amount} — ${ctx.salon}` : `Jūsų dovanų kuponas ${amount} — ${ctx.salon}`;
-    heading = ru ? 'Спасибо за покупку!' : 'Ačiū už pirkinį!';
-    paras = [ru ? `Оплата получена, сертификат на <b>${esc(amount)}</b> активен.` : `Apmokėjimas gautas, <b>${esc(amount)}</b> kuponas aktyvus.`];
+    subject = tr(`Jūsų dovanų kuponas ${amount} — ${ctx.salon}`, `Ваш подарочный сертификат ${amount} — ${ctx.salon}`, `Your ${amount} gift voucher — ${ctx.salon}`);
+    heading = tr('Ačiū už pirkinį!', 'Спасибо за покупку!', 'Thank you for your purchase!');
+    paras = [tr(`Apmokėjimas gautas, <b>${esc(amount)}</b> kuponas aktyvus.`, `Оплата получена, сертификат на <b>${esc(amount)}</b> активен.`, `Payment received, your <b>${esc(amount)}</b> voucher is active.`)];
     if (toRec) {
-      const when = v.delivery!.date ? fmtDate(v.delivery!.date, lang) : (ru ? 'сегодня' : 'šiandien');
-      paras.push(ru ? `Мы отправим его на <b>${esc(v.delivery!.email)}</b> ${esc(when)}. Копия для вас во вложении.`
-        : `Išsiųsime jį adresu <b>${esc(v.delivery!.email)}</b> ${esc(when)}. Jūsų kopija prisegta.`);
+      const when = v.delivery!.date ? fmtDate(v.delivery!.date, lang) : tr('šiandien', 'сегодня', 'today');
+      paras.push(tr(`Išsiųsime jį adresu <b>${esc(v.delivery!.email)}</b> ${esc(when)}. Jūsų kopija prisegta.`,
+        `Мы отправим его на <b>${esc(v.delivery!.email)}</b> ${esc(when)}. Копия для вас во вложении.`,
+        `We’ll send it to <b>${esc(v.delivery!.email)}</b> ${v.delivery!.date ? 'on ' : ''}${esc(when)}. Your copy is attached.`));
     }
     cta = check;
   } else if (kind === 'recipient') {
-    const from = v.from ? esc(v.from) : (ru ? 'Вам' : 'Jums');
+    const from = v.from ? esc(v.from) : tr('Jums', 'Вам', 'Someone');
     subject = v.from
-      ? (ru ? `${v.from} дарит вам подарочный сертификат — ${ctx.salon}` : `${v.from} jums dovanoja dovanų kuponą — ${ctx.salon}`)
-      : (ru ? `Вам подарили сертификат — ${ctx.salon}` : `Jums padovanotas dovanų kuponas — ${ctx.salon}`);
-    heading = ru ? 'Вам подарок!' : 'Jums dovana!';
+      ? tr(`${v.from} jums dovanoja dovanų kuponą — ${ctx.salon}`, `${v.from} дарит вам подарочный сертификат — ${ctx.salon}`, `${v.from} sent you a gift voucher — ${ctx.salon}`)
+      : tr(`Jums padovanotas dovanų kuponas — ${ctx.salon}`, `Вам подарили сертификат — ${ctx.salon}`, `You’ve received a gift voucher — ${ctx.salon}`);
+    heading = tr('Jums dovana!', 'Вам подарок!', 'A gift for you!');
     paras = [v.from
-      ? (ru ? `${from} дарит вам подарочный сертификат на <b>${esc(amount)}</b>.` : `${from} jums dovanoja <b>${esc(amount)}</b> dovanų kuponą.`)
-      : (ru ? `Вам подарили сертификат на <b>${esc(amount)}</b>.` : `Jums padovanotas <b>${esc(amount)}</b> dovanų kuponas.`)];
+      ? tr(`${from} jums dovanoja <b>${esc(amount)}</b> dovanų kuponą.`, `${from} дарит вам подарочный сертификат на <b>${esc(amount)}</b>.`, `${from} has given you a <b>${esc(amount)}</b> gift voucher.`)
+      : tr(`Jums padovanotas <b>${esc(amount)}</b> dovanų kuponas.`, `Вам подарили сертификат на <b>${esc(amount)}</b>.`, `You’ve received a <b>${esc(amount)}</b> gift voucher.`)];
     if (v.message) paras.push(`<i>“${esc(v.message)}”</i>`);
   } else if (kind === 'reminder') {
     const bal = money(v.balance ?? v.amount);
-    subject = ru ? `Срок вашего сертификата заканчивается ${fmtDate(v.validUntil, lang)}` : `Jūsų kupono galiojimas baigiasi ${fmtDate(v.validUntil, lang)}`;
-    heading = ru ? 'Не забудьте про сертификат' : 'Nepamirškite kupono';
-    paras = [ru ? `На сертификате <b>${esc(v.code)}</b> осталось <b>${esc(bal)}</b>. Он действует до <b>${esc(fmtDate(v.validUntil, lang))}</b>, продлить срок нельзя.`
-      : `Kupone <b>${esc(v.code)}</b> liko <b>${esc(bal)}</b>. Jis galioja iki <b>${esc(fmtDate(v.validUntil, lang))}</b>, galiojimas nepratęsiamas.`,
-      ru ? 'Запишитесь заранее, пока есть свободное время.' : 'Užsiregistruokite iš anksto, kol yra laisvo laiko.'];
+    subject = tr(`Jūsų kupono galiojimas baigiasi ${fmtDate(v.validUntil, lang)}`, `Срок вашего сертификата заканчивается ${fmtDate(v.validUntil, lang)}`, `Your voucher expires on ${fmtDate(v.validUntil, lang)}`);
+    heading = tr('Nepamirškite kupono', 'Не забудьте про сертификат', 'Don’t forget your voucher');
+    paras = [tr(`Kupone <b>${esc(v.code)}</b> liko <b>${esc(bal)}</b>. Jis galioja iki <b>${esc(fmtDate(v.validUntil, lang))}</b>, galiojimas nepratęsiamas.`,
+      `На сертификате <b>${esc(v.code)}</b> осталось <b>${esc(bal)}</b>. Он действует до <b>${esc(fmtDate(v.validUntil, lang))}</b>, продлить срок нельзя.`,
+      `Voucher <b>${esc(v.code)}</b> has <b>${esc(bal)}</b> left. It’s valid until <b>${esc(fmtDate(v.validUntil, lang))}</b> and can’t be extended.`),
+      tr('Užsiregistruokite iš anksto, kol yra laisvo laiko.', 'Запишитесь заранее, пока есть свободное время.', 'Book in advance while there are free slots.')];
     card.amount = bal; attach = false;
-    footer = ru ? 'Вопросы: ответьте на это письмо.' : 'Klausimai: atsakykite į šį laišką.';
+    footer = tr('Klausimai: atsakykite į šį laišką.', 'Вопросы: ответьте на это письмо.', 'Questions? Just reply to this email.');
   } else if (kind === 'staff') {
     subject = `Naujas užsakymas: ${amount} · ${v.code}`;
     heading = 'Naujas kupono užsakymas';
