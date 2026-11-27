@@ -158,7 +158,7 @@ begin
     'message', kuponai.clean_text(p->'message', 300),
     'design', case when p->>'design' in ('noir','blush','bone','mocha') then p->>'design' else 'noir' end,
     'buyerEmail', left(coalesce(p->>'buyerEmail',''), 120),
-    'lang', case when p->>'lang' = 'ru' then 'ru' else 'lt' end,
+    'lang', case when p->>'lang' in ('ru', 'en') then p->>'lang' else 'lt' end,
     'payment', jsonb_build_object('provider', case when m is null then 'online' else 'salon' end, 'status', case when m is null then 'pending' else 'paid' end),
     'source', case when m is null then 'online' else 'salon' end,
     'payMethod', case when m is null then 'online' when p->>'payMethod' in ('cash','card','gift') then p->>'payMethod' else 'cash' end,

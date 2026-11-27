@@ -34,7 +34,7 @@ Deno.serve(async (req) => {
       client_reference_id: v.code,
       'metadata[code]': v.code,
       'payment_intent_data[metadata][code]': v.code,
-      locale: lang === 'ru' ? 'ru' : 'lt',
+      locale: lang === 'ru' || lang === 'en' ? lang : 'lt',
       success_url: `${site}/?paid=${encodeURIComponent(v.code)}`,
       cancel_url: `${site}/?cancelled=${encodeURIComponent(v.code)}`,
       expires_at: String(Math.floor(Date.now() / 1000) + 3600),

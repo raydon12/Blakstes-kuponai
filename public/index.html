@@ -531,6 +531,7 @@ dialog::backdrop{background:rgba(10,9,9,.7);backdrop-filter:blur(4px)}
       <div class="lang" role="group" aria-label="Language">
         <button data-lang="lt" aria-pressed="true">LT</button>
         <button data-lang="ru" aria-pressed="false">RU</button>
+        <button data-lang="en" aria-pressed="false">EN</button>
       </div>
     </div>
   </div>
@@ -937,6 +938,74 @@ const I18N = {
     newT:"Новый сертификат", newD:"Сертификат, проданный в салоне (наличными или картой). Он появится в списке и получит код и QR.", vtype:"Тип", byAmount:"Сумма", byService:"Процедура",
     payM:"Оплата", payCash:"Наличными", payCard:"Картой в салоне", payOnline:"Онлайн", payGift:"Подарок / акция", create:"Создать сертификат", created:"Создан {c}", buyerOpt:"Email покупателя (необязательно)", srcSalon:"В салоне", srcOnline:"Онлайн", source:"Источник",
     perDay:"{n} шт. · {s}", vouchersN:"шт."
+  },
+  en: {
+    logoSub:"MASTER VIKTORIJA", navPrices:"Prices", navGift:"Voucher", navHow:"How it works", bookNow:"Book now", admin:"Admin", adminArrow:"Admin panel →",
+    eyebrow:"Gift vouchers", heroBig:"Gift", heroIt:"beauty", heroText:"Book a treatment or give an elegant gift voucher.",
+    heroCta:"Choose a voucher", stampFrom:"from", stampGift:"gift", vert:"GIFT VOUCHERS · VALID 12 MONTHS",
+    marquee:["Hair","Brows","Lashes","Nails","Face","Massage"],
+    k1:"01 — Prices", chooseBig:"Prices", chooseIt:"& gifts", chooseText:"Give a specific treatment or any amount. You can book directly via Treatwell.",
+    tabService:"Treatment", tabAmount:"Amount", all:"All", search:"Search treatments…",
+    amountNote:"The amount can be used for any service at the salon.", custom:"Other amount", minAmt:"Minimum amount — 40 €",
+    giftK:"Gift voucher", giftBig:"Voucher amount", k2:"Personal voucher", persBig:"Your", persIt:"words", cap:"Preview updates instantly",
+    fTo:"To", fFrom:"From", fMsg:"Message", fDesign:"Design", total:"Total", buy:"Buy voucher", choose:"Choose a gift",
+    voucher:"Gift voucher", forWhom:"To", min:"min", from:"from", gift:"Gift it", gifted:"Selected ✓",
+    emptyT:"Price list coming soon", emptyD:"For now you can give a voucher for any amount or book via Treatwell.",
+    bookAll:"Book via Treatwell", toAmount:"Voucher for an amount",
+    k3:"02 — How it works", howBig:"Three", howIt:"steps",
+    s1t:"Choose an amount", s1d:"Tap “Choose a voucher” and pick an amount from 40 €.", s2t:"Sign it", s2d:"Add the recipient’s name, a message and choose the voucher design.", s3t:"Give it", s3d:"You’ll get a voucher with a unique code and QR. Download it, print it or send it to the recipient. At the salon, just show the QR code.",
+    fExplore:"EXPLORE", fBook:"BOOKING", fGift:"VOUCHER", perk1:"Valid 12 months", perk2:"Unique code and QR", perk3:"Printable",
+    mockFoot:"Test mode: payments are off",
+    payTitle:"Payment", mockNote:"Test mode — no money is charged", pEmail:"Email", pCard:"Card number", cancel:"Cancel", pay:"Pay",
+    doneTitle:"Thank you!", doneText:"Voucher code: {code}. Test mode: no email is sent to {email}.",
+    print:"Print", close:"Close", errEmail:"Enter your email", errCard:"Check your card details", heroMsg:"Time just for you", saveErr:"Could not save the voucher",
+    aKicker:"Admin", aBig:"Vouchers", aIt:"& balances", loading:"Loading…", logout:"Log out",
+    name:"Name", password:"Password", signIn:"Sign in", badLogin:"Wrong name or password", tooMany:"Too many attempts. Wait 5 minutes.",
+    settings:"Settings", pwT:"Password", pwOld:"Current password", pwNew:"New password (min. 8 characters)", pwNew2:"Repeat new password", pwSave:"Change password",
+    pwDone:"Password changed. You’ll need to sign in again on other devices.", pwMismatch:"New passwords don’t match", pwShort:"Password is too short (min. 8 characters)", pwBad:"Wrong current password",
+    staffT:"Masters", staffAddT:"Add a master", staffName:"Name", staffEmail:"Email (for sign-in)", staffPass:"Temporary password (min. 8)", staffAddB:"Add",
+    staffAdded:"Master added. Give them the email and password.", staffRemoveQ:"Remove master {n}? They won’t be able to sign in.", staffRemoveB:"Remove", staffRemoved:"Master removed",
+    staffMe:"you", emailTaken:"This email is already in use", badName:"Enter a name", demoOnly:"Works only on the live site",
+    worksK:"Master Viktorija’s work", worksBig:"Work", worksIt:"& reviews", worksItPh:"up close", stPeriod:"Period", p30:"30 days", pMonth:"This month", pYear:"This year", pAll:"All time",
+    stRedeemed:"Redeemed", stUnpaid:"Awaiting payment", stExpiring:"Expire within 30 days", stExpired:"Expired unused", stAvg:"Average voucher",
+    stSplit:"online {a} · in salon {b}", stFull:"{n} fully used", stNowAll:"now, all vouchers", stRedN:"redemptions: {n}",
+    mailT:"Emails", m_buyer:"To buyer", m_recipient:"To recipient", m_reminder:"Expiry reminder", m_staff:"Salon notification",
+    ms_sent:"sent {d}", ms_sending:"sending…", ms_failed:"failed, will retry", ms_wait:"after payment", ms_sched:"{d} at 9:00", ms_auto:"30 days before",
+    resend:"Send again", sendNow:"Send now", resendQ:"Send the voucher to {e}?", resent:"The email will go out within a minute",
+    fLegal:"TERMS", lRules:"Terms of purchase", lPrivacy:"Privacy policy", agree1:"By buying you agree to the ", agree2:" and ", agree3:".",
+    stSold:"Vouchers sold", stSum:"Sales total", stOpen:"Unused balance", stUsed:"Used",
+    aSearch:"Search: code, name, email…", scan:"Scan QR", f_all:"All", f_active:"Active", f_used:"Used", f_expired:"Expired",
+    hCode:"Code", hTitle:"Voucher", hDate:"Sold", hBal:"Balance", hSt:"Status",
+    s_active:"Active", s_used:"Used", s_expired:"Expired", none:"No vouchers found", of:"of",
+    noteServer:"Data is stored on the server.", noteDb:"Preview mode: vouchers are stored in this page’s shared database and visible from any of your devices. No sign-in needed — only people with access to the page can see the panel.",
+    noteLocal:"Preview mode: vouchers are stored only in this browser.",
+    deduct:"Redeem", deductAmt:"Amount", deductNote:"Treatment / note", deductBtn:"Redeem", allBal:"Full balance",
+    confirm:"Redeem {a} from voucher {c}?", deducted:"Redeemed {a}. Balance {b}", insufficient:"Balance too low",
+    details:"Details", edit:"Edit", save:"Save", saved:"Saved", recipient:"To", fromL:"From", message:"Message", validUntil:"Valid until", buyer:"Buyer", sold:"Sold", nominal:"Face value", buyerEmailL:"Buyer’s email", amtQ:"Change face value from {a} to {b}? Balance will be {c}.", amtBelowUsed:"Face value can’t be less than the amount already used", amtBad:"Enter an amount from 0.01 to 10,000 €",
+    history:"Redemption history", noHistory:"Nothing redeemed yet", undo:"Undo", undoQ:"Undo this redemption ({a})? The amount will return to the balance.", undone:"Redemption undone",
+    scanHint:"Point the camera at the voucher’s QR code", photo:"Take a photo of the QR", camDenied:"Camera isn’t available here. Tap “Take a photo of the QR” or enter the code in search.",
+    noQr:"No QR code found in the photo", notFound:"Voucher {c} not found", by:"",
+    navCheck:"Balance", delivery:"Delivery", dMe:"Send to me", dMeD:"The voucher will arrive in your email right away — print it or forward it.",
+    dRec:"Send to recipient", dRecD:"We’ll send it to the recipient on the day you choose, e.g. on their birthday morning.", dEmail:"Recipient’s email", dDate:"Send date",
+    errRecEmail:"Enter the recipient’s email", tr1:"Secure payment", tr2:"Instant voucher", tr3:"Valid 12 months",
+    occ:[["🎂","Birthday","Happy birthday! Take some time for yourself and enjoy."],["🎄","Christmas","Happy holidays! May the new year be beautiful."],["💝","Love","For you, with love. You deserve the very best."],["🌷","For mom","Thank you, mom, for everything. This time is just for you."],["🙏","Thank you","Thank you for being you. Take this moment for yourself."],["✨","Just because","Just because you’re wonderful."]],
+    k4:"03 — Balance", chkBig:"Voucher", chkIt:"balance", chkText:"Enter the code from your voucher to see how much is left and when it expires.", chkBtn:"Check",
+    chkNone:"No voucher found with this code", chkLeft:"left", chkUntil:"Valid until", chkBook:"Book now",
+    k5:"04 — Questions", faqIt:"FAQ",
+    faq:[["How long is the voucher valid?","12 months from the date of purchase. The expiry date is printed on the voucher and shown in the “Balance” section."],
+         ["Can I use the voucher in parts?","Yes. After a treatment the master deducts its price, and the rest stays on the voucher for your next visit."],
+         ["How do I book with a voucher?","Book as usual via Treatwell, and at the salon show the voucher’s QR code or tell us the code."],
+         ["How will the recipient get the voucher?","You can receive it yourself and print or forward it, or have us send it to the recipient on a specific day."],
+         ["Can the validity be extended?","No. The voucher can’t be extended, so please use it before the expiry date."],
+         ["What if the voucher doesn’t cover the treatment?","Just pay the difference at the salon."],
+         ["Can I return the voucher or exchange it for cash?","An unused voucher bought online can be returned within 14 days of purchase — just write to us. After that the amount is non-refundable and can’t be exchanged for cash. See the terms of purchase for details."]],
+    download:"Download", dlErr:"Download failed", next:"Next", sendOn:"Will be sent to {email} on {date} (emails aren’t sent in test mode).",
+    chartT:"Sales · 30 days", feedT:"Latest redemptions", noFeed:"No redemptions yet", newV:"+ New voucher", csv:"CSV",
+    sortNew:"Newest", sortOld:"Oldest", sortBal:"Highest balance", sortExp:"Expiring soon",
+    f_void:"Voided", f_unpaid:"Unpaid", payGo:"Redirecting to payment…", payErr:"Couldn’t start the payment. Please try again.", payCancelled:"Payment cancelled", paidOk:"Paid! Your voucher code: {code}. Download or print the voucher.", paidWait:"Payment is being processed. Voucher code: {code}. It will become active in a few minutes.", cardNote:"Pay securely by card, Apple Pay or Google Pay. The voucher is active right after payment.", terms:"An unused voucher bought online can be returned within 14 days of purchase. After that the amount is non-refundable and can’t be exchanged for cash. The voucher can’t be extended. If the voucher doesn’t cover the treatment, the difference is paid at the salon.", badLoginEmail:"Wrong email or password", s_unpaid:"Awaiting payment", unpaidNote:"Ordered online but not paid yet. When the client pays, mark the voucher as paid — then it can be used.", markPaid:"Mark as paid", paidQ:"Confirm that {a} was received for {c}?", paidDone:"Voucher paid and active", notMaster:"This account doesn’t have master rights", order:"Order", liveNote:"The voucher becomes active once the master confirms payment. We’ll contact you by email about payment. Unpaid orders are cancelled after 7 days.", doneLive:"Order received! Voucher code: {code}. It becomes active once payment is confirmed — we’ll write to {email}.", s_void:"Voided", extend:"+3 mo.", extended:"Extended until {d}", voidB:"Void", voidQ:"Void voucher {c}? It can no longer be used for payment.", voided:"Voucher voided", restore:"Restore", restored:"Voucher restored",
+    newT:"New voucher", newD:"A voucher sold at the salon (cash or card). It will appear in the list and get a code and QR.", vtype:"Type", byAmount:"Amount", byService:"Treatment",
+    payM:"Payment", payCash:"Cash", payCard:"Card at salon", payOnline:"Online", payGift:"Gift / promo", create:"Create voucher", created:"Created {c}", buyerOpt:"Buyer’s email (optional)", srcSalon:"In salon", srcOnline:"Online", source:"Source",
+    perDay:"{n} pcs · {s}", vouchersN:"pcs"
   }
 };
 const AMOUNTS = [40, 50, 75, 100, 150];
@@ -957,8 +1026,20 @@ Object.assign(I18N.ru, { prB:'Цены', galB:'Галерея', saved:'Сохр�
   prFrom:'от', prAddSvc:'+ Услуга', prAddCat:'+ Категория', prSave:'Сохранить', prDelCatQ:'Удалить категорию «{n}» со всеми услугами?',
   prUnsaved:'Изменения не сохранены. Закрыть без сохранения?', prDiscard:'Закрыть', prBad:'Заполните названия и цены (отмечено красным)',
   prRu:'Название по-русски', prDescRu:'Описание по-русски (необязательно)', prUp:'Выше', prDown:'Ниже', prDel:'Удалить', prNewCat:'Новая категория' });
+I18N.en.badCode = 'Code must look like GIFT-XXXX-XXXX';
+Object.assign(I18N.en, { prB:'Prices', galB:'Gallery', saved:'Saved', saving:'Saving…',
+  galT:'Gallery', galNote:'Photos are shown on the home page in the “Work” section. Changes are saved instantly.', galUp:'+ Upload photos',
+  galUploading:'Uploading {i} of {n}…', galEmpty:'No photos yet. While the gallery is empty, the section is hidden on the site.', galDelQ:'Delete this photo from the gallery?', galDel:'Delete',
+  galLeft:'Left', galRight:'Right', galAdded:'Photos added: {n}', badImage:'Couldn’t open file {f}. JPG, PNG, WebP work.', upErr:'Couldn’t upload the photo',
+  prT:'Prices', prNote:'Price list on the home page. Changes show after “Save”.', prCat:'Category', prDesc:'Description (optional)', prSvc:'Service',
+  prFrom:'from', prAddSvc:'+ Service', prAddCat:'+ Category', prSave:'Save', prDelCatQ:'Delete category “{n}” with all its services?',
+  prUnsaved:'Changes aren’t saved. Close without saving?', prDiscard:'Close', prBad:'Fill in names and prices (marked red)',
+  prRu:'Name in Russian', prDescRu:'Description in Russian (optional)', prEn:'Name in English', prDescEn:'Description in English (optional)', prUp:'Up', prDown:'Down', prDel:'Delete', prNewCat:'New category' });
+Object.assign(I18N.lt, { prEn:'Pavadinimas angliškai', prDescEn:'Aprašymas angliškai (nebūtina)' });
+Object.assign(I18N.ru, { prEn:'Название по-английски', prDescEn:'Описание по-английски (необязательно)' });
 const DEFAULT_BOOKING = 'https://book.treatwell.lt/salonas/397163/meniu';
-const state = { lang: localGet('lang') || 'lt', mode: 'service', cat: null, q: '', service: null, amount: null, design: 'noir', menu: null,
+const LANGS = ['lt', 'ru', 'en'];
+const state = { lang: LANGS.includes(localGet('lang')) ? localGet('lang') : 'lt', mode: 'service', cat: null, q: '', service: null, amount: null, design: 'noir', menu: null,
   vouchers: [], aFilter: 'all', aQuery: '', aSort: 'new', openCode: null, me: undefined, occ: null, delivery: 'me' };
 const $ = s => document.querySelector(s);
 const t = k => I18N[state.lang][k] ?? k;
@@ -969,7 +1050,7 @@ const money = n => n == null ? '—' : (Number.isInteger(n) ? n : (Math.round(n*
 const round2 = n => Math.round(n * 100) / 100;
 const allServices = () => (state.menu.categories || []).flatMap(c => c.services);
 const normCode = s => String(s || '').toUpperCase().replace(/\s+/g,'').match(/GIFT-[A-Z0-9]{4}-[A-Z0-9]{4}/)?.[0] || null;
-const fmtDate = (iso, time) => iso ? new Date(iso.length === 10 ? iso + 'T12:00:00' : iso).toLocaleString(state.lang === 'ru' ? 'ru-RU' : 'lt-LT', time ? { day:'numeric', month:'short', hour:'2-digit', minute:'2-digit' } : { year:'numeric', month:'short', day:'numeric' }) : '—';
+const fmtDate = (iso, time) => iso ? new Date(iso.length === 10 ? iso + 'T12:00:00' : iso).toLocaleString({ ru: 'ru-RU', en: 'en-GB' }[state.lang] || 'lt-LT', time ? { day:'numeric', month:'short', hour:'2-digit', minute:'2-digit' } : { year:'numeric', month:'short', day:'numeric' }) : '—';
 function toast(msg){ document.querySelectorAll('.toast').forEach(x => x.remove()); const el = document.createElement('div'); el.className = 'toast'; el.textContent = msg; document.body.append(el); setTimeout(() => el.remove(), 2800); }
 // In-page confirmation: the browser's confirm() is silently blocked when the page is embedded (e.g. the preview).
 function ask(text, okLabel){
@@ -1231,7 +1312,7 @@ function renderServices(){
 function renderAmounts(){
   $('#amounts').innerHTML = AMOUNTS.map(a => `<button class="amt" data-amount="${a}" aria-pressed="false"><b>${a} €</b><span>${t('voucher')}</span></button>`).join('') +
     `<label class="amt custom"><span>${t('custom')}</span><input id="customAmt" type="number" min="40" max="1000" step="5" placeholder="nuo 40" value="${state.amount && !state.service && !AMOUNTS.includes(state.amount) ? state.amount : ''}"><small class="amt-err" id="amtErr" hidden>${t('minAmt')}</small></label>`;
-  $('#customAmt').placeholder = state.lang === 'ru' ? 'от 40' : 'nuo 40';
+  $('#customAmt').placeholder = ({ ru: 'от 40', en: 'from 40' })[state.lang] || 'nuo 40';
   $('#customAmt').oninput = e => { const v = Math.round(+e.target.value); state.service = null; state.amount = v >= 40 && v <= 1000 ? v : null; $('#amtErr').hidden = !(e.target.value && v < 40); renderServices(); renderPreview(); renderMbar(); };
 }
 function qrPayload(code){
@@ -1246,7 +1327,10 @@ function qrSvg(text){
 const RU_NAMES = {"Blakstienų laminavimas": "Ламинирование ресниц", "M / L linkis": "Изгиб M / L", "Express priauginimas": "Экспресс-наращивание", "Blakstienų nuėmimas": "Снятие ресниц", "Priauginimas paruoštais kuokšteliais": "Наращивание готовыми пучками", "Blakstienų laminavimas su dažymu": "Ламинирование ресниц с окрашиванием", "Korekcija (po 4 savaičių)": "Коррекция (через 4 недели)", "Pilnas priauginimas": "Полное наращивание", "Korekcija po kito meistro": "Коррекция после другого мастера", "Priauginimas + nuėmimas": "Наращивание + снятие", "Korekcija": "Коррекция", "Priauginimas": "Наращивание", "Nuėmimas": "Снятие", "Nuėmimas po kito meistro": "Снятие после другого мастера", "Antakių laminavimas": "Ламинирование бровей", "Antakių laminavimas su dažymu": "Ламинирование бровей с окрашиванием"};
 // Russian name of a category/service: own nameRu, else a known translation, else the Lithuanian name.
 function ruOf(o, f = 'name'){ const v = o?.[f + 'Ru']; return v && String(v).trim() ? v : RU_NAMES[String(o?.[f] || '').trim()] || ''; }
-function loc(o, f = 'name'){ return state.lang === 'ru' ? ruOf(o, f) || o?.[f] || '' : o?.[f] || ''; }
+const EN_NAMES = {"Blakstienų laminavimas": "Lash lamination", "M / L linkis": "M / L curl", "Express priauginimas": "Express extensions", "Blakstienų nuėmimas": "Lash removal", "Priauginimas paruoštais kuokšteliais": "Extensions with pre-made fans", "Blakstienų laminavimas su dažymu": "Lash lamination with tint", "Korekcija (po 4 savaičių)": "Refill (after 4 weeks)", "Pilnas priauginimas": "Full set", "Korekcija po kito meistro": "Refill after another artist", "Priauginimas + nuėmimas": "Extensions + removal", "Korekcija": "Refill", "Priauginimas": "Extensions", "Nuėmimas": "Removal", "Nuėmimas po kito meistro": "Removal after another artist", "Antakių laminavimas": "Brow lamination", "Antakių laminavimas su dažymu": "Brow lamination with tint", "Blakstienos": "Lashes", "Antakiai": "Brows", "Blakstienų priauginimas": "Lash extensions"};
+// English name: own nameEn, else a known translation, else '' (falls back to the Lithuanian name).
+function enOf(o, f = 'name'){ const v = o?.[f + 'En']; return v && String(v).trim() ? v : EN_NAMES[String(o?.[f] || '').trim()] || ''; }
+function loc(o, f = 'name'){ const tr = state.lang === 'ru' ? ruOf(o, f) : state.lang === 'en' ? enOf(o, f) : ''; return tr || o?.[f] || ''; }
 function salonAddr(){ return String(state.menu?.salon?.address || '').trim(); }
 function addrLines(){ const a = salonAddr(); const i = a.indexOf(', '); return !a ? [] : i > 0 ? [a.slice(0, i), a.slice(i + 2)] : [a]; }
 function mapsUrl(){ return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(salonAddr()); }
@@ -1785,14 +1869,17 @@ function renderPricesDrawer(){
       <div class="pe-row"><input type="text" class="pe-cn" data-c="${ci}" data-f="name" value="${esc(c.name)}" placeholder="${esc(t('prCat'))}" maxlength="80" aria-label="${esc(t('prCat'))}">
         ${ic(`data-cmv="-1" data-c="${ci}"`, t('prUp'), '↑', !ci)}${ic(`data-cmv="1" data-c="${ci}"`, t('prDown'), '↓', ci === cats.length - 1)}${ic(`data-cdel="${ci}"`, t('prDel'), '✕', false, 'del')}</div>
       <input type="text" class="pe-desc pe-ru" data-c="${ci}" data-f="nameRu" value="${esc(ruOf(c))}" placeholder="${esc(t('prRu'))}" maxlength="80" lang="ru" aria-label="${esc(t('prRu'))}">
+      <input type="text" class="pe-desc pe-ru" data-c="${ci}" data-f="nameEn" value="${esc(enOf(c))}" placeholder="${esc(t('prEn'))}" maxlength="80" lang="en" aria-label="${esc(t('prEn'))}">
       <input type="text" class="pe-desc" data-c="${ci}" data-f="description" value="${esc(c.description || '')}" placeholder="${esc(t('prDesc'))}" maxlength="200">
-      ${c.description ? '' : '<!--'}<input type="text" class="pe-desc pe-ru" data-c="${ci}" data-f="descriptionRu" value="${esc(ruOf(c, 'description'))}" placeholder="${esc(t('prDescRu'))}" maxlength="200" lang="ru" aria-label="${esc(t('prDescRu'))}">${c.description ? '' : '-->'}
+      ${c.description ? '' : '<!--'}<input type="text" class="pe-desc pe-ru" data-c="${ci}" data-f="descriptionRu" value="${esc(ruOf(c, 'description'))}" placeholder="${esc(t('prDescRu'))}" maxlength="200" lang="ru" aria-label="${esc(t('prDescRu'))}">
+      <input type="text" class="pe-desc pe-ru" data-c="${ci}" data-f="descriptionEn" value="${esc(enOf(c, 'description'))}" placeholder="${esc(t('prDescEn'))}" maxlength="200" lang="en" aria-label="${esc(t('prDescEn'))}">${c.description ? '' : '-->'}
       <div class="pe-svcs">${(c.services || []).map((s, si) => `<div class="pe-row pe-svc">
         <input type="text" data-c="${ci}" data-s="${si}" data-f="name" value="${esc(s.name)}" placeholder="${esc(t('prSvc'))}" maxlength="100" aria-label="${esc(t('prSvc'))}">
         <label class="pe-from"><input type="checkbox" data-c="${ci}" data-s="${si}" data-f="priceFrom" ${s.priceFrom ? 'checked' : ''}>${t('prFrom')}</label>
         <input type="number" data-c="${ci}" data-s="${si}" data-f="price" value="${s.price ?? ''}" min="0" max="10000" step="0.5" inputmode="decimal" aria-label="€"><span class="pe-eur">€</span>
         ${ic(`data-smv="-1" data-c="${ci}" data-s="${si}"`, t('prUp'), '↑', !si)}${ic(`data-smv="1" data-c="${ci}" data-s="${si}"`, t('prDown'), '↓', si === c.services.length - 1)}${ic(`data-sdel="${si}" data-c="${ci}"`, t('prDel'), '✕', false, 'del')}
         <input type="text" class="pe-desc pe-ru pe-sru" data-c="${ci}" data-s="${si}" data-f="nameRu" value="${esc(ruOf(s))}" placeholder="${esc(t('prRu'))}" maxlength="100" lang="ru" aria-label="${esc(t('prRu'))}">
+        <input type="text" class="pe-desc pe-ru pe-sru" data-c="${ci}" data-s="${si}" data-f="nameEn" value="${esc(enOf(s))}" placeholder="${esc(t('prEn'))}" maxlength="100" lang="en" aria-label="${esc(t('prEn'))}">
       </div>`).join('')}</div>
       <button type="button" class="btn small" data-sadd="${ci}">${t('prAddSvc')}</button>
     </div>`).join('')}
@@ -1808,7 +1895,7 @@ function renderPricesDrawer(){
     const c = cats[+el.dataset.c], o = el.dataset.s != null ? c.services[+el.dataset.s] : c;
     if (f === 'priceFrom') { if (el.checked) o.priceFrom = true; else delete o.priceFrom; }
     else if (f === 'price') o.price = el.value === '' ? null : Math.round(+el.value * 100) / 100;
-    else if (f === 'description' || f === 'nameRu' || f === 'descriptionRu') { if (el.value.trim()) o[f] = el.value; else { delete o[f]; if (f !== 'description') o[f] = ''; } }
+    else if (['description', 'nameRu', 'descriptionRu', 'nameEn', 'descriptionEn'].includes(f)) { if (el.value.trim()) o[f] = el.value; else { delete o[f]; if (f !== 'description') o[f] = ''; } }
     else o[f] = el.value;
     el.classList.remove('pe-bad'); dirty();
   });
@@ -1833,10 +1920,11 @@ function renderPricesDrawer(){
       el.classList.toggle('pe-bad', !ok); if (!ok && !bad) bad = el;
     });
     if (bad) { er.textContent = t('prBad'); er.hidden = false; bad.focus(); return; }
-    const ru = (o, f) => { const v = (o[f + 'Ru'] ?? ruOf(o, f)).trim(); return v ? { [f + 'Ru']: v } : {}; };
-    const clean = cats.map(c => { const { nameRu, descriptionRu, ...rest } = c; return { ...rest, name: c.name.trim(), ...ru(c, 'name'),
-      ...(c.description?.trim() ? { description: c.description.trim(), ...ru(c, 'description') } : { description: undefined }),
-      services: c.services.map(x => { const { nameRu, ...r } = x; return { ...r, name: x.name.trim(), price: +x.price, ...ru(x, 'name') }; }) }; });
+    const tr = (o, f) => { const r = (o[f + 'Ru'] ?? ruOf(o, f)).trim(), e = (o[f + 'En'] ?? enOf(o, f)).trim();
+      return { ...(r ? { [f + 'Ru']: r } : {}), ...(e ? { [f + 'En']: e } : {}) }; };
+    const clean = cats.map(c => { const { nameRu, descriptionRu, nameEn, descriptionEn, ...rest } = c; return { ...rest, name: c.name.trim(), ...tr(c, 'name'),
+      ...(c.description?.trim() ? { description: c.description.trim(), ...tr(c, 'description') } : { description: undefined }),
+      services: c.services.map(x => { const { nameRu, nameEn, ...r } = x; return { ...r, name: x.name.trim(), price: +x.price, ...tr(x, 'name') }; }) }; });
     const btn = $('#peSave'); btn.disabled = true; btn.textContent = t('saving');
     try { await store.saveSite('menu', { categories: clean }); state.prDirty = false; state.prDraft = null; renderServices(); toast(t('saved')); renderPricesDrawer(); }
     catch (x) { er.textContent = String(x); er.hidden = false; btn.disabled = false; btn.textContent = t('prSave'); }
@@ -1864,7 +1952,7 @@ function renderNewDrawer(){
       <div class="field"><label class="mono" for="nEmail">${t('buyerOpt')}</label><input id="nEmail" type="email"></div>
       <div class="two" style="gap:16px">
         <div class="field"><label class="mono" for="nPay">${t('payM')}</label><select id="nPay"><option value="cash">${t('payCash')}</option><option value="card">${t('payCard')}</option><option value="gift">${t('payGift')}</option></select></div>
-        <div class="field"><label class="mono" for="nValid">${t('validUntil')}</label><select id="nValid">${[3,6,12,24].map(m => `<option value="${m}" ${m === 12 ? 'selected' : ''}>${m} ${state.lang === 'ru' ? 'мес.' : 'mėn.'}</option>`).join('')}</select></div>
+        <div class="field"><label class="mono" for="nValid">${t('validUntil')}</label><select id="nValid">${[3,6,12,24].map(m => `<option value="${m}" ${m === 12 ? 'selected' : ''}>${m} ${({ ru: 'мес.', en: 'mo.' })[state.lang] || 'mėn.'}</option>`).join('')}</select></div>
       </div>
       <div class="field"><label class="mono">${t('fDesign')}</label><div class="seg" id="nDesign">${['noir','blush','bone','mocha'].map(d => `<button type="button" data-nd="${d}" aria-pressed="${(nd.design || 'noir') === d}">${d}</button>`).join('')}</div></div>
       <button class="btn pink" type="submit" id="nBtn">${t('create')}</button>
